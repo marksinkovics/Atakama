@@ -1,0 +1,10 @@
+**/build
+**/.vscode
+*.swp
+.idea
+.cache
+
+# Neovim
+
+compile_commands.json
+neovim.json
