@@ -21,6 +21,10 @@ public:
 
     GLFWwindow* GetWindow() const;
 
+    float GetWidth();
+    float GetHeight();
+    float GetRatio();
+
 private:
     uint32_t m_Width;
     uint32_t m_Height;

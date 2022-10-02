@@ -38,4 +38,19 @@ GLFWwindow* Window::GetWindow() const
     return m_Window;
 }
 
+float Window::GetWidth()
+{
+    return m_Width;
+}
+
+float Window::GetHeight()
+{
+    return m_Height;
+}
+
+float Window::GetRatio()
+{
+    return (float)(m_Width / m_Height);
+}
+
 }
