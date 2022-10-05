@@ -19,7 +19,7 @@ Shader::~Shader()
     glDeleteShader(m_Id);
 }
 
-std::string Shader::read() 
+std::string Shader::read()
 {
     std::string code;
     std::ifstream fileStream(m_Path.c_str(), std::ios::in);
@@ -32,13 +32,12 @@ std::string Shader::read()
     stream << fileStream.rdbuf();
     code = stream.str();
     fileStream.close();
-    return code;    
+    return code;
 }
 
 void Shader::compile()
 {
     const std::string content = read();
-    std::cout << "Compile shader: " << m_Path << "\n";
 
     const GLchar* contentPointer = content.c_str();
     glShaderSource(m_Id, 1, &contentPointer, NULL);
@@ -49,7 +48,7 @@ void Shader::compile()
 
     glGetShaderiv(m_Id, GL_COMPILE_STATUS, &result);
     glGetShaderiv(m_Id, GL_INFO_LOG_LENGTH, &infoLogLength);
-    if (infoLogLength > 0) 
+    if (infoLogLength > 0)
     {
         char* msg = (char*)malloc(infoLogLength + 1);
         glGetShaderInfoLog(m_Id, infoLogLength, NULL, msg);
@@ -77,9 +76,6 @@ ShaderProgram::~ShaderProgram()
 
 void ShaderProgram::compile()
 {
-
-    std::cout << "Linking program\n";
-
     glAttachShader(m_Id, m_Vertex.GetId());
     glAttachShader(m_Id, m_Fragment.GetId());
     glLinkProgram(m_Id);
@@ -89,7 +85,7 @@ void ShaderProgram::compile()
 
     glGetShaderiv(m_Id, GL_LINK_STATUS, &result);
     glGetShaderiv(m_Id, GL_INFO_LOG_LENGTH, &infoLogLength);
-    if (infoLogLength > 0) 
+    if (infoLogLength > 0)
     {
         char* msg = (char*)malloc(infoLogLength + 1);
         glGetProgramInfoLog(m_Id, infoLogLength, NULL, msg);
@@ -104,6 +100,11 @@ void ShaderProgram::compile()
 GLuint ShaderProgram::GetId()
 {
     return m_Id;
+}
+
+void ShaderProgram::use()
+{
+    glUseProgram(m_Id);
 }
 
 }

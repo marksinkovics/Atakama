@@ -26,6 +26,7 @@ public:
     ShaderProgram(Shader& vertex, Shader& fragment);
     ~ShaderProgram();
     GLuint GetId();
+    void use();
 private:
     void compile();
 private:
