@@ -42,11 +42,19 @@ file(GLOB_RECURSE SHADERS
 #         ${SHADERS}
 # )
 
-set(ASSET_ROOT ${PROJECT_SOURCE_DIR}/models)
 set(SHADERS_ROOT ${PROJECT_SOURCE_DIR}/src/shaders)
 
 target_add_assets(app shaders
-    ${SHADERS}
+${SHADERS}
+)
+
+set(ASSETS_ROOT ${PROJECT_SOURCE_DIR}/assets)
+set(TEXTURES_ROOT ${ASSETS_ROOT}/textures)
+file(GLOB_RECURSE TEXTURES
+    ${TEXTURES_ROOT}/*.*
+)
+target_add_assets(app "assets/textures"
+    ${TEXTURES}
 )
 
 target_include_directories(app

@@ -11,6 +11,7 @@ class FileSystem
 public:
   static const std::filesystem::path GetBinaryPath();
   static const std::filesystem::path GetShaderPath();
+  static const std::filesystem::path GetTexturePath();
 };
 
 }

@@ -1,5 +1,5 @@
-#ifndef MODEL_H
-#define MODEL_H
+#ifndef MODEL_HPP
+#define MODEL_HPP
 
 #include <vector>
 
@@ -13,7 +13,7 @@ namespace OGLSample
 class Model
 {
 public:
-  Model(std::vector<glm::vec3> vertices, std::vector<glm::vec3> colors);
+  Model(std::vector<glm::vec3> vertices, std::vector<glm::vec3> colors, std::vector<glm::vec2> uvs);
   ~Model();
 
   void bind();
@@ -27,11 +27,13 @@ public:
 private:
   std::vector<glm::vec3> m_Vertices;
   std::vector<glm::vec3> m_Colors;
+  std::vector<glm::vec2> m_UVs;
 
   GLuint m_VAOId;
 
   GLuint m_VertexBufferId;
   GLuint m_ColorBufferId;
+  GLuint m_UVBufferId;
 
   glm::mat4 m_ModelMatrix {1.0f};
 };

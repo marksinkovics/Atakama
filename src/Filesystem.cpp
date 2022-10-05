@@ -14,4 +14,9 @@ const std::filesystem::path FileSystem::GetShaderPath()
   return FileSystem::GetBinaryPath() / "shaders";
 }
 
+const std::filesystem::path FileSystem::GetTexturePath()
+{
+  return FileSystem::GetBinaryPath() / "assets" / "textures";
+}
+
 }

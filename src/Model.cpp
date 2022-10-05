@@ -5,8 +5,8 @@
 namespace OGLSample
 {
 
-Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec3> colors)
-  : m_Vertices(vertices), m_Colors(colors)
+Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec3> colors, std::vector<glm::vec2> uvs)
+  : m_Vertices(vertices), m_Colors(colors), m_UVs(uvs)
 {
 	glGenVertexArrays(1, &m_VAOId);
 	glBindVertexArray(m_VAOId);
@@ -19,7 +19,6 @@ Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec3> colors)
     glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferId);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-
     if (m_Colors.size() > 0) {
         glGenBuffers(1, &m_ColorBufferId);
         glBindBuffer(GL_ARRAY_BUFFER, m_ColorBufferId);
@@ -28,6 +27,16 @@ Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec3> colors)
         glEnableVertexAttribArray(1);
         glBindBuffer(GL_ARRAY_BUFFER, m_ColorBufferId);
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    }
+
+    if (m_UVs.size() > 0) {
+        glGenBuffers(1, &m_UVBufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, m_UVBufferId);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * m_UVs.size(), m_UVs.data(), GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, m_UVBufferId);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
     }
 
     glBindVertexArray(0);
@@ -39,6 +48,8 @@ Model::~Model()
     // glDisableVertexAttribArray(1);
     glDeleteBuffers(1, &m_VertexBufferId);
     glDeleteBuffers(1, &m_ColorBufferId);
+    glDeleteBuffers(1, &m_UVBufferId);
+
     glDeleteVertexArrays(1, &m_VAOId);
 }
 
@@ -58,6 +69,15 @@ void Model::draw()
     unbind();
 }
 
+glm::mat4 Model::getModelMatrix()
+{
+    return m_ModelMatrix;
+}
+
+void Model::setModelMatrix(glm::mat4 modelMatrix)
+{
+    m_ModelMatrix = modelMatrix;
+}
 
 Model LoadCubeModel()
 {
@@ -139,7 +159,46 @@ Model LoadCubeModel()
         {0.982f,  0.099f,  0.879f}
     };
 
-    return Model(vertices, colors);
+    std::vector<glm::vec2> uvs  {
+        {0.000059f, 1.0f-0.000004f},
+        {0.000103f, 1.0f-0.336048f},
+        {0.335973f, 1.0f-0.335903f},
+        {1.000023f, 1.0f-0.000013f},
+        {0.667979f, 1.0f-0.335851f},
+        {0.999958f, 1.0f-0.336064f},
+        {0.667979f, 1.0f-0.335851f},
+        {0.336024f, 1.0f-0.671877f},
+        {0.667969f, 1.0f-0.671889f},
+        {1.000023f, 1.0f-0.000013f},
+        {0.668104f, 1.0f-0.000013f},
+        {0.667979f, 1.0f-0.335851f},
+        {0.000059f, 1.0f-0.000004f},
+        {0.335973f, 1.0f-0.335903f},
+        {0.336098f, 1.0f-0.000071f},
+        {0.667979f, 1.0f-0.335851f},
+        {0.335973f, 1.0f-0.335903f},
+        {0.336024f, 1.0f-0.671877f},
+        {1.000004f, 1.0f-0.671847f},
+        {0.999958f, 1.0f-0.336064f},
+        {0.667979f, 1.0f-0.335851f},
+        {0.668104f, 1.0f-0.000013f},
+        {0.335973f, 1.0f-0.335903f},
+        {0.667979f, 1.0f-0.335851f},
+        {0.335973f, 1.0f-0.335903f},
+        {0.668104f, 1.0f-0.000013f},
+        {0.336098f, 1.0f-0.000071f},
+        {0.000103f, 1.0f-0.336048f},
+        {0.000004f, 1.0f-0.671870f},
+        {0.336024f, 1.0f-0.671877f},
+        {0.000103f, 1.0f-0.336048f},
+        {0.336024f, 1.0f-0.671877f},
+        {0.335973f, 1.0f-0.335903f},
+        {0.667969f, 1.0f-0.671889f},
+        {1.000004f, 1.0f-0.671847f},
+        {0.667979f, 1.0f-0.335851f}
+    };
+
+    return Model(vertices, {}, uvs);
 }
 
 Model LoadTriangle()
@@ -156,17 +215,7 @@ Model LoadTriangle()
         { 0.0f, 0.0f, 1.0f},
     };
 
-    return Model(vertices, colors);
-}
-
-glm::mat4 Model::getModelMatrix()
-{
-    return m_ModelMatrix;
-}
-
-void Model::setModelMatrix(glm::mat4 modelMatrix)
-{
-    m_ModelMatrix = modelMatrix;
+    return Model(vertices, colors, {});
 }
 
 }
