@@ -22,7 +22,7 @@ public:
 
   void run();
 private:
-  Scope<Window> m_Window;
+  Ref<Window> m_Window;
 };
 
 }

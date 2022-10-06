@@ -19,7 +19,9 @@ Window::Window(uint32_t width, uint32_t height, const std::string& name)
 
     glewExperimental = true;
     glewInit();
+
     glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GL_TRUE);
+    glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 Window::~Window()

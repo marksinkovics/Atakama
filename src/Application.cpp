@@ -3,6 +3,7 @@
 #include "Filesystem.hpp"
 #include "Model.hpp"
 #include "Texture.hpp"
+#include "Camera.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,10 +16,9 @@
 
 namespace OGLSample {
 
-
 Application::Application()
 {
-    m_Window = std::make_unique<Window>(Application::WIDTH, Application::HEIGHT, "OpenGL Tutorial");
+    m_Window = CreateRef<Window>(Application::WIDTH, Application::HEIGHT, "OpenGL Tutorial");
 }
 
 Application::~Application()
@@ -28,10 +28,16 @@ Application::~Application()
 
 void Application::run()
 {
+    glfwPollEvents();
+    glfwSetCursorPos(m_Window->GetWindow(), Application::WIDTH/2, Application::HEIGHT/2);
+
     glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
 	glEnable(GL_DEPTH_TEST);
+    // Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS);
+    // Cull triangles which normal is not towards the camera
+    glEnable(GL_CULL_FACE);
 
     Ref<Shader> simpleVertShader = CreateRef<Shader>(FileSystem::GetShaderPath() / "simple_shader.vert", GL_VERTEX_SHADER);
     Ref<Shader> simpleFragShader = CreateRef<Shader>(FileSystem::GetShaderPath() / "simple_shader.frag", GL_FRAGMENT_SHADER);
@@ -43,31 +49,35 @@ void Application::run()
 
     Ref<Texture> texture = CreateRef<Texture>(FileSystem::GetTexturePath() / "uvtemplate.bmp");
 
-    glm::mat4 ProjectionMatrix = glm::perspective(glm::radians(45.0f), (float)m_Window->GetRatio(), 0.1f, 100.0f);
-    glm::mat4 ViewMatrix = glm::lookAt(
-        glm::vec3(4, 3, 3), // Camera is in World Space
-        glm::vec3(0, 0, 0), // looks at the origin
-        glm::vec3(0, 1, 0) // Head is up
-    );
-
     Model cubeModel = LoadCubeModel();
     cubeModel.SetModelMatrix(glm::translate(cubeModel.GetModelMatrix(), {-1.25, 0, 0}));
-    glm::mat4 cubeMVPMatrix = ProjectionMatrix * ViewMatrix * cubeModel.GetModelMatrix();
 
     Model triangleModel = LoadTriangle();
     triangleModel.SetModelMatrix(glm::translate(triangleModel.GetModelMatrix(), {1.25, 0, -1}));
-    glm::mat4 triangleMVPMatrix = ProjectionMatrix * ViewMatrix * triangleModel.GetModelMatrix();
+
+    Ref<Camera> camera = CreateRef<Camera>(m_Window);
+
+    auto currentTime = std::chrono::high_resolution_clock::now();
 
     do {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glfwPollEvents();
 
+        auto newTime = std::chrono::high_resolution_clock::now();
+        float frameTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
+        currentTime = newTime;
+
+        camera->Update(frameTime);
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         textureProgram->Bind();
+        glm::mat4 cubeMVPMatrix = camera->GetProjectionMatrix() * camera->GetViewMatrix() * cubeModel.GetModelMatrix();
         textureProgram->SetUniformMat4("MVP", cubeMVPMatrix);
     	glBindTexture(GL_TEXTURE_2D, texture->GetId());
         textureProgram->SetUniformInt("textureSampler", 0);
         cubeModel.Draw();
 
         simpleProgram->Bind();
+        glm::mat4 triangleMVPMatrix = camera->GetProjectionMatrix() * camera->GetViewMatrix() * triangleModel.GetModelMatrix();
         simpleProgram->SetUniformMat4("MVP", triangleMVPMatrix);
         triangleModel.Draw();
 

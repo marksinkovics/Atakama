@@ -65,7 +65,7 @@ GLuint Shader::GetId()
    return m_Id;
 }
 
-ShaderProgram::ShaderProgram(Ref<Shader>& vertex, Ref<Shader>& fragment)
+ShaderProgram::ShaderProgram(Ref<Shader> vertex, Ref<Shader> fragment)
     : m_Vertex(vertex), m_Fragment(fragment)
 {
     m_Id = glCreateProgram();

@@ -27,7 +27,7 @@ private:
 class ShaderProgram
 {
 public:
-    ShaderProgram(Ref<Shader>& vertex, Ref<Shader>& fragment);
+    ShaderProgram(Ref<Shader> vertex, Ref<Shader> fragment);
     ShaderProgram(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath);
     ~ShaderProgram();
     GLuint GetId();
