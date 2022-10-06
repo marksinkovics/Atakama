@@ -1,4 +1,7 @@
 #include "Shader.hpp"
+
+#include <glm/gtc/type_ptr.hpp>
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -11,7 +14,7 @@ Shader::Shader(const std::filesystem::path& path, GLuint type)
     : m_Path(path), m_Type(type)
 {
     m_Id = glCreateShader(m_Type);
-    compile();
+    Compile();
 }
 
 Shader::~Shader()
@@ -19,7 +22,7 @@ Shader::~Shader()
     glDeleteShader(m_Id);
 }
 
-std::string Shader::read()
+std::string Shader::Read()
 {
     std::string code;
     std::ifstream fileStream(m_Path.c_str(), std::ios::in);
@@ -35,9 +38,9 @@ std::string Shader::read()
     return code;
 }
 
-void Shader::compile()
+void Shader::Compile()
 {
-    const std::string content = read();
+    const std::string content = Read();
 
     const GLchar* contentPointer = content.c_str();
     glShaderSource(m_Id, 1, &contentPointer, NULL);
@@ -62,11 +65,18 @@ GLuint Shader::GetId()
    return m_Id;
 }
 
-ShaderProgram::ShaderProgram(Shader& vertex, Shader& fragment)
+ShaderProgram::ShaderProgram(Ref<Shader>& vertex, Ref<Shader>& fragment)
     : m_Vertex(vertex), m_Fragment(fragment)
 {
     m_Id = glCreateProgram();
-    compile();
+    Compile();
+}
+
+ShaderProgram::ShaderProgram(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
+{
+    Ref<Shader> vertexShader = CreateRef<Shader>(vertexPath, GL_VERTEX_SHADER);
+    Ref<Shader> fragmentShader = CreateRef<Shader>(fragmentPath, GL_FRAGMENT_SHADER);
+    ShaderProgram(vertexShader, fragmentShader);
 }
 
 ShaderProgram::~ShaderProgram()
@@ -74,10 +84,10 @@ ShaderProgram::~ShaderProgram()
 	glDeleteProgram(m_Id);
 }
 
-void ShaderProgram::compile()
+void ShaderProgram::Compile()
 {
-    glAttachShader(m_Id, m_Vertex.GetId());
-    glAttachShader(m_Id, m_Fragment.GetId());
+    glAttachShader(m_Id, m_Vertex->GetId());
+    glAttachShader(m_Id, m_Fragment->GetId());
     glLinkProgram(m_Id);
 
     GLint result = GL_FALSE;
@@ -93,8 +103,8 @@ void ShaderProgram::compile()
         free(msg);
     }
 
-    glDetachShader(m_Id, m_Vertex.GetId());
-    glDetachShader(m_Id, m_Fragment.GetId());
+    glDetachShader(m_Id, m_Vertex->GetId());
+    glDetachShader(m_Id, m_Fragment->GetId());
 }
 
 GLuint ShaderProgram::GetId()
@@ -102,9 +112,22 @@ GLuint ShaderProgram::GetId()
     return m_Id;
 }
 
-void ShaderProgram::use()
+void ShaderProgram::Bind()
 {
     glUseProgram(m_Id);
 }
+
+void ShaderProgram::SetUniformInt(const std::string& name, const int value)
+{
+    GLuint location = glGetUniformLocation(m_Id, name.c_str());
+    glUniform1i(location, value);
+}
+
+void ShaderProgram::SetUniformMat4(const std::string& name, const glm::mat4& matrix)
+{
+    GLuint location = glGetUniformLocation(m_Id, name.c_str());
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
 
 }

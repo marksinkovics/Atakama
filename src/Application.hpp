@@ -22,7 +22,7 @@ public:
 
   void run();
 private:
-  std::unique_ptr<Window> m_Window;
+  Scope<Window> m_Window;
 };
 
 }

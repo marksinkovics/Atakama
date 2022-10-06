@@ -17,7 +17,7 @@ public:
     Window(const Window &) = delete;
     Window &operator=(const Window &) = delete;
 
-    bool shouldClose();
+    bool ShouldClose();
 
     GLFWwindow* GetWindow() const;
 

@@ -53,28 +53,28 @@ Model::~Model()
     glDeleteVertexArrays(1, &m_VAOId);
 }
 
-void Model::bind()
+void Model::Bind()
 {
     glBindVertexArray(m_VAOId);
 }
-void Model::unbind()
+void Model::Unbind()
 {
     glBindVertexArray(0);
 }
 
-void Model::draw()
+void Model::Draw()
 {
-    bind();
+    Bind();
     glDrawArrays(GL_TRIANGLES, 0, m_Vertices.size());
-    unbind();
+    Unbind();
 }
 
-glm::mat4 Model::getModelMatrix()
+glm::mat4 Model::GetModelMatrix()
 {
     return m_ModelMatrix;
 }
 
-void Model::setModelMatrix(glm::mat4 modelMatrix)
+void Model::SetModelMatrix(glm::mat4 modelMatrix)
 {
     m_ModelMatrix = modelMatrix;
 }

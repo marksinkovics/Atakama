@@ -16,13 +16,13 @@ public:
   Model(std::vector<glm::vec3> vertices, std::vector<glm::vec3> colors, std::vector<glm::vec2> uvs);
   ~Model();
 
-  void bind();
-  void unbind();
+  void Bind();
+  void Unbind();
 
-  void draw();
+  void Draw();
 
-  glm::mat4 getModelMatrix();
-  void setModelMatrix(glm::mat4 modelMatrix);
+  glm::mat4 GetModelMatrix();
+  void SetModelMatrix(glm::mat4 modelMatrix);
 
 private:
   std::vector<glm::vec3> m_Vertices;

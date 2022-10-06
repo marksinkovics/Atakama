@@ -28,7 +28,7 @@ Window::~Window()
     glfwTerminate();
 }
 
-bool Window::shouldClose()
+bool Window::ShouldClose()
 {
     return glfwGetKey(m_Window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(m_Window) == 0;
 }
