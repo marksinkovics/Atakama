@@ -26,6 +26,8 @@ set_target_properties(app PROPERTIES
 )
 
 set(SOURCE_ROOT ${PROJECT_SOURCE_DIR}/src)
+set(VENDOR_ROOT ${PROJECT_SOURCE_DIR}/vendor)
+
 set(LIBS_PATH ${PROJECT_SOURCE_DIR}/libs)
 
 file(GLOB_RECURSE HEADERS ${SOURCE_ROOT}/*.hpp)
@@ -53,8 +55,23 @@ set(TEXTURES_ROOT ${ASSETS_ROOT}/textures)
 file(GLOB_RECURSE TEXTURES
     ${TEXTURES_ROOT}/*.*
 )
+
 target_add_assets(app "assets/textures"
     ${TEXTURES}
+)
+
+
+set(MODELS_ROOT ${ASSETS_ROOT}/models)
+file(GLOB_RECURSE MODELS
+    ${MODELS_ROOT}/*.*
+)
+
+target_add_assets(app "assets/models"
+    ${MODELS}
+)
+
+include_directories(
+    ${VENDOR_ROOT}/stb
 )
 
 target_include_directories(app

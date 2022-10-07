@@ -14,7 +14,8 @@ class Texture
 public:
     Texture(const std::filesystem::path& path);
     GLuint GetId();
-    void Bind();
+    void Bind(int index);
+    void Unbind();
 private:
     GLuint m_Id;
 };

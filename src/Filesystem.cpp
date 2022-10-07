@@ -19,4 +19,10 @@ const std::filesystem::path FileSystem::GetTexturePath()
   return FileSystem::GetBinaryPath() / "assets" / "textures";
 }
 
+const std::filesystem::path FileSystem::GetModelPath()
+{
+  return FileSystem::GetBinaryPath() / "assets" / "models";
+}
+
+
 }

@@ -2,6 +2,7 @@
 #define MODEL_HPP
 
 #include <vector>
+#include <filesystem>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -38,8 +39,9 @@ private:
   glm::mat4 m_ModelMatrix {1.0f};
 };
 
-Model LoadCubeModel();
-Model LoadTriangle();
+Ref<Model> LoadCubeModel();
+Ref<Model> LoadTriangle();
+Ref<Model> LoadOBJFile(const std::filesystem::path& path);
 
 }
 
