@@ -5,12 +5,15 @@
 namespace OGLSample
 {
 
-Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec3> colors, std::vector<glm::vec2> uvs)
-  : m_Vertices(vertices), m_Colors(colors), m_UVs(uvs)
+Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<glm::vec3> colors)
+  : m_Vertices(vertices), m_UVs(uvs), m_Normals(normals), m_Colors(colors)
 {
+    // VAO
+
 	glGenVertexArrays(1, &m_VAOId);
 	glBindVertexArray(m_VAOId);
 
+    // Position
     glGenBuffers(1, &m_VertexBufferId);
     glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferId);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_Vertices.size(), m_Vertices.data(), GL_STATIC_DRAW);
@@ -19,25 +22,32 @@ Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec3> colors, std
     glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferId);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-    if (m_UVs.size() > 0) {
-        glGenBuffers(1, &m_UVBufferId);
-        glBindBuffer(GL_ARRAY_BUFFER, m_UVBufferId);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * m_UVs.size(), m_UVs.data(), GL_STATIC_DRAW);
+    // UV
+    glGenBuffers(1, &m_UVBufferId);
+    glBindBuffer(GL_ARRAY_BUFFER, m_UVBufferId);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * m_UVs.size(), m_UVs.data(), GL_STATIC_DRAW);
 
-        glEnableVertexAttribArray(1);
-        glBindBuffer(GL_ARRAY_BUFFER, m_UVBufferId);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    }
+    glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, m_UVBufferId);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-    if (m_Colors.size() > 0) {
-        glGenBuffers(2, &m_ColorBufferId);
-        glBindBuffer(GL_ARRAY_BUFFER, m_ColorBufferId);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_Colors.size(), m_Colors.data(), GL_STATIC_DRAW);
+    // Normal
+    glGenBuffers(1, &m_NormalBufferId);
+    glBindBuffer(GL_ARRAY_BUFFER, m_NormalBufferId);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_Normals.size(), m_Normals.data(), GL_STATIC_DRAW);
 
-        glEnableVertexAttribArray(1);
-        glBindBuffer(GL_ARRAY_BUFFER, m_ColorBufferId);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    }
+    glEnableVertexAttribArray(2);
+    glBindBuffer(GL_ARRAY_BUFFER, m_NormalBufferId);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+
+    glGenBuffers(1, &m_ColorBufferId);
+    glBindBuffer(GL_ARRAY_BUFFER, m_ColorBufferId);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_Colors.size(), m_Colors.data(), GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(3);
+    glBindBuffer(GL_ARRAY_BUFFER, m_ColorBufferId);
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
     glBindVertexArray(0);
 }
@@ -47,8 +57,9 @@ Model::~Model()
     // glDisableVertexAttribArray(0);
     // glDisableVertexAttribArray(1);
     glDeleteBuffers(1, &m_VertexBufferId);
-    glDeleteBuffers(1, &m_ColorBufferId);
+    glDeleteBuffers(1, &m_NormalBufferId);
     glDeleteBuffers(1, &m_UVBufferId);
+    glDeleteBuffers(1, &m_ColorBufferId);
 
     glDeleteVertexArrays(1, &m_VAOId);
 }
@@ -198,7 +209,9 @@ Ref<Model> LoadCubeModel()
         {0.667979f, 1.0f-0.335851f}
     };
 
-    return CreateRef<Model>(vertices, std::vector<glm::vec3>{}, uvs);
+    std::vector<glm::vec3> normals {};
+
+    return CreateRef<Model>(vertices, uvs, normals, colors);
 }
 
 Ref<Model> LoadTriangle()
@@ -216,8 +229,9 @@ Ref<Model> LoadTriangle()
     };
 
     std::vector<glm::vec2> uvs {};
+    std::vector<glm::vec3> normals {};
 
-    return CreateRef<Model>(vertices, colors, uvs);
+    return CreateRef<Model>(vertices, uvs, normals, colors);
 }
 
 Ref<Model> LoadOBJFile(const std::filesystem::path& path)
@@ -314,7 +328,7 @@ Ref<Model> LoadOBJFile(const std::filesystem::path& path)
 
     fclose(file);
 
-	return CreateRef<Model>(vertices, colors, uvs);
+	return CreateRef<Model>(vertices, uvs, normals, colors);
 }
 
 }

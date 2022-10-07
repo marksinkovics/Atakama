@@ -14,7 +14,12 @@ namespace OGLSample
 class Model
 {
 public:
-  Model(std::vector<glm::vec3> vertices, std::vector<glm::vec3> colors, std::vector<glm::vec2> uvs);
+  Model(
+    std::vector<glm::vec3> vertices,
+    std::vector<glm::vec2> uvs,
+    std::vector<glm::vec3> normals,
+    std::vector<glm::vec3> colors);
+
   ~Model();
 
   void Bind();
@@ -27,14 +32,16 @@ public:
 
 private:
   std::vector<glm::vec3> m_Vertices;
-  std::vector<glm::vec3> m_Colors;
   std::vector<glm::vec2> m_UVs;
+  std::vector<glm::vec3> m_Normals;
+  std::vector<glm::vec3> m_Colors;
 
   GLuint m_VAOId;
 
   GLuint m_VertexBufferId;
-  GLuint m_ColorBufferId;
+  GLuint m_NormalBufferId;
   GLuint m_UVBufferId;
+  GLuint m_ColorBufferId;
 
   glm::mat4 m_ModelMatrix {1.0f};
 };
