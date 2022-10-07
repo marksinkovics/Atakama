@@ -74,8 +74,9 @@ void Application::run()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         textureProgram->Bind();
-        glm::mat4 cubeMVPMatrix = camera->GetProjectionMatrix() * camera->GetViewMatrix() * cubeModel->GetModelMatrix();
-        textureProgram->SetUniformMat4("MVP", cubeMVPMatrix);
+        textureProgram->SetUniformMat4("uModel", cubeModel->GetModelMatrix());
+        textureProgram->SetUniformMat4("uView", camera->GetViewMatrix());
+        textureProgram->SetUniformMat4("uProjection", camera->GetProjectionMatrix());
         texture1->Bind(0);
         textureProgram->SetUniformInt("textureSampler", 0);
         cubeModel->Draw();
@@ -83,14 +84,16 @@ void Application::run()
         texture1->Unbind();
 
         simpleProgram->Bind();
-        glm::mat4 triangleMVPMatrix = camera->GetProjectionMatrix() * camera->GetViewMatrix() * triangleModel->GetModelMatrix();
-        simpleProgram->SetUniformMat4("MVP", triangleMVPMatrix);
+        simpleProgram->SetUniformMat4("uModel", triangleModel->GetModelMatrix());
+        simpleProgram->SetUniformMat4("uView", camera->GetViewMatrix());
+        simpleProgram->SetUniformMat4("uProjection", camera->GetProjectionMatrix());
         triangleModel->Draw();
         simpleProgram->Unbind();
 
         textureProgram->Bind();
-        glm::mat4 cube2MVPMatrix = camera->GetProjectionMatrix() * camera->GetViewMatrix() * cubeModel2->GetModelMatrix();
-        textureProgram->SetUniformMat4("MVP", cube2MVPMatrix);
+        textureProgram->SetUniformMat4("uModel", cubeModel2->GetModelMatrix());
+        textureProgram->SetUniformMat4("uView", camera->GetViewMatrix());
+        textureProgram->SetUniformMat4("uProjection", camera->GetProjectionMatrix());
         texture2->Bind(1);
         textureProgram->SetUniformInt("textureSampler", 1);
         cubeModel2->Draw();

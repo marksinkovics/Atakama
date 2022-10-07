@@ -5,12 +5,14 @@ layout(location = 1) in vec2 aUV;
 layout(location = 2) in vec3 aNormal;
 layout(location = 3) in vec3 aColor;
 
-uniform mat4 MVP;
+uniform mat4 uModel;
+uniform mat4 uView;
+uniform mat4 uProjection;
 
 out vec2 UV;
 
 void main()
 {
-  gl_Position = MVP * vec4(aPosition, 1);
+  gl_Position = uProjection * uView * uModel * vec4(aPosition, 1);
   UV = aUV;
 }
