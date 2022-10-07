@@ -4,6 +4,7 @@
 #include "Model.hpp"
 #include "Texture.hpp"
 #include "Camera.hpp"
+#include "Input.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,7 +30,8 @@ Application::~Application()
 void Application::run()
 {
     glfwPollEvents();
-    glfwSetCursorPos(m_Window->GetWindow(), Application::WIDTH/2, Application::HEIGHT/2);
+
+    Input::EnableDragging(m_Window, true);
 
     glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
@@ -55,7 +57,6 @@ void Application::run()
     assert(cubeModel2 && "Model didn't load");
 
     cubeModel2->SetModelMatrix(glm::translate(cubeModel2->GetModelMatrix(), {1.25, 0, -1}));
-
 
     Ref<Camera> camera = CreateRef<Camera>(m_Window);
 

@@ -1,7 +1,10 @@
 #include "Camera.hpp"
+#include "Input.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/constants.hpp>
+
+#include <iostream>
 
 namespace OGLSample
 {
@@ -24,13 +27,10 @@ glm::mat4 Camera::GetProjectionMatrix()
 
 void Camera::Update(float frameTime)
 {
-    double mouseX, mouseY;
-	glfwGetCursorPos(m_Window->GetWindow(), &mouseX, &mouseY);
-    glfwSetCursorPos(m_Window->GetWindow(), m_Window->GetWidth()/2, m_Window->GetHeight()/2);
+	Input::MousePos mousePos = Input::IsMouseMoved(m_Window, GLFW_MOUSE_BUTTON_LEFT);
 
-	// Compute new orientation
-	m_HorizontalAngle += m_MouseSpeed * float(m_Window->GetWidth()/2  - mouseX);
-	m_VerticalAngle   += m_MouseSpeed * float(m_Window->GetHeight()/2 - mouseY);
+	m_HorizontalAngle += m_MouseSpeed * float(mousePos.X);
+	m_VerticalAngle   += m_MouseSpeed * float(mousePos.Y);
 
     // Direction : Spherical coordinates to Cartesian coordinates conversion
     glm::vec3 direction = glm::vec3(
@@ -49,20 +49,20 @@ void Camera::Update(float frameTime)
     // Up vector (perpendicular)
 	glm::vec3 up = glm::cross(right, direction);
 
-    	// Move forward
-	if (glfwGetKey(m_Window->GetWindow(), GLFW_KEY_UP) == GLFW_PRESS){
+    // Move forward
+	if (Input::IsKeyPressed(m_Window, GLFW_KEY_UP) || Input::IsKeyPressed(m_Window, GLFW_KEY_W)){
 		m_Position += direction * frameTime * m_Speed;
 	}
 	// Move backward
-	if (glfwGetKey(m_Window->GetWindow(), GLFW_KEY_DOWN ) == GLFW_PRESS){
+	if (Input::IsKeyPressed(m_Window, GLFW_KEY_DOWN) || Input::IsKeyPressed(m_Window, GLFW_KEY_S)){
 		m_Position -= direction * frameTime * m_Speed;
 	}
-	// Strafe right
-	if (glfwGetKey(m_Window->GetWindow(), GLFW_KEY_RIGHT ) == GLFW_PRESS){
+	// Move right
+	if (Input::IsKeyPressed(m_Window, GLFW_KEY_RIGHT) || Input::IsKeyPressed(m_Window, GLFW_KEY_D)){
 		m_Position += right * frameTime * m_Speed;
 	}
-	// Strafe left
-	if (glfwGetKey(m_Window->GetWindow(), GLFW_KEY_LEFT ) == GLFW_PRESS){
+	// Move left
+	if (Input::IsKeyPressed(m_Window, GLFW_KEY_LEFT) || Input::IsKeyPressed(m_Window, GLFW_KEY_A)){
 		m_Position -= right * frameTime * m_Speed;
 	}
 
