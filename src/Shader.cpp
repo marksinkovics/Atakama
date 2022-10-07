@@ -73,10 +73,9 @@ ShaderProgram::ShaderProgram(Ref<Shader> vertex, Ref<Shader> fragment)
 }
 
 ShaderProgram::ShaderProgram(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
+    : ShaderProgram(CreateRef<Shader>(vertexPath, GL_VERTEX_SHADER), CreateRef<Shader>(fragmentPath, GL_FRAGMENT_SHADER))
 {
-    Ref<Shader> vertexShader = CreateRef<Shader>(vertexPath, GL_VERTEX_SHADER);
-    Ref<Shader> fragmentShader = CreateRef<Shader>(fragmentPath, GL_FRAGMENT_SHADER);
-    ShaderProgram(vertexShader, fragmentShader);
+
 }
 
 ShaderProgram::~ShaderProgram()
@@ -115,6 +114,11 @@ GLuint ShaderProgram::GetId()
 void ShaderProgram::Bind()
 {
     glUseProgram(m_Id);
+}
+
+void ShaderProgram::Unbind()
+{
+    glUseProgram(0);
 }
 
 void ShaderProgram::SetUniformInt(const std::string& name, const int value)

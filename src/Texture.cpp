@@ -90,7 +90,7 @@ Texture::Texture(const std::filesystem::path& path)
     glBindTexture(GL_TEXTURE_2D, m_Id);
     glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
-    // free(data);
+    free(data);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

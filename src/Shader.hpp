@@ -5,7 +5,6 @@
 #include <glm/glm.hpp>
 
 #include <filesystem>
-#include <memory>
 
 namespace OGLSample {
 
@@ -32,6 +31,7 @@ public:
     ~ShaderProgram();
     GLuint GetId();
     void Bind();
+    void Unbind();
 
     void SetUniformInt(const std::string& name, const int value);
     void SetUniformMat4(const std::string& name, const glm::mat4& matrix);

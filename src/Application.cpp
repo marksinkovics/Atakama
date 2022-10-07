@@ -39,13 +39,8 @@ void Application::run()
     // Cull triangles which normal is not towards the camera
     glEnable(GL_CULL_FACE);
 
-    Ref<Shader> simpleVertShader = CreateRef<Shader>(FileSystem::GetShaderPath() / "simple_shader.vert", GL_VERTEX_SHADER);
-    Ref<Shader> simpleFragShader = CreateRef<Shader>(FileSystem::GetShaderPath() / "simple_shader.frag", GL_FRAGMENT_SHADER);
-    Ref<ShaderProgram> simpleProgram = CreateRef<ShaderProgram>(simpleVertShader, simpleFragShader);
-
-    Ref<Shader> textureVertShader = CreateRef<Shader>(FileSystem::GetShaderPath() / "texture_shader.vert", GL_VERTEX_SHADER);
-    Ref<Shader> textureFragShader = CreateRef<Shader>(FileSystem::GetShaderPath() / "texture_shader.frag", GL_FRAGMENT_SHADER);
-    Ref<ShaderProgram> textureProgram = CreateRef<ShaderProgram>(textureVertShader, textureFragShader);
+    Ref<ShaderProgram> simpleProgram = CreateRef<ShaderProgram>(FileSystem::GetShaderPath() / "simple_shader.vert", FileSystem::GetShaderPath() / "simple_shader.frag");
+    Ref<ShaderProgram> textureProgram = CreateRef<ShaderProgram>(FileSystem::GetShaderPath() / "texture_shader.vert", FileSystem::GetShaderPath() / "texture_shader.frag");
 
     Ref<Texture> texture = CreateRef<Texture>(FileSystem::GetTexturePath() / "uvtemplate.bmp");
 
@@ -75,11 +70,13 @@ void Application::run()
     	glBindTexture(GL_TEXTURE_2D, texture->GetId());
         textureProgram->SetUniformInt("textureSampler", 0);
         cubeModel.Draw();
+        textureProgram->Unbind();
 
         simpleProgram->Bind();
         glm::mat4 triangleMVPMatrix = camera->GetProjectionMatrix() * camera->GetViewMatrix() * triangleModel.GetModelMatrix();
         simpleProgram->SetUniformMat4("MVP", triangleMVPMatrix);
         triangleModel.Draw();
+        simpleProgram->Unbind();
 
         // Swap buffers
         glfwSwapBuffers(m_Window->GetWindow());
