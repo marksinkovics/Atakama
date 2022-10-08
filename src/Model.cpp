@@ -8,6 +8,12 @@ namespace OGLSample
 Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<glm::vec3> colors)
   : m_Vertices(vertices), m_UVs(uvs), m_Normals(normals), m_Colors(colors)
 {
+    if (m_Normals.size() > 0) {
+        std::cout << "Normal exists\n";
+    } else {
+        std::cout << "Normals cannot be found\n";
+    }
+
     // VAO
 
 	glGenVertexArrays(1, &m_VAOId);
@@ -60,6 +66,7 @@ void Model::Bind()
 {
     glBindVertexArray(m_VAOId);
 }
+
 void Model::Unbind()
 {
     glBindVertexArray(0);
@@ -80,6 +87,16 @@ glm::mat4 Model::GetModelMatrix()
 void Model::SetModelMatrix(glm::mat4 modelMatrix)
 {
     m_ModelMatrix = modelMatrix;
+}
+
+void Model::SetTexture(Ref<Texture> texture)
+{
+    m_Texture = texture;
+}
+
+Ref<Texture> Model::GetTexture()
+{
+    return m_Texture;
 }
 
 Ref<Model> LoadCubeModel()
@@ -221,7 +238,11 @@ Ref<Model> LoadTriangle()
     };
 
     std::vector<glm::vec2> uvs {};
-    std::vector<glm::vec3> normals {};
+    std::vector<glm::vec3> normals {
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+    };
 
     return CreateRef<Model>(vertices, uvs, normals, colors);
 }
@@ -314,7 +335,7 @@ Ref<Model> LoadOBJFile(const std::filesystem::path& path)
 
 		// Put the attributes in buffers
 		vertices.push_back(vertex);
-		uvs.push_back(uv);
+		uvs.push_back({uv.x, 1.f - uv.y});
 		normals .push_back(normal);
 	}
 

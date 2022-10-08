@@ -1,6 +1,8 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
+#include "Texture.hpp"
+
 #include <vector>
 #include <filesystem>
 
@@ -27,14 +29,20 @@ public:
 
   void Draw();
 
+  // model = T * S * R
   glm::mat4 GetModelMatrix();
   void SetModelMatrix(glm::mat4 modelMatrix);
+
+  void SetTexture(Ref<Texture> texture);
+  Ref<Texture> GetTexture();
 
 private:
   std::vector<glm::vec3> m_Vertices;
   std::vector<glm::vec2> m_UVs;
   std::vector<glm::vec3> m_Normals;
   std::vector<glm::vec3> m_Colors;
+
+  Ref<Texture> m_Texture;
 
   GLuint m_VAOId;
 
