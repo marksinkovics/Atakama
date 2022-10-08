@@ -1,6 +1,6 @@
 #include "Application.hpp"
 #include "Shader.hpp"
-#include "Filesystem.hpp"
+#include "FileSystem.hpp"
 #include "Model.hpp"
 #include "Texture.hpp"
 #include "Camera.hpp"
@@ -41,13 +41,13 @@ void Application::run()
     // Cull triangles which normal is not towards the camera
     glEnable(GL_CULL_FACE);
 
-    Ref<ShaderProgram> simpleProgram = CreateRef<ShaderProgram>(FileSystem::GetShaderPath() / "simple_shader.vert", FileSystem::GetShaderPath() / "simple_shader.frag");
-    Ref<ShaderProgram> textureProgram = CreateRef<ShaderProgram>(FileSystem::GetShaderPath() / "texture_shader.vert", FileSystem::GetShaderPath() / "texture_shader.frag");
+    Ref<Shader> simpleProgram = CreateRef<Shader>(FileSystem::GetShaderFile("simple_shader.vert"), FileSystem::GetShaderFile("simple_shader.frag"));
+    Ref<Shader> textureProgram = CreateRef<Shader>(FileSystem::GetShaderFile("texture_shader.vert"), FileSystem::GetShaderFile("texture_shader.frag"));
 
     Ref<Texture> texture1 = CreateRef<Texture>(FileSystem::GetTexturePath() / "uvtemplate.bmp");
     Ref<Texture> texture2 = CreateRef<Texture>(FileSystem::GetTexturePath() / "wall.jpg");
 
-    Ref<Model> cubeModel = LoadCubeModel();
+    Ref<Model> cubeModel = LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
     cubeModel->SetModelMatrix(glm::translate(cubeModel->GetModelMatrix(), {-2.f, 0, 0}));
 
     Ref<Model> triangleModel = LoadTriangle();
@@ -99,7 +99,6 @@ void Application::run()
         cubeModel2->Draw();
         textureProgram->Unbind();
         texture2->Unbind();
-
 
         // Swap buffers
         glfwSwapBuffers(m_Window->GetWindow());

@@ -1,4 +1,5 @@
 #include "Shader.hpp"
+#include "FileSystem.hpp"
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -10,25 +11,23 @@
 namespace OGLSample
 {
 
-Shader::Shader(const std::filesystem::path& path, GLuint type)
-    : m_Path(path), m_Type(type)
+Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
 {
-    m_Id = glCreateShader(m_Type);
-    Compile();
+    Compile(vertexPath, fragmentPath);
 }
 
 Shader::~Shader()
 {
-    glDeleteShader(m_Id);
+	glDeleteProgram(m_Id);
 }
 
-std::string Shader::Read()
+std::string Shader::LoadFile(const std::filesystem::path& path)
 {
     std::string code;
-    std::ifstream fileStream(m_Path.c_str(), std::ios::in);
+    std::ifstream fileStream(path.c_str(), std::ios::in);
     if(!fileStream.is_open())
     {
-        std::cerr << "Cannot open: " << m_Path << "\n";
+        std::cerr << "Cannot open: " << path << "\n";
         return "";
     }
     std::stringstream stream;
@@ -38,19 +37,25 @@ std::string Shader::Read()
     return code;
 }
 
-void Shader::Compile()
+GLuint Shader::CompileShaderFiles(const std::filesystem::path& path, GLuint type)
 {
-    const std::string content = Read();
+    const std::string content = LoadFile(path);
+
+    if (content.size() == 0) {
+        return 0;
+    }
+
+    GLuint shaderId = glCreateShader(type);
 
     const GLchar* contentPointer = content.c_str();
-    glShaderSource(m_Id, 1, &contentPointer, NULL);
-    glCompileShader(m_Id);
+    glShaderSource(shaderId, 1, &contentPointer, NULL);
+    glCompileShader(shaderId);
 
     GLint result = GL_FALSE;
     int infoLogLength = 0;
 
-    glGetShaderiv(m_Id, GL_COMPILE_STATUS, &result);
-    glGetShaderiv(m_Id, GL_INFO_LOG_LENGTH, &infoLogLength);
+    glGetShaderiv(shaderId, GL_COMPILE_STATUS, &result);
+    glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
     if (infoLogLength > 0)
     {
         char* msg = (char*)malloc(infoLogLength + 1);
@@ -58,35 +63,18 @@ void Shader::Compile()
         std::cerr << "Error during shader compilation: \n" << msg << "\n";
         free(msg);
     }
+
+    return shaderId;
+
 }
 
-GLuint Shader::GetId()
-{
-   return m_Id;
-}
-
-ShaderProgram::ShaderProgram(Ref<Shader> vertex, Ref<Shader> fragment)
-    : m_Vertex(vertex), m_Fragment(fragment)
+void Shader::CompileProgram(const GLuint vertexId, const GLuint fragmentId)
 {
     m_Id = glCreateProgram();
-    Compile();
-}
 
-ShaderProgram::ShaderProgram(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
-    : ShaderProgram(CreateRef<Shader>(vertexPath, GL_VERTEX_SHADER), CreateRef<Shader>(fragmentPath, GL_FRAGMENT_SHADER))
-{
+    glAttachShader(m_Id, vertexId);
+    glAttachShader(m_Id, fragmentId);
 
-}
-
-ShaderProgram::~ShaderProgram()
-{
-	glDeleteProgram(m_Id);
-}
-
-void ShaderProgram::Compile()
-{
-    glAttachShader(m_Id, m_Vertex->GetId());
-    glAttachShader(m_Id, m_Fragment->GetId());
     glLinkProgram(m_Id);
 
     GLint result = GL_FALSE;
@@ -102,32 +90,41 @@ void ShaderProgram::Compile()
         free(msg);
     }
 
-    glDetachShader(m_Id, m_Vertex->GetId());
-    glDetachShader(m_Id, m_Fragment->GetId());
+    glDetachShader(m_Id, vertexId);
+    glDeleteShader(vertexId);
+    glDetachShader(m_Id, fragmentId);
+    glDeleteShader(fragmentId);
 }
 
-GLuint ShaderProgram::GetId()
+void Shader::Compile(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
+{
+    GLuint vertexId = CompileShaderFiles(vertexPath, GL_VERTEX_SHADER);
+    GLuint fragmentId = CompileShaderFiles(fragmentPath, GL_FRAGMENT_SHADER);
+    CompileProgram(vertexId, fragmentId);
+}
+
+GLuint Shader::GetId()
 {
     return m_Id;
 }
 
-void ShaderProgram::Bind()
+void Shader::Bind()
 {
     glUseProgram(m_Id);
 }
 
-void ShaderProgram::Unbind()
+void Shader::Unbind()
 {
     glUseProgram(0);
 }
 
-void ShaderProgram::SetUniformInt(const std::string& name, const int value)
+void Shader::SetUniformInt(const std::string& name, const int value)
 {
     GLuint location = glGetUniformLocation(m_Id, name.c_str());
     glUniform1i(location, value);
 }
 
-void ShaderProgram::SetUniformMat4(const std::string& name, const glm::mat4& matrix)
+void Shader::SetUniformMat4(const std::string& name, const glm::mat4& matrix)
 {
     GLuint location = glGetUniformLocation(m_Id, name.c_str());
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));

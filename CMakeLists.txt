@@ -98,7 +98,7 @@ target_link_libraries(app
 
 target_precompile_headers(app
     PUBLIC
-        ${SOURCE_ROOT}/Utils/Utils.hpp
+        ${SOURCE_ROOT}/pch.hpp
 )
 
 # add_subdirectory("libs/tinyobjloader")

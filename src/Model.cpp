@@ -17,36 +17,28 @@ Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::v
     glGenBuffers(1, &m_VertexBufferId);
     glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferId);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_Vertices.size(), m_Vertices.data(), GL_STATIC_DRAW);
-
     glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferId);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
     // UV
     glGenBuffers(1, &m_UVBufferId);
     glBindBuffer(GL_ARRAY_BUFFER, m_UVBufferId);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * m_UVs.size(), m_UVs.data(), GL_STATIC_DRAW);
-
     glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, m_UVBufferId);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
     // Normal
     glGenBuffers(1, &m_NormalBufferId);
     glBindBuffer(GL_ARRAY_BUFFER, m_NormalBufferId);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_Normals.size(), m_Normals.data(), GL_STATIC_DRAW);
-
     glEnableVertexAttribArray(2);
-    glBindBuffer(GL_ARRAY_BUFFER, m_NormalBufferId);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 
     glGenBuffers(1, &m_ColorBufferId);
     glBindBuffer(GL_ARRAY_BUFFER, m_ColorBufferId);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_Colors.size(), m_Colors.data(), GL_STATIC_DRAW);
-
     glEnableVertexAttribArray(3);
-    glBindBuffer(GL_ARRAY_BUFFER, m_ColorBufferId);
     glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
     glBindVertexArray(0);

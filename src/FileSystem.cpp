@@ -1,4 +1,4 @@
-#include "Filesystem.hpp"
+#include "FileSystem.hpp"
 #include "Args.hpp"
 
 namespace OGLSample
@@ -12,6 +12,11 @@ const std::filesystem::path FileSystem::GetBinaryPath()
 const std::filesystem::path FileSystem::GetShaderPath()
 {
   return FileSystem::GetBinaryPath() / "shaders";
+}
+
+const std::filesystem::path FileSystem::GetShaderFile(const std::string& file)
+{
+  return FileSystem::GetShaderPath() / file;
 }
 
 const std::filesystem::path FileSystem::GetTexturePath()
