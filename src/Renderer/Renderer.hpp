@@ -13,25 +13,12 @@ class Renderer
 public:
     Renderer() {}
 
-    virtual void Init(Ref<Camera> camera, Ref<Shader> shader)
-    {
-        m_Camera = camera;
-        m_Shader = shader;
-    }
-
+    virtual void Init(Ref<Camera> camera, Ref<Shader> shader);
     virtual ~Renderer() = default;
 
-    virtual void Begin()
-    {
-        m_Shader->Bind();
-    }
-
+    virtual void Begin();
     virtual void Draw(Ref<Model> model) = 0;
-
-    virtual void End()
-    {
-        m_Shader->Unbind();
-    }
+    virtual void End();
 
 protected:
     Ref<Shader> m_Shader;

@@ -18,6 +18,7 @@ public:
     void Unbind();
 private:
     GLuint m_Id;
+    int m_TotalUnits;
 };
 
 }

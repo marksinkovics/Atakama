@@ -25,6 +25,11 @@ glm::mat4 Camera::GetProjectionMatrix()
     return m_ProjectionMatrix;
 }
 
+glm::vec3 Camera::GetPosition()
+{
+	return m_Position;
+}
+
 void Camera::Update(float frameTime)
 {
 	Input::MousePos mousePos = Input::IsMouseMoved(m_Window, GLFW_MOUSE_BUTTON_LEFT);

@@ -8,6 +8,7 @@
 
 #include "Renderer/SimpleRenderer.hpp"
 #include "Renderer/TextureRenderer.hpp"
+#include "Renderer/LightingRenderer.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -82,6 +83,16 @@ void Application::run()
     Ref<TextureRenderer> textureRenderer = CreateRef<TextureRenderer>();
     textureRenderer->Init(camera);
 
+    Ref<LightingRenderer> lightingRenderer = CreateRef<LightingRenderer>();
+    lightingRenderer->Init(camera);
+
+    glm::vec4 lightPosition {8.f, 2.f, 8.f, 1.f};
+    glm::vec4 lightColor {1.f, 1.f, 1.f, 1.f};
+
+    Ref<Model> lightModel = LoadCubeModel(glm::vec3(lightColor));
+    lightModel->SetModelMatrix(glm::scale(lightModel->GetModelMatrix(), {0.2f, 0.2f, 0.2f}));
+    lightModel->SetModelMatrix(glm::translate(lightModel->GetModelMatrix(), glm::vec3(lightPosition)));
+
     do {
         glfwPollEvents();
 
@@ -93,16 +104,22 @@ void Application::run()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        textureRenderer->Begin();
+        lightingRenderer->Begin(lightPosition, lightColor);
+        lightingRenderer->Draw(cubeModel);
+        lightingRenderer->Draw(cubeModel2);
+        lightingRenderer->End();
+
+        // textureRenderer->Begin();
         // textureRenderer->Draw(cubeModel);
         // textureRenderer->Draw(cubeModel2);
-        textureRenderer->Draw(vikingRoomModel);
-        // textureRenderer->Draw(smoothVaseModel);
-        textureRenderer->End();
+        // textureRenderer->Draw(vikingRoomModel);
+        // textureRenderer->End();
 
-        // simpleRenderer->Begin();
+        simpleRenderer->Begin();
+        simpleRenderer->Draw(lightModel);
         // simpleRenderer->Draw(triangleModel);
-        // simpleRenderer->End();
+        // simpleRenderer->Draw(smoothVaseModel);
+        simpleRenderer->End();
 
         // Swap buffers
         glfwSwapBuffers(m_Window->GetWindow());

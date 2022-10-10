@@ -25,10 +25,11 @@ Texture::Texture(const std::filesystem::path& path)
     glBindTexture(GL_TEXTURE_2D, m_Id);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-
     stbi_image_free(data);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &m_TotalUnits);
 }
 
 GLuint Texture::GetId()
@@ -38,10 +39,8 @@ GLuint Texture::GetId()
 
 void Texture::Bind(int index)
 {
-    int total_units;
-    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &total_units);
+    assert((index < m_TotalUnits) && "Texture index is higher than the limit");
 
-    assert((index < total_units) && "Texture index is higher than the limit");
     glActiveTexture((GL_TEXTURE0 + index));
 	glBindTexture(GL_TEXTURE_2D, m_Id);
 }

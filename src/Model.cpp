@@ -1,6 +1,7 @@
 #include "Model.hpp"
 
 #include <iostream>
+#include <glm/gtc/matrix_inverse.hpp>
 
 namespace OGLSample
 {
@@ -39,7 +40,6 @@ Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::v
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_Normals.size(), m_Normals.data(), GL_STATIC_DRAW);
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
 
     glGenBuffers(1, &m_ColorBufferId);
     glBindBuffer(GL_ARRAY_BUFFER, m_ColorBufferId);
@@ -87,6 +87,11 @@ glm::mat4 Model::GetModelMatrix()
 void Model::SetModelMatrix(glm::mat4 modelMatrix)
 {
     m_ModelMatrix = modelMatrix;
+}
+
+glm::mat3 Model::GetNormalMatrix()
+{
+    return glm::inverseTranspose(glm::mat3(m_ModelMatrix));
 }
 
 void Model::SetTexture(Ref<Texture> texture)
@@ -218,6 +223,55 @@ Ref<Model> LoadCubeModel()
         {0.667979f, 1.0f-0.335851f}
     };
 
+    std::vector<glm::vec3> normals {};
+
+    return CreateRef<Model>(vertices, uvs, normals, colors);
+}
+
+Ref<Model> LoadCubeModel(glm::vec3 color)
+{
+    std::vector<glm::vec3> vertices {
+        {-1.0f,-1.0f,-1.0f},
+        {-1.0f,-1.0f, 1.0f},
+        {-1.0f, 1.0f, 1.0f},
+        { 1.0f, 1.0f,-1.0f},
+        {-1.0f,-1.0f,-1.0f},
+        {-1.0f, 1.0f,-1.0f},
+        { 1.0f,-1.0f, 1.0f},
+        {-1.0f,-1.0f,-1.0f},
+        { 1.0f,-1.0f,-1.0f},
+        { 1.0f, 1.0f,-1.0f},
+        { 1.0f,-1.0f,-1.0f},
+        {-1.0f,-1.0f,-1.0f},
+        {-1.0f,-1.0f,-1.0f},
+        {-1.0f, 1.0f, 1.0f},
+        {-1.0f, 1.0f,-1.0f},
+        { 1.0f,-1.0f, 1.0f},
+        {-1.0f,-1.0f, 1.0f},
+        {-1.0f,-1.0f,-1.0f},
+        {-1.0f, 1.0f, 1.0f},
+        {-1.0f,-1.0f, 1.0f},
+        { 1.0f,-1.0f, 1.0f},
+        { 1.0f, 1.0f, 1.0f},
+        { 1.0f,-1.0f,-1.0f},
+        { 1.0f, 1.0f,-1.0f},
+        { 1.0f,-1.0f,-1.0f},
+        { 1.0f, 1.0f, 1.0f},
+        { 1.0f,-1.0f, 1.0f},
+        { 1.0f, 1.0f, 1.0f},
+        { 1.0f, 1.0f,-1.0f},
+        {-1.0f, 1.0f,-1.0f},
+        { 1.0f, 1.0f, 1.0f},
+        {-1.0f, 1.0f,-1.0f},
+        {-1.0f, 1.0f, 1.0f},
+        { 1.0f, 1.0f, 1.0f},
+        {-1.0f, 1.0f, 1.0f},
+        { 1.0f,-1.0f, 1.0f}
+    };
+
+    std::vector<glm::vec3> colors(vertices.size(), color);
+
+    std::vector<glm::vec2> uvs  {};
     std::vector<glm::vec3> normals {};
 
     return CreateRef<Model>(vertices, uvs, normals, colors);

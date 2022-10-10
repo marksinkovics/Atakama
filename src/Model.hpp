@@ -33,6 +33,8 @@ public:
   glm::mat4 GetModelMatrix();
   void SetModelMatrix(glm::mat4 modelMatrix);
 
+  glm::mat3 GetNormalMatrix();
+
   void SetTexture(Ref<Texture> texture);
   Ref<Texture> GetTexture();
 
@@ -55,6 +57,7 @@ private:
 };
 
 Ref<Model> LoadCubeModel();
+Ref<Model> LoadCubeModel(glm::vec3 color);
 Ref<Model> LoadTriangle();
 Ref<Model> LoadOBJFile(const std::filesystem::path& path);
 
