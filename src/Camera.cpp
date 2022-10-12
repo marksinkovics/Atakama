@@ -1,8 +1,13 @@
 #include "Camera.hpp"
 #include "Input.hpp"
 
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/constants.hpp>
+#include <glm/gtx/string_cast.hpp>
+#include <glm/trigonometric.hpp>
+
+#include <cmath>
 
 #include <iostream>
 
@@ -12,7 +17,22 @@ namespace OGLSample
 Camera::Camera(Ref<Window>& window)
 : m_Window(window)
 {
+    m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), (float)m_Window->GetRatio(), 0.1f, 100.0f);
+}
 
+void Camera::LookAt(glm::vec3 position, glm::vec3 center, glm::vec3 up)
+{
+    m_Position = position;
+    m_ViewMatrix = glm::lookAt(m_Position, center, up);
+    
+    glm::vec3 direction = m_Position - center;
+    
+    float length = glm::distance(center, m_Position);
+    float verticalAngle = -glm::asin(direction.y / length);
+    m_VerticalAngle = verticalAngle;
+    
+    float horizontalAngle = glm::pi<float>() + glm::atan(direction.x, direction.z);
+    m_HorizontalAngle = horizontalAngle;
 }
 
 glm::mat4 Camera::GetViewMatrix()
@@ -73,10 +93,9 @@ void Camera::Update(float frameTime)
 
     float FoV = m_InitialFoV;
 
-    m_ProjectionMatrix = glm::perspective(glm::radians(FoV), (float)m_Window->GetRatio(), 0.1f, 100.0f);
     m_ViewMatrix = glm::lookAt(
         m_Position,               // Camera is here
-        m_Position + direction,   // and looks here : at the same position, plus "direction"
+        m_Position + direction,   // and looks here
         up                        // Head is up
     );
 }

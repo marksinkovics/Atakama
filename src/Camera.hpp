@@ -19,9 +19,11 @@ public:
     glm::mat4 GetViewMatrix();
     glm::mat4 GetProjectionMatrix();
     glm::vec3 GetPosition();
+    
+    void LookAt(glm::vec3 position = {5.0f, 5.0f, 5.0f}, glm::vec3 center = {0.0f, 0.0f, 0.0f}, glm::vec3 up = {0.0f, 1.0f, 0.0f});
 
 private:
-    glm::vec3 m_Position {0.f, 0.f, 5.f};
+    glm::vec3 m_Position {0.f, 5.f, 5.f};
     float m_HorizontalAngle = 3.14f;
     float m_VerticalAngle = 0.0f;
     float m_InitialFoV = 45.0f;

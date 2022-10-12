@@ -9,12 +9,6 @@ namespace OGLSample
 Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<glm::vec3> colors)
   : m_Vertices(vertices), m_UVs(uvs), m_Normals(normals), m_Colors(colors)
 {
-    if (m_Normals.size() > 0) {
-        std::cout << "Normal exists\n";
-    } else {
-        std::cout << "Normals cannot be found\n";
-    }
-
     // VAO
 
 	glGenVertexArrays(1, &m_VAOId);
@@ -75,7 +69,7 @@ void Model::Unbind()
 void Model::Draw()
 {
     Bind();
-    glDrawArrays(GL_TRIANGLES, 0, m_Vertices.size());
+    glDrawArrays(m_Type, 0, m_Vertices.size());
     Unbind();
 }
 
@@ -102,6 +96,16 @@ void Model::SetTexture(Ref<Texture> texture)
 Ref<Texture> Model::GetTexture()
 {
     return m_Texture;
+}
+
+GLuint Model::GetType()
+{
+    return m_Type;
+}
+
+void Model::SetType(GLuint type)
+{
+    m_Type = type;
 }
 
 Ref<Model> LoadCubeModel()
@@ -280,9 +284,9 @@ Ref<Model> LoadCubeModel(glm::vec3 color)
 Ref<Model> LoadTriangle()
 {
     std::vector<glm::vec3> vertices {
-        {-1.0f, -1.0f, 0.0f},
-        { 1.0f, -1.0f, 0.0f},
-        { 0.0f,  1.0f, 0.0f},
+        {-0.5f, -0.5f, 0.0f},
+        { 0.5f, -0.5f, 0.0f},
+        { 0.0f,  0.5f, 0.0f},
     };
 
     std::vector<glm::vec3> colors {
@@ -396,6 +400,34 @@ Ref<Model> LoadOBJFile(const std::filesystem::path& path)
     fclose(file);
 
 	return CreateRef<Model>(vertices, uvs, normals, colors);
+}
+
+Ref<Model> LoadAxis()
+{
+    std::vector<glm::vec3> vertices {
+        {0.0f, 0.0f, 0.0f},
+        {3.0f, 0.0f, 0.0f},
+        {0.0f, 0.0f, 0.0f},
+        {0.0f, 3.0f, 0.0f},
+        {0.0f, 0.0f, 0.0f},
+        {0.0f, 0.0f, 3.0f},
+    };
+    
+    std::vector<glm::vec3> colors {
+        {1.0f, 0.0f, 0.0f},
+        {1.0f, 0.0f, 0.0f},
+        {0.0f, 1.0f, 0.0f},
+        {0.0f, 1.0f, 0.0f},
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+    };
+    
+    std::vector<glm::vec2> uvs;
+    std::vector<glm::vec3> normals;
+    
+    auto model = CreateRef<Model>(vertices, uvs, normals, colors);
+    model->SetType(GL_LINES);
+    return model;
 }
 
 }
