@@ -29,12 +29,24 @@ void LightingRenderer::Draw(Ref<Model> model)
     // Camera / View
     m_Shader->SetUniformFloat3("uViewPosition", m_Camera->GetPosition());
 
-    model->GetTexture()->Bind(0);
-    m_Shader->SetUniformInt("textureSampler", 0);
+    auto texture = model->GetTexture();
+    if (texture == nullptr)
+    {
+        m_Shader->SetUniformInt("uHasTexture", 0);
+    }
+    else
+    {
+        m_Shader->SetUniformInt("uHasTexture", 1);
+        model->GetTexture()->Bind(0);
+        m_Shader->SetUniformInt("textureSampler", 0);
+    }
 
     model->Draw();
 
-    model->GetTexture()->Unbind();
+    if (texture != nullptr)
+    {
+        model->GetTexture()->Unbind();
+    }
 }
 
 }

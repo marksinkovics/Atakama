@@ -10,7 +10,6 @@ Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::v
   : m_Vertices(vertices), m_UVs(uvs), m_Normals(normals), m_Colors(colors)
 {
     // VAO
-
 	glGenVertexArrays(1, &m_VAOId);
 	glBindVertexArray(m_VAOId);
 
@@ -35,6 +34,11 @@ Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::v
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
+    if (m_Colors.size() == 0) {
+        m_Colors.resize(m_Vertices.size(), {1.0f, 1.0f, 1.0f});
+    }
+
+    // Colors
     glGenBuffers(1, &m_ColorBufferId);
     glBindBuffer(GL_ARRAY_BUFFER, m_ColorBufferId);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * m_Colors.size(), m_Colors.data(), GL_STATIC_DRAW);

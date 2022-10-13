@@ -17,16 +17,18 @@ uniform vec4 uLightColor;
 uniform vec3 uViewPosition;
 
 out vec2 UV;
+out int hasTexture;
+out vec3 fragColor;
 out vec3 fragPosition;
-out vec3 Normal;
-out vec3 ViewPosition;
+out vec3 fragNormalWorld;
 
 void main()
 {
 	// Updating out variables
   	UV = aUV;
+  	fragColor = aColor;
 	fragPosition = vec3(uModel * vec4(aPosition, 1.0));
-	Normal = normalize(mat3(uNormalMatrix) * aNormal);
-	ViewPosition = uViewPosition;
+	fragNormalWorld = normalize(mat3(uNormalMatrix) * aNormal);
+
 	gl_Position = uProjection * uView * uModel * vec4(aPosition, 1);
 }
