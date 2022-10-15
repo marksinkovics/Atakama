@@ -5,6 +5,7 @@
 #include "Texture.hpp"
 #include "Camera.hpp"
 #include "Input.hpp"
+#include "Perf/PerfMonitor.hpp"
 
 #include "Renderer/SimpleRenderer.hpp"
 #include "Renderer/TextureRenderer.hpp"
@@ -101,7 +102,6 @@ void Application::run()
     Ref<Camera> camera = CreateRef<Camera>(m_Window);
     camera->LookAt({5.0f, 5.f, 5.f});
 
-    auto currentTime = std::chrono::high_resolution_clock::now();
 
     Ref<SimpleRenderer> simpleRenderer = CreateRef<SimpleRenderer>();
     simpleRenderer->Init(camera);
@@ -132,6 +132,10 @@ void Application::run()
     ImGui_ImplGlfw_InitForOpenGL(m_Window->GetWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
+    PerfMonitor perfMonitor;
+
+    auto currentTime = std::chrono::high_resolution_clock::now();
+    std::chrono::time_point<std::chrono::high_resolution_clock> cpuStartTimer, cpuStopTimer;
 
     do {
         glfwPollEvents();
@@ -147,6 +151,8 @@ void Application::run()
 
 //        ImGui::ShowDemoWindow();
 
+        perfMonitor.StartCPUTimer();
+        perfMonitor.StartGPUTimer();
 
         if (!io.WantCaptureMouse || !io.WantCaptureKeyboard)
         {
@@ -157,27 +163,39 @@ void Application::run()
         lightingRenderer->Draw(floorModel);
         lightingRenderer->Draw(cubeModel);
         lightingRenderer->Draw(cubeModel2);
-//        lightingRenderer->Draw(suzanne);
+    //    lightingRenderer->Draw(suzanne);
         lightingRenderer->End();
 
-//        textureRenderer->Begin();
-//        textureRenderer->Draw(cubeModel);
-//        textureRenderer->Draw(cubeModel2);
-//        textureRenderer->Draw(vikingRoomModel);
-//        textureRenderer->End();
+    //    textureRenderer->Begin();
+    //    textureRenderer->Draw(cubeModel);
+    //    textureRenderer->Draw(cubeModel2);
+    //    textureRenderer->Draw(vikingRoomModel);
+    //    textureRenderer->End();
 
         simpleRenderer->Begin();
         simpleRenderer->Draw(axisModel);
-//        simpleRenderer->Draw(lightModel);
-//        simpleRenderer->Draw(triangleModel);
-//        simpleRenderer->Draw(smoothVaseModel);
+    //    simpleRenderer->Draw(lightModel);
+    //    simpleRenderer->Draw(triangleModel);
+    //    simpleRenderer->Draw(smoothVaseModel);
         simpleRenderer->End();
 
         pointLightRenderer->Begin();
         pointLightRenderer->Draw(lightPosition, lightColor);
         pointLightRenderer->End();
 
+        perfMonitor.StopGPUTimer();
+        perfMonitor.StopCPUTimer();
+
         ImGui::Begin("ImGui Window");
+        ImGui::Text("CPU time: %f ms", perfMonitor.GetCPUTime());
+        if (perfMonitor.GetGPUAvailable())
+        {
+            ImGui::Text("GPU time: %f ms", perfMonitor.GetGPUTime());
+        }
+        else
+        {
+            ImGui::Text("GPU time: not available");
+        }
         ImGui::DragFloat3("Light position", (float*)&lightPosition, 0.01);
         ImGui::ColorEdit3("Light color", (float*)&lightColor);
         ImGui::End();
