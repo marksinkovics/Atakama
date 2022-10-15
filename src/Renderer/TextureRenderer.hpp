@@ -10,7 +10,7 @@ class TextureRenderer: public Renderer
 {
 public:
     void Init(Ref<Camera> camera);
-    virtual void Draw(Ref<Model> model) override;
+    virtual void Draw(Ref<Model> model);
 };
 
 }

@@ -14,6 +14,11 @@ void Renderer::Begin()
     m_Shader->Bind();
 }
 
+void Renderer::Draw()
+{
+
+}
+
 void Renderer::End()
 {
     m_Shader->Unbind();

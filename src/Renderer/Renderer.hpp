@@ -17,7 +17,7 @@ public:
     virtual ~Renderer() = default;
 
     virtual void Begin();
-    virtual void Draw(Ref<Model> model) = 0;
+    virtual void Draw();
     virtual void End();
 
 protected:

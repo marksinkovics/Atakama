@@ -10,7 +10,7 @@ class SimpleRenderer: public Renderer
 {
 public:
     void Init(Ref<Camera> camera);
-    virtual void Draw(Ref<Model> model) override;
+    void Draw(Ref<Model> model);
 };
 
 }

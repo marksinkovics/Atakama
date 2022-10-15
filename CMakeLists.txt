@@ -16,6 +16,8 @@ find_package(glfw3 REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glm REQUIRED)
 
+add_subdirectory("vendor")
+
 add_executable(app)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -93,6 +95,7 @@ target_link_libraries(app
         glfw
         GLEW::GLEW
         glm::glm
+        IMGUI
         # tinyobjloader
 )
 

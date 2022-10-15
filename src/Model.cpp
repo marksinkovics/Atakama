@@ -416,7 +416,7 @@ Ref<Model> LoadAxis()
         {0.0f, 0.0f, 0.0f},
         {0.0f, 0.0f, 3.0f},
     };
-    
+
     std::vector<glm::vec3> colors {
         {1.0f, 0.0f, 0.0f},
         {1.0f, 0.0f, 0.0f},
@@ -425,13 +425,38 @@ Ref<Model> LoadAxis()
         {0.0f, 0.0f, 1.0f},
         {0.0f, 0.0f, 1.0f},
     };
-    
+
     std::vector<glm::vec2> uvs;
     std::vector<glm::vec3> normals;
-    
+
     auto model = CreateRef<Model>(vertices, uvs, normals, colors);
     model->SetType(GL_LINES);
     return model;
+}
+
+Ref<Model> LoadLightModel()
+{
+    std::vector<glm::vec3> vertices {
+{-1.0f, -1.0f, 0.0f},
+{1.0f, 1.0f, 0.0f},
+{-1.0f, 1.0f, 0.0f},
+{1.0f, 1.0f, 0.0f},
+{-1.0f, -1.0f, 0.0f},
+{1.0f, -1.0f, 0.0f}
+    };
+
+    std::vector<glm::vec3> colors;
+    std::vector<glm::vec2> uvs;
+    std::vector<glm::vec3> normals {
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+    };
+
+    return CreateRef<Model>(vertices, uvs, normals, colors);
 }
 
 }
