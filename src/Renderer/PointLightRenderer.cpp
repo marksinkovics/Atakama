@@ -1,6 +1,7 @@
 #include "PointLightRenderer.hpp"
 #include "FileSystem.hpp"
 #include "Model.hpp"
+#include "ModelUtils.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -19,7 +20,7 @@ void PointLightRenderer::Init(Ref<Camera> camera)
 void PointLightRenderer::Draw(glm::vec4 lightPosition, glm::vec4 lightColor)
 {
     glm::mat4 t = glm::translate(glm::mat4(1.0f), glm::vec3(lightPosition));
-    
+
     m_Shader->SetUniformMat4("uModel", t);
     m_Shader->SetUniformMat4("uView", m_Camera->GetViewMatrix());
     m_Shader->SetUniformMat4("uProjection", m_Camera->GetProjectionMatrix());

@@ -2,6 +2,7 @@
 #include "Shader.hpp"
 #include "FileSystem.hpp"
 #include "Model.hpp"
+#include "ModelUtils.hpp"
 #include "Texture.hpp"
 #include "Camera.hpp"
 #include "Input.hpp"

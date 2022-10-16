@@ -60,13 +60,6 @@ private:
     glm::mat4 m_ModelMatrix {1.0f};
 };
 
-Ref<Model> LoadCubeModel();
-Ref<Model> LoadCubeModel(glm::vec3 color);
-Ref<Model> LoadTriangle();
-Ref<Model> LoadOBJFile(const std::filesystem::path& path);
-Ref<Model> LoadAxis();
-Ref<Model> LoadLightModel();
-
 }
 
 #endif
