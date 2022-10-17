@@ -1,9 +1,11 @@
-#include "ModelUtils.hpp"
+#include "AssetManager.hpp"
+
+#include "Model.hpp"
 
 namespace OGLSample
 {
 
-Ref<Model> LoadCubeModel()
+Ref<Model> AssetManager::LoadCubeModel()
 {
     std::vector<glm::vec3> vertices {
         {-1.0f,-1.0f,-1.0f},
@@ -127,7 +129,7 @@ Ref<Model> LoadCubeModel()
     return CreateRef<Model>(vertices, uvs, normals, colors);
 }
 
-Ref<Model> LoadCubeModel(glm::vec3 color)
+Ref<Model> AssetManager::LoadCubeModel(glm::vec3 color)
 {
     std::vector<glm::vec3> vertices {
         {-1.0f,-1.0f,-1.0f},
@@ -176,7 +178,7 @@ Ref<Model> LoadCubeModel(glm::vec3 color)
     return CreateRef<Model>(vertices, uvs, normals, colors);
 }
 
-Ref<Model> LoadTriangle()
+Ref<Model> AssetManager::LoadTriangle()
 {
     std::vector<glm::vec3> vertices {
         {-0.5f, -0.5f, 0.0f},
@@ -200,7 +202,7 @@ Ref<Model> LoadTriangle()
     return CreateRef<Model>(vertices, uvs, normals, colors);
 }
 
-Ref<Model> LoadOBJFile(const std::filesystem::path& path)
+Ref<Model> AssetManager::LoadOBJFile(const std::filesystem::path& path)
 {
     std::vector<uint32_t> vertexIndices, uvIndices, normalIndices;
     std::vector<glm::vec3> temp_vertices;
@@ -297,7 +299,7 @@ Ref<Model> LoadOBJFile(const std::filesystem::path& path)
 	return CreateRef<Model>(vertices, uvs, normals, colors);
 }
 
-Ref<Model> LoadAxis()
+Ref<Model> AssetManager::LoadAxis()
 {
     std::vector<glm::vec3> vertices {
         {0.0f, 0.0f, 0.0f},
@@ -325,7 +327,7 @@ Ref<Model> LoadAxis()
     return model;
 }
 
-Ref<Model> LoadLightModel()
+Ref<Model> AssetManager::LoadLightModel()
 {
     std::vector<glm::vec3> vertices {
         {-1.0f, -1.0f, 0.0f},

@@ -1,7 +1,7 @@
 #include "PointLightRenderer.hpp"
 #include "FileSystem.hpp"
 #include "Model.hpp"
-#include "ModelUtils.hpp"
+#include "AssetManager.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -11,7 +11,7 @@ namespace OGLSample
 
 void PointLightRenderer::Init(Ref<Camera> camera)
 {
-    m_LightModel = LoadLightModel();
+    m_LightModel = AssetManager::LoadLightModel();
     Ref<Shader> shader = CreateRef<Shader>(FileSystem::GetShaderFile("point_light.vert"), FileSystem::GetShaderFile("point_light.frag"));
     Renderer::Init(camera, shader);
 
