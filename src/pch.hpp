@@ -5,5 +5,6 @@
 #include <filesystem>
 #include <stdint.h>
 #include <chrono>
+#include <vector>
 
 #include "Utils/Utils.hpp"

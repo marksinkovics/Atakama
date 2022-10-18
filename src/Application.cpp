@@ -1,7 +1,7 @@
 #include "Application.hpp"
 #include "Shader.hpp"
 #include "FileSystem.hpp"
-#include "Model.hpp"
+#include "SubMesh.hpp"
 #include "AssetManager.hpp"
 #include "Texture.hpp"
 #include "Camera.hpp"
@@ -61,32 +61,32 @@ void Application::run()
     Ref<Texture> vikingRoomTexture = CreateRef<Texture>(FileSystem::GetTexturePath() / "viking_room.png");
     Ref<Texture> wallTexture = CreateRef<Texture>(FileSystem::GetTexturePath() / "wall.jpg");
 
-    Ref<Model> cubeModel = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
+    Ref<Mesh> cubeModel = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
     assert(cubeModel && "Model didn't load");
     cubeModel->SetModelMatrix(glm::translate(cubeModel->GetModelMatrix(), {-2.f, 1.0, 0}));
-    cubeModel->SetTexture(texture1);
+    cubeModel->GetSubMeshes()[0]->SetTexture(texture1);
 
-    Ref<Model> triangleModel = AssetManager::LoadTriangle();
+    Ref<Mesh> triangleModel = AssetManager::LoadTriangle();
     triangleModel->SetModelMatrix(glm::mat4(1.0f));
     assert(triangleModel && "Model didn't load");
 
-    Ref<Model> cubeModel2 = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
+    Ref<Mesh> cubeModel2 = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
     assert(cubeModel2 && "Model didn't load");
     cubeModel2->SetModelMatrix(glm::translate(cubeModel2->GetModelMatrix(), {1.25, 1.0, -1}));
-    cubeModel2->SetTexture(texture2);
+    cubeModel2->GetSubMeshes()[0]->SetTexture(texture2);
 
-    Ref<Model> vikingRoomModel = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "viking_room.obj");
+    Ref<Mesh> vikingRoomModel = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "viking_room.obj");
     assert(vikingRoomModel && "Model didn't load");
-    vikingRoomModel->SetTexture(vikingRoomTexture);
+    vikingRoomModel->GetSubMeshes()[0]->SetTexture(vikingRoomTexture);
     vikingRoomModel->SetModelMatrix(glm::translate(vikingRoomModel->GetModelMatrix(), {0.f, -1.f, 1.5f}));
     vikingRoomModel->SetModelMatrix(glm::rotate(vikingRoomModel->GetModelMatrix(), glm::radians(90.0f), {0.f, 0.f, -1.f}));
     vikingRoomModel->SetModelMatrix(glm::rotate(vikingRoomModel->GetModelMatrix(), glm::radians(90.0f), {0.f, -1.f, 0.f}));
 
-    Ref<Model> smoothVaseModel = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "smooth_vase.obj");
+    Ref<Mesh> smoothVaseModel = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "smooth_vase.obj");
     smoothVaseModel->SetModelMatrix(glm::mat4(1.0f));
     assert(smoothVaseModel && "Model didn't load");
 
-    Ref<Model> floorModel = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "quad.obj");
+    Ref<Mesh> floorModel = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "quad.obj");
     assert(floorModel && "Model didn't load");
     // floorModel->SetTexture(wallTexture);
     floorModel->SetModelMatrix(glm::rotate(floorModel->GetModelMatrix(), glm::radians(180.0f), {0.f, 0.f, -1.f}));
@@ -95,7 +95,7 @@ void Application::run()
 
 
 //    Ref<Texture> suzanneTexture = CreateRef<Texture>(FileSystem::GetTexturePath() / "suzanne.png");
-//    Ref<Model> suzanne = LoadOBJFile(FileSystem::GetModelPath() / "suzanne.obj");
+//    Ref<Mesh> suzanne = LoadOBJFile(FileSystem::GetModelPath() / "suzanne.obj");
 //    suzanne->SetTexture(suzanneTexture);
 //    suzanne->SetModelMatrix(glm::mat4(1.0));
 
@@ -120,11 +120,11 @@ void Application::run()
     glm::vec4 lightPosition {4.f, 4.f, 4.f, 1.f};
     glm::vec4 lightColor {1.f, 1.f, 1.f, 1.f};
 
-    Ref<Model> lightModel = AssetManager::LoadCubeModel(glm::vec3(lightColor));
+    Ref<Mesh> lightModel = AssetManager::LoadCube(glm::vec3(lightColor));
     lightModel->SetModelMatrix(glm::scale(lightModel->GetModelMatrix(), {0.2f, 0.2f, 0.2f}));
     lightModel->SetModelMatrix(glm::translate(lightModel->GetModelMatrix(), glm::vec3(lightPosition)));
 
-    Ref<Model> axisModel = AssetManager::LoadAxis();
+    Ref<Mesh> axisModel = AssetManager::LoadAxis();
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();

@@ -3,9 +3,6 @@
 
 #include "Texture.hpp"
 
-#include <vector>
-#include <filesystem>
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -13,19 +10,18 @@
 namespace OGLSample
 {
 
-class Model
+class SubMesh
 {
 public:
-    Model(std::vector<glm::vec3> vertices,
+    SubMesh(std::vector<glm::vec3> vertices,
           std::vector<glm::vec2> uvs,
           std::vector<glm::vec3> normals,
           std::vector<glm::vec3> colors);
 
-    ~Model();
+    ~SubMesh();
 
     void Bind();
     void Unbind();
-
     void Draw();
 
     // model = T * S * R

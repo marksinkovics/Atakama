@@ -1,11 +1,15 @@
 #include "AssetManager.hpp"
 
-#include "Model.hpp"
+#include "Mesh.hpp"
+#include "SubMesh.hpp"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace OGLSample
 {
 
-Ref<Model> AssetManager::LoadCubeModel()
+Ref<Mesh> AssetManager::LoadCube()
 {
     std::vector<glm::vec3> vertices {
         {-1.0f,-1.0f,-1.0f},
@@ -126,10 +130,13 @@ Ref<Model> AssetManager::LoadCubeModel()
 
     std::vector<glm::vec3> normals {};
 
-    return CreateRef<Model>(vertices, uvs, normals, colors);
+    auto subMesh = CreateScope<SubMesh>(vertices, uvs, normals, colors);
+    auto mesh = CreateRef<Mesh>();
+    mesh->AddSubMesh(std::move(subMesh));
+    return mesh;
 }
 
-Ref<Model> AssetManager::LoadCubeModel(glm::vec3 color)
+Ref<Mesh> AssetManager::LoadCube(glm::vec3 color)
 {
     std::vector<glm::vec3> vertices {
         {-1.0f,-1.0f,-1.0f},
@@ -175,10 +182,13 @@ Ref<Model> AssetManager::LoadCubeModel(glm::vec3 color)
     std::vector<glm::vec2> uvs  {};
     std::vector<glm::vec3> normals {};
 
-    return CreateRef<Model>(vertices, uvs, normals, colors);
+    auto subMesh = CreateScope<SubMesh>(vertices, uvs, normals, colors);
+    auto mesh = CreateRef<Mesh>();
+    mesh->AddSubMesh(std::move(subMesh));
+    return mesh;
 }
 
-Ref<Model> AssetManager::LoadTriangle()
+Ref<Mesh> AssetManager::LoadTriangle()
 {
     std::vector<glm::vec3> vertices {
         {-0.5f, -0.5f, 0.0f},
@@ -199,10 +209,13 @@ Ref<Model> AssetManager::LoadTriangle()
         {0.0f, 0.0f, 1.0f},
     };
 
-    return CreateRef<Model>(vertices, uvs, normals, colors);
+    auto subMesh = CreateScope<SubMesh>(vertices, uvs, normals, colors);
+    auto mesh = CreateRef<Mesh>();
+    mesh->AddSubMesh(std::move(subMesh));
+    return mesh;
 }
 
-Ref<Model> AssetManager::LoadOBJFile(const std::filesystem::path& path)
+Ref<Mesh> AssetManager::LoadOBJFile(const std::filesystem::path& path)
 {
     std::vector<uint32_t> vertexIndices, uvIndices, normalIndices;
     std::vector<glm::vec3> temp_vertices;
@@ -296,10 +309,13 @@ Ref<Model> AssetManager::LoadOBJFile(const std::filesystem::path& path)
 
     fclose(file);
 
-	return CreateRef<Model>(vertices, uvs, normals, colors);
+    auto subMesh = CreateScope<SubMesh>(vertices, uvs, normals, colors);
+    auto mesh = CreateRef<Mesh>();
+    mesh->AddSubMesh(std::move(subMesh));
+    return mesh;
 }
 
-Ref<Model> AssetManager::LoadAxis()
+Ref<Mesh> AssetManager::LoadAxis()
 {
     std::vector<glm::vec3> vertices {
         {0.0f, 0.0f, 0.0f},
@@ -322,12 +338,20 @@ Ref<Model> AssetManager::LoadAxis()
     std::vector<glm::vec2> uvs;
     std::vector<glm::vec3> normals;
 
-    auto model = CreateRef<Model>(vertices, uvs, normals, colors);
-    model->SetType(GL_LINES);
-    return model;
+    auto subMesh1 = CreateScope<SubMesh>(vertices, uvs, normals, colors);
+    subMesh1->SetType(GL_LINES);
+
+    auto subMesh2 = CreateScope<SubMesh>(vertices, uvs, normals, colors);
+    subMesh2->SetType(GL_LINES);
+    subMesh2->SetModelMatrix(glm::translate(glm::mat4(1.0f), {1.0f, 0.0f, 1.0f}));
+
+    std::vector<Scope<SubMesh>> subMeshes;
+    subMeshes.push_back(std::move(subMesh1));
+    subMeshes.push_back(std::move(subMesh2));
+    return CreateRef<Mesh>(subMeshes);
 }
 
-Ref<Model> AssetManager::LoadLightModel()
+Ref<Mesh> AssetManager::LoadLightModel()
 {
     std::vector<glm::vec3> vertices {
         {-1.0f, -1.0f, 0.0f},
@@ -349,7 +373,10 @@ Ref<Model> AssetManager::LoadLightModel()
         {0.0f, 0.0f, 1.0f},
     };
 
-    return CreateRef<Model>(vertices, uvs, normals, colors);
+    auto subMesh = CreateScope<SubMesh>(vertices, uvs, normals, colors);
+    auto mesh = CreateRef<Mesh>();
+    mesh->AddSubMesh(std::move(subMesh));
+    return mesh;
 }
 
 }

@@ -1,6 +1,6 @@
 #include "PointLightRenderer.hpp"
 #include "FileSystem.hpp"
-#include "Model.hpp"
+#include "SubMesh.hpp"
 #include "AssetManager.hpp"
 
 #include <glm/glm.hpp>
@@ -11,17 +11,15 @@ namespace OGLSample
 
 void PointLightRenderer::Init(Ref<Camera> camera)
 {
-    m_LightModel = AssetManager::LoadLightModel();
+    m_LightMesh = AssetManager::LoadLightModel();
     Ref<Shader> shader = CreateRef<Shader>(FileSystem::GetShaderFile("point_light.vert"), FileSystem::GetShaderFile("point_light.frag"));
     Renderer::Init(camera, shader);
-
 }
 
 void PointLightRenderer::Draw(glm::vec4 lightPosition, glm::vec4 lightColor)
 {
     glm::mat4 t = glm::translate(glm::mat4(1.0f), glm::vec3(lightPosition));
 
-    m_Shader->SetUniformMat4("uModel", t);
     m_Shader->SetUniformMat4("uView", m_Camera->GetViewMatrix());
     m_Shader->SetUniformMat4("uProjection", m_Camera->GetProjectionMatrix());
     // Lights
@@ -30,7 +28,13 @@ void PointLightRenderer::Draw(glm::vec4 lightPosition, glm::vec4 lightColor)
     // Camera / View
     m_Shader->SetUniformFloat3("uViewPosition", m_Camera->GetPosition());
 
-    m_LightModel->Draw();
+    for (auto& subMesh: m_LightMesh->GetSubMeshes())
+    {
+        glm::mat4 model = t * subMesh->GetModelMatrix();
+        m_Shader->SetUniformMat4("uModel", model);
+        subMesh->Draw();
+    }
+
 }
 
 }

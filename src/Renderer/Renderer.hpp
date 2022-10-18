@@ -3,7 +3,7 @@
 
 #include "Camera.hpp"
 #include "Shader.hpp"
-#include "Model.hpp"
+#include "SubMesh.hpp"
 
 namespace OGLSample
 {

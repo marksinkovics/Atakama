@@ -1,12 +1,11 @@
-#include "Model.hpp"
+#include "SubMesh.hpp"
 
-#include <iostream>
 #include <glm/gtc/matrix_inverse.hpp>
 
 namespace OGLSample
 {
 
-Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<glm::vec3> colors)
+SubMesh::SubMesh(std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<glm::vec3> colors)
   : m_Vertices(vertices), m_UVs(uvs), m_Normals(normals), m_Colors(colors)
 {
     // VAO
@@ -48,7 +47,7 @@ Model::Model(std::vector<glm::vec3> vertices, std::vector<glm::vec2> uvs, std::v
     glBindVertexArray(0);
 }
 
-Model::~Model()
+SubMesh::~SubMesh()
 {
     // glDisableVertexAttribArray(0);
     // glDisableVertexAttribArray(1);
@@ -60,54 +59,54 @@ Model::~Model()
     glDeleteVertexArrays(1, &m_VAOId);
 }
 
-void Model::Bind()
+void SubMesh::Bind()
 {
     glBindVertexArray(m_VAOId);
 }
 
-void Model::Unbind()
+void SubMesh::Unbind()
 {
     glBindVertexArray(0);
 }
 
-void Model::Draw()
+void SubMesh::Draw()
 {
     Bind();
     glDrawArrays(m_Type, 0, m_Vertices.size());
     Unbind();
 }
 
-glm::mat4 Model::GetModelMatrix()
+glm::mat4 SubMesh::GetModelMatrix()
 {
     return m_ModelMatrix;
 }
 
-void Model::SetModelMatrix(glm::mat4 modelMatrix)
+void SubMesh::SetModelMatrix(glm::mat4 modelMatrix)
 {
     m_ModelMatrix = modelMatrix;
 }
 
-glm::mat3 Model::GetNormalMatrix()
+glm::mat3 SubMesh::GetNormalMatrix()
 {
     return glm::inverseTranspose(glm::mat3(m_ModelMatrix));
 }
 
-void Model::SetTexture(Ref<Texture> texture)
+void SubMesh::SetTexture(Ref<Texture> texture)
 {
     m_Texture = texture;
 }
 
-Ref<Texture> Model::GetTexture()
+Ref<Texture> SubMesh::GetTexture()
 {
     return m_Texture;
 }
 
-GLuint Model::GetType()
+GLuint SubMesh::GetType()
 {
     return m_Type;
 }
 
-void Model::SetType(GLuint type)
+void SubMesh::SetType(GLuint type)
 {
     m_Type = type;
 }

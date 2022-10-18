@@ -1,6 +1,9 @@
 #include "LightingRenderer.hpp"
 #include "FileSystem.hpp"
 
+#include <glm/gtc/matrix_inverse.hpp>
+
+
 namespace OGLSample
 {
 
@@ -17,35 +20,41 @@ void LightingRenderer::Begin(glm::vec4 lightPosition, glm::vec4 lightColor)
     m_LightColor = lightColor;
 }
 
-void LightingRenderer::Draw(Ref<Model> model)
+void LightingRenderer::Draw(Ref<Mesh> mesh)
 {
-    m_Shader->SetUniformMat4("uModel", model->GetModelMatrix());
     m_Shader->SetUniformMat4("uView", m_Camera->GetViewMatrix());
     m_Shader->SetUniformMat4("uProjection", m_Camera->GetProjectionMatrix());
-    m_Shader->SetUniformMat3("uNormalMatrix", model->GetNormalMatrix());
     // Lights
     m_Shader->SetUniformFloat4("uLightPosition", m_LightPosition);
     m_Shader->SetUniformFloat4("uLightColor", m_LightColor);
     // Camera / View
     m_Shader->SetUniformFloat3("uViewPosition", m_Camera->GetPosition());
 
-    auto texture = model->GetTexture();
-    if (texture == nullptr)
+    for (auto& subMesh: mesh->GetSubMeshes())
     {
-        m_Shader->SetUniformInt("uHasTexture", 0);
-    }
-    else
-    {
-        m_Shader->SetUniformInt("uHasTexture", 1);
-        model->GetTexture()->Bind(0);
-        m_Shader->SetUniformInt("textureSampler", 0);
-    }
+        glm::mat4 modelMatrix = mesh->GetModelMatrix() * subMesh->GetModelMatrix();
+        m_Shader->SetUniformMat4("uModel", modelMatrix);
+        glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(modelMatrix));
+        m_Shader->SetUniformMat3("uNormalMatrix", normalMatrix);
 
-    model->Draw();
+        auto texture = subMesh->GetTexture();
+        if (texture == nullptr)
+        {
+            m_Shader->SetUniformInt("uHasTexture", 0);
+        }
+        else
+        {
+            m_Shader->SetUniformInt("uHasTexture", 1);
+            subMesh->GetTexture()->Bind(0);
+            m_Shader->SetUniformInt("textureSampler", 0);
+        }
 
-    if (texture != nullptr)
-    {
-        model->GetTexture()->Unbind();
+        subMesh->Draw();
+
+        if (texture != nullptr)
+        {
+            subMesh->GetTexture()->Unbind();
+        }
     }
 }
 

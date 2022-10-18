@@ -6,17 +6,18 @@
 namespace OGLSample
 {
 
-class Model;
+class Mesh;
+class SubMesh;
 
 class AssetManager
 {
 public:
-    static Ref<Model> LoadCubeModel();
-    static Ref<Model> LoadCubeModel(glm::vec3 color);
-    static Ref<Model> LoadTriangle();
-    static Ref<Model> LoadOBJFile(const std::filesystem::path& path);
-    static Ref<Model> LoadAxis();
-    static Ref<Model> LoadLightModel();
+    static Ref<Mesh> LoadCube();
+    static Ref<Mesh> LoadCube(glm::vec3 color);
+    static Ref<Mesh> LoadTriangle();
+    static Ref<Mesh> LoadOBJFile(const std::filesystem::path& path);
+    static Ref<Mesh> LoadAxis();
+    static Ref<Mesh> LoadLightModel();
 };
 
 }
