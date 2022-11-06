@@ -30,32 +30,7 @@ void LightingRenderer::Draw(Ref<Mesh> mesh)
     // Camera / View
     m_Shader->SetUniformFloat3("uViewPosition", m_Camera->GetPosition());
 
-    for (auto& subMesh: mesh->GetSubMeshes())
-    {
-        glm::mat4 modelMatrix = mesh->GetModelMatrix() * subMesh->GetModelMatrix();
-        m_Shader->SetUniformMat4("uModel", modelMatrix);
-        glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(modelMatrix));
-        m_Shader->SetUniformMat3("uNormalMatrix", normalMatrix);
-
-        auto texture = subMesh->GetTexture();
-        if (texture == nullptr)
-        {
-            m_Shader->SetUniformInt("uHasTexture", 0);
-        }
-        else
-        {
-            m_Shader->SetUniformInt("uHasTexture", 1);
-            subMesh->GetTexture()->Bind(0);
-            m_Shader->SetUniformInt("textureSampler", 0);
-        }
-
-        subMesh->Draw();
-
-        if (texture != nullptr)
-        {
-            subMesh->GetTexture()->Unbind();
-        }
-    }
+    mesh->Draw(m_Shader);
 }
 
 }

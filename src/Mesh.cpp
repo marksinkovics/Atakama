@@ -1,4 +1,5 @@
 #include "Mesh.hpp"
+#include "Shader.hpp"
 
 #include <glm/gtc/matrix_inverse.hpp>
 
@@ -40,6 +41,37 @@ std::vector<Scope<SubMesh>>& Mesh::GetSubMeshes()
 void Mesh::AddSubMesh(Scope<SubMesh> subMesh)
 {
     m_SubMeshes.push_back(std::move(subMesh));
+}
+
+void Mesh::Draw(Ref<Shader>& shader)
+{
+    for (auto& subMesh: m_SubMeshes)
+    {
+        glm::mat4 modelMatrix = m_ModelMatrix * subMesh->m_ModelMatrix;
+        shader->SetUniformMat4("uModel", modelMatrix);
+
+        glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(modelMatrix));
+        shader->SetUniformMat3("uNormalMatrix", normalMatrix);
+
+        auto texture = subMesh->GetTexture();
+        if (texture == nullptr)
+        {
+            shader->SetUniformInt("uHasTexture", 0);
+        }
+        else
+        {
+            shader->SetUniformInt("uHasTexture", 1);
+            subMesh->GetTexture()->Bind(0);
+            shader->SetUniformInt("textureSampler", 0);
+        }
+
+        subMesh->Draw();
+
+        if (texture != nullptr)
+        {
+            subMesh->GetTexture()->Unbind();
+        }
+    }
 }
 
 }

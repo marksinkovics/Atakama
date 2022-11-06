@@ -36,10 +36,10 @@ public:
     GLuint GetType();
     void SetType(GLuint type);
 
-    std::vector<glm::vec3> m_Vertices;
 private:
     GLuint m_Type = GL_TRIANGLES;
 
+    std::vector<glm::vec3> m_Vertices;
     std::vector<glm::vec2> m_UVs;
     std::vector<glm::vec3> m_Normals;
     std::vector<glm::vec3> m_Colors;
@@ -54,6 +54,8 @@ private:
     GLuint m_ColorBufferId;
 
     glm::mat4 m_ModelMatrix {1.0f};
+
+    friend class Mesh;
 };
 
 }

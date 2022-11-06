@@ -6,6 +6,8 @@
 namespace OGLSample
 {
 
+class Shader;
+
 class Mesh
 {
 public:
@@ -19,6 +21,8 @@ public:
 
     std::vector<Scope<SubMesh>>& GetSubMeshes();
     void AddSubMesh(Scope<SubMesh> subMesh);
+
+    void Draw(Ref<Shader>& shader);
 
 private:
     std::vector<Scope<SubMesh>> m_SubMeshes;

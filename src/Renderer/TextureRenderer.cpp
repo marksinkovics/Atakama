@@ -24,7 +24,6 @@ void TextureRenderer::Draw(Ref<Mesh> mesh)
         subMesh->Draw();
         subMesh->GetTexture()->Unbind();
     }
-
 }
 
 }

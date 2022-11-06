@@ -18,7 +18,7 @@ void PointLightRenderer::Init(Ref<Camera> camera)
 
 void PointLightRenderer::Draw(glm::vec4 lightPosition, glm::vec4 lightColor)
 {
-    glm::mat4 t = glm::translate(glm::mat4(1.0f), glm::vec3(lightPosition));
+    m_LightMesh->SetModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(lightPosition)));
 
     m_Shader->SetUniformMat4("uView", m_Camera->GetViewMatrix());
     m_Shader->SetUniformMat4("uProjection", m_Camera->GetProjectionMatrix());
@@ -28,13 +28,7 @@ void PointLightRenderer::Draw(glm::vec4 lightPosition, glm::vec4 lightColor)
     // Camera / View
     m_Shader->SetUniformFloat3("uViewPosition", m_Camera->GetPosition());
 
-    for (auto& subMesh: m_LightMesh->GetSubMeshes())
-    {
-        glm::mat4 model = t * subMesh->GetModelMatrix();
-        m_Shader->SetUniformMat4("uModel", model);
-        subMesh->Draw();
-    }
-
+    m_LightMesh->Draw(m_Shader);
 }
 
 }
