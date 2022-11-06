@@ -1,8 +1,6 @@
 #include "Shader.hpp"
 #include "FileSystem.hpp"
 
-#include <glm/gtc/type_ptr.hpp>
-
 #include <fstream>
 #include <iostream>
 #include <sstream>

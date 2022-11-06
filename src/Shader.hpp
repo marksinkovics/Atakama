@@ -2,7 +2,6 @@
 #define SHADER_HPP
 
 #include <GL/glew.h>
-#include <glm/glm.hpp>
 
 namespace OGLSample {
 

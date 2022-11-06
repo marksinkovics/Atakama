@@ -5,7 +5,6 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
 
 namespace OGLSample
 {
@@ -19,7 +18,7 @@ public:
     glm::mat4 GetViewMatrix();
     glm::mat4 GetProjectionMatrix();
     glm::vec3 GetPosition();
-    
+
     void LookAt(glm::vec3 position = {5.0f, 5.0f, 5.0f}, glm::vec3 center = {0.0f, 0.0f, 0.0f}, glm::vec3 up = {0.0f, 1.0f, 0.0f});
 
 private:

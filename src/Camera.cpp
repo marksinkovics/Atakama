@@ -1,12 +1,6 @@
 #include "Camera.hpp"
 #include "Input.hpp"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/constants.hpp>
-#include <glm/gtx/string_cast.hpp>
-#include <glm/trigonometric.hpp>
-
 #include <cmath>
 
 #include <iostream>
@@ -24,13 +18,13 @@ void Camera::LookAt(glm::vec3 position, glm::vec3 center, glm::vec3 up)
 {
     m_Position = position;
     m_ViewMatrix = glm::lookAt(m_Position, center, up);
-    
+
     glm::vec3 direction = m_Position - center;
-    
+
     float length = glm::distance(center, m_Position);
     float verticalAngle = -glm::asin(direction.y / length);
     m_VerticalAngle = verticalAngle;
-    
+
     float horizontalAngle = glm::pi<float>() + glm::atan(direction.x, direction.z);
     m_HorizontalAngle = horizontalAngle;
 }

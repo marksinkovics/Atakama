@@ -1,9 +1,6 @@
 #include "LightingRenderer.hpp"
 #include "FileSystem.hpp"
 
-#include <glm/gtc/matrix_inverse.hpp>
-
-
 namespace OGLSample
 {
 

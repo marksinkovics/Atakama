@@ -3,8 +3,21 @@
 #include "Mesh.hpp"
 #include "SubMesh.hpp"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <unordered_map>
+
+namespace std
+{
+    template<>
+    struct hash<OGLSample::SubMesh::Vertex>
+    {
+        size_t operator()(const OGLSample::SubMesh::Vertex &vertex) const
+        {
+            size_t seed = 0;
+            OGLSample::hashCombine(seed, vertex.position, vertex.color, vertex.normal, vertex.uv);
+            return seed;
+        }
+    };
+}
 
 namespace OGLSample
 {
@@ -49,6 +62,8 @@ Ref<Mesh> AssetManager::LoadCube()
         {-1.0f, 1.0f, 1.0f},
         { 1.0f,-1.0f, 1.0f}
     };
+
+    std::vector<uint32_t> indices {};
 
     std::vector<glm::vec3> colors {
         {0.583f,  0.771f,  0.014f},
@@ -130,7 +145,7 @@ Ref<Mesh> AssetManager::LoadCube()
 
     std::vector<glm::vec3> normals {};
 
-    auto subMesh = CreateScope<SubMesh>(vertices, uvs, normals, colors);
+    auto subMesh = CreateScope<SubMesh>(vertices, indices, uvs, normals, colors);
     auto mesh = CreateRef<Mesh>();
     mesh->AddSubMesh(std::move(subMesh));
     return mesh;
@@ -177,12 +192,13 @@ Ref<Mesh> AssetManager::LoadCube(glm::vec3 color)
         { 1.0f,-1.0f, 1.0f}
     };
 
+    std::vector<uint32_t> indices {};
     std::vector<glm::vec3> colors(vertices.size(), color);
 
     std::vector<glm::vec2> uvs  {};
     std::vector<glm::vec3> normals {};
 
-    auto subMesh = CreateScope<SubMesh>(vertices, uvs, normals, colors);
+    auto subMesh = CreateScope<SubMesh>(vertices, indices, uvs, normals, colors);
     auto mesh = CreateRef<Mesh>();
     mesh->AddSubMesh(std::move(subMesh));
     return mesh;
@@ -195,6 +211,8 @@ Ref<Mesh> AssetManager::LoadTriangle()
         { 0.5f, -0.5f, 0.0f},
         { 0.0f,  0.5f, 0.0f},
     };
+
+    std::vector<uint32_t> indices {};
 
     std::vector<glm::vec3> colors {
         { 1.0f, 0.0f, 0.0f},
@@ -209,7 +227,74 @@ Ref<Mesh> AssetManager::LoadTriangle()
         {0.0f, 0.0f, 1.0f},
     };
 
-    auto subMesh = CreateScope<SubMesh>(vertices, uvs, normals, colors);
+    auto subMesh = CreateScope<SubMesh>(vertices, indices, uvs, normals, colors);
+    auto mesh = CreateRef<Mesh>();
+    mesh->AddSubMesh(std::move(subMesh));
+    return mesh;
+}
+
+Ref<Mesh> AssetManager::LoadAxis()
+{
+    std::vector<glm::vec3> vertices {
+        {0.0f, 0.0f, 0.0f},
+        {3.0f, 0.0f, 0.0f},
+        {0.0f, 0.0f, 0.0f},
+        {0.0f, 3.0f, 0.0f},
+        {0.0f, 0.0f, 0.0f},
+        {0.0f, 0.0f, 3.0f},
+    };
+
+    std::vector<uint32_t> indices {};
+
+    std::vector<glm::vec3> colors {
+        {1.0f, 0.0f, 0.0f},
+        {1.0f, 0.0f, 0.0f},
+        {0.0f, 1.0f, 0.0f},
+        {0.0f, 1.0f, 0.0f},
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+    };
+
+    std::vector<glm::vec2> uvs;
+    std::vector<glm::vec3> normals;
+
+    auto subMesh1 = CreateScope<SubMesh>(vertices, indices, uvs, normals, colors);
+    subMesh1->SetType(GL_LINES);
+
+    auto subMesh2 = CreateScope<SubMesh>(vertices, indices, uvs, normals, colors);
+    subMesh2->SetType(GL_LINES);
+    subMesh2->SetModelMatrix(glm::translate(glm::mat4(1.0f), {1.0f, 0.0f, 1.0f}));
+
+    std::vector<Scope<SubMesh>> subMeshes;
+    subMeshes.push_back(std::move(subMesh1));
+    subMeshes.push_back(std::move(subMesh2));
+    return CreateRef<Mesh>(subMeshes);
+}
+
+Ref<Mesh> AssetManager::LoadLightModel()
+{
+    std::vector<glm::vec3> vertices {
+        {-1.0f, -1.0f, 0.0f},
+        {1.0f, 1.0f, 0.0f},
+        {-1.0f, 1.0f, 0.0f},
+        {1.0f, 1.0f, 0.0f},
+        {-1.0f, -1.0f, 0.0f},
+        {1.0f, -1.0f, 0.0f}
+    };
+
+    std::vector<uint32_t> indices {};
+    std::vector<glm::vec3> colors;
+    std::vector<glm::vec2> uvs;
+    std::vector<glm::vec3> normals {
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+        {0.0f, 0.0f, 1.0f},
+    };
+
+    auto subMesh = CreateScope<SubMesh>(vertices, indices, uvs, normals, colors);
     auto mesh = CreateRef<Mesh>();
     mesh->AddSubMesh(std::move(subMesh));
     return mesh;
@@ -218,15 +303,12 @@ Ref<Mesh> AssetManager::LoadTriangle()
 Ref<Mesh> AssetManager::LoadOBJFile(const std::filesystem::path& path)
 {
     std::vector<uint32_t> vertexIndices, uvIndices, normalIndices;
-    std::vector<glm::vec3> temp_vertices;
+    std::vector<glm::vec3> temp_positions;
     std::vector<glm::vec2> temp_uvs;
     std::vector<glm::vec3> temp_normals;
 
-    std::vector<glm::vec3> vertices;
-    std::vector<glm::vec3> colors;
-    std::vector<glm::vec2> uvs;
-    std::vector<glm::vec3> normals;
-
+    std::vector<SubMesh::Vertex> vertices{};
+    std::vector<uint32_t> indices {};
 
     std::cout << "Loading OBJ model from path: " << path << "\n";
     FILE* file = fopen(path.c_str(), "r");
@@ -248,7 +330,7 @@ Ref<Mesh> AssetManager::LoadOBJFile(const std::filesystem::path& path)
         {
             glm::vec3 vertex;
 			fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
-			temp_vertices.push_back(vertex);
+			temp_positions.push_back(vertex);
         }
         else if (strcmp(lineHeader, "vt" ) == 0)
         {
@@ -289,7 +371,11 @@ Ref<Mesh> AssetManager::LoadOBJFile(const std::filesystem::path& path)
 		}
     }
 
-    for( unsigned int i=0; i<vertexIndices.size(); i++ ){
+    std::unordered_map<SubMesh::Vertex, uint32_t> uniqueVertices{};
+
+    for( unsigned int i=0; i<vertexIndices.size(); i++ )
+    {
+        SubMesh::Vertex vertex{};
 
 		// Get the indices of its attributes
 		unsigned int vertexIndex = vertexIndices[i];
@@ -297,83 +383,22 @@ Ref<Mesh> AssetManager::LoadOBJFile(const std::filesystem::path& path)
 		unsigned int normalIndex = normalIndices[i];
 
 		// Get the attributes thanks to the index
-		glm::vec3 vertex = temp_vertices[vertexIndex-1];
-		glm::vec2 uv = temp_uvs[uvIndex-1];
-		glm::vec3 normal = temp_normals[normalIndex-1];
+		vertex.position = temp_positions[vertexIndex-1];
+		vertex.uv = {temp_uvs[uvIndex-1].x, 1.f - temp_uvs[uvIndex-1].y};
+		vertex.normal =  temp_normals[normalIndex-1];
 
-		// Put the attributes in buffers
-		vertices.push_back(vertex);
-		uvs.push_back({uv.x, 1.f - uv.y});
-		normals .push_back(normal);
+        if (uniqueVertices.count(vertex) == 0)
+        {
+            uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
+            vertices.push_back(vertex);
+        }
+
+        indices.push_back(uniqueVertices[vertex]);
 	}
 
     fclose(file);
 
-    auto subMesh = CreateScope<SubMesh>(vertices, uvs, normals, colors);
-    auto mesh = CreateRef<Mesh>();
-    mesh->AddSubMesh(std::move(subMesh));
-    return mesh;
-}
-
-Ref<Mesh> AssetManager::LoadAxis()
-{
-    std::vector<glm::vec3> vertices {
-        {0.0f, 0.0f, 0.0f},
-        {3.0f, 0.0f, 0.0f},
-        {0.0f, 0.0f, 0.0f},
-        {0.0f, 3.0f, 0.0f},
-        {0.0f, 0.0f, 0.0f},
-        {0.0f, 0.0f, 3.0f},
-    };
-
-    std::vector<glm::vec3> colors {
-        {1.0f, 0.0f, 0.0f},
-        {1.0f, 0.0f, 0.0f},
-        {0.0f, 1.0f, 0.0f},
-        {0.0f, 1.0f, 0.0f},
-        {0.0f, 0.0f, 1.0f},
-        {0.0f, 0.0f, 1.0f},
-    };
-
-    std::vector<glm::vec2> uvs;
-    std::vector<glm::vec3> normals;
-
-    auto subMesh1 = CreateScope<SubMesh>(vertices, uvs, normals, colors);
-    subMesh1->SetType(GL_LINES);
-
-    auto subMesh2 = CreateScope<SubMesh>(vertices, uvs, normals, colors);
-    subMesh2->SetType(GL_LINES);
-    subMesh2->SetModelMatrix(glm::translate(glm::mat4(1.0f), {1.0f, 0.0f, 1.0f}));
-
-    std::vector<Scope<SubMesh>> subMeshes;
-    subMeshes.push_back(std::move(subMesh1));
-    subMeshes.push_back(std::move(subMesh2));
-    return CreateRef<Mesh>(subMeshes);
-}
-
-Ref<Mesh> AssetManager::LoadLightModel()
-{
-    std::vector<glm::vec3> vertices {
-        {-1.0f, -1.0f, 0.0f},
-        {1.0f, 1.0f, 0.0f},
-        {-1.0f, 1.0f, 0.0f},
-        {1.0f, 1.0f, 0.0f},
-        {-1.0f, -1.0f, 0.0f},
-        {1.0f, -1.0f, 0.0f}
-    };
-
-    std::vector<glm::vec3> colors;
-    std::vector<glm::vec2> uvs;
-    std::vector<glm::vec3> normals {
-        {0.0f, 0.0f, 1.0f},
-        {0.0f, 0.0f, 1.0f},
-        {0.0f, 0.0f, 1.0f},
-        {0.0f, 0.0f, 1.0f},
-        {0.0f, 0.0f, 1.0f},
-        {0.0f, 0.0f, 1.0f},
-    };
-
-    auto subMesh = CreateScope<SubMesh>(vertices, uvs, normals, colors);
+    auto subMesh = CreateScope<SubMesh>(vertices, indices);
     auto mesh = CreateRef<Mesh>();
     mesh->AddSubMesh(std::move(subMesh));
     return mesh;

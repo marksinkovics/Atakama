@@ -1,9 +1,6 @@
 #include "Mesh.hpp"
 #include "Shader.hpp"
 
-#include <glm/gtc/matrix_inverse.hpp>
-
-
 namespace OGLSample
 {
 
