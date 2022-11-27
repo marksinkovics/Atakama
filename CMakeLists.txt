@@ -12,9 +12,7 @@ project(OpenGLSample
 include("cmake/add_asset.cmake")
 
 find_package(OpenGL REQUIRED)
-find_package(glfw3 REQUIRED)
 find_package(GLEW REQUIRED)
-find_package(glm REQUIRED)
 
 add_subdirectory("vendor")
 
@@ -34,6 +32,8 @@ set(LIBS_PATH ${PROJECT_SOURCE_DIR}/libs)
 
 file(GLOB_RECURSE HEADERS ${SOURCE_ROOT}/*.hpp)
 file(GLOB_RECURSE SOURCES ${SOURCE_ROOT}/*.cpp)
+
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${HEADERS} ${SOURCES})
 
 set(SHADER_ROOT ${SOURCE_ROOT}/shaders)
 file(GLOB_RECURSE SHADERS
@@ -72,10 +72,6 @@ target_add_assets(app "assets/models"
     ${MODELS}
 )
 
-include_directories(
-    ${VENDOR_ROOT}/stb
-)
-
 target_include_directories(app
     PUBLIC
         ${SOURCE_ROOT}
@@ -95,7 +91,8 @@ target_link_libraries(app
         glfw
         GLEW::GLEW
         glm::glm
-        IMGUI
+        stb
+        imgui
         # tinyobjloader
 )
 

@@ -1,30 +1,27 @@
-set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/imgui)
+set(vendor_folder "Vendor")
 
-add_library(IMGUI STATIC)
+if(NOT TARGET glfw)
+    option(GLFW_BUILD_EXAMPLES "" OFF)
+    option(GLFW_BUILD_TESTS "" OFF)
+    option(GLFW_BUILD_DOCS "" OFF)
+    option(GLFW_INSTALL "" OFF)
+    add_subdirectory(glfw)
+    set_target_properties(glfw PROPERTIES FOLDER ${vendor_folder}/glfw)
+    set_target_properties(update_mappings PROPERTIES FOLDER ${vendor_folder}/glfw)
+    # set_target_properties(uninstall PROPERTIES FOLDER ${vendor_folder}/glfw)
+endif()
 
-find_package(glfw3 REQUIRED)
+if(NOT TARGET imgui)
+    include(imgui.cmake)
+    set_target_properties(imgui PROPERTIES FOLDER ${vendor_folder}/imgui)
+endif()
 
-set_target_properties(IMGUI PROPERTIES
-    CXX_STANDARD 20
-    CXX_STANDARD_REQUIRED OFF
-    CXX_EXTENSIONS OFF
-)
-target_sources(IMGUI
-    PRIVATE
-        ${IMGUI_DIR}/imgui_demo.cpp
-        ${IMGUI_DIR}/imgui_draw.cpp
-        ${IMGUI_DIR}/imgui_tables.cpp
-        ${IMGUI_DIR}/imgui_widgets.cpp
-        ${IMGUI_DIR}/imgui.cpp
-    PRIVATE
-        ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
-        ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
-)
+if(NOT TARGET stb)
+    include(stb.cmake)
+    set_target_properties(stb PROPERTIES FOLDER ${vendor_folder}/stb)
+endif()
 
-target_include_directories(IMGUI
-    PUBLIC ${IMGUI_DIR}
-    PUBLIC ${IMGUI_DIR}/backends
-)
-
-find_package(OpenGL REQUIRED)
-target_link_libraries(IMGUI PUBLIC ${OPENGL_LIBRARIES} glfw)
+if(NOT TARGET glm)
+    add_subdirectory(glm)
+    set_target_properties(glm PROPERTIES FOLDER ${vendor_folder}/glm)
+endif()
