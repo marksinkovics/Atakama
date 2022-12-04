@@ -12,6 +12,7 @@ project(OpenGLSample
 include("cmake/add_asset.cmake")
 
 find_package(OpenGL REQUIRED)
+find_package(Vulkan REQUIRED)
 find_package(GLEW REQUIRED)
 
 add_subdirectory("vendor")
@@ -92,6 +93,7 @@ target_link_libraries(app
         GLEW::GLEW
         glm::glm
         stb
+        Vulkan::Vulkan
         imgui
         # tinyobjloader
 )
