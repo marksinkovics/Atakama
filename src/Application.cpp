@@ -7,11 +7,13 @@
 #include "Camera.hpp"
 #include "Input.hpp"
 #include "Perf/PerfMonitor.hpp"
+#include "Events/Event.hpp"
 
 #include "Renderer/SimpleRenderer.hpp"
 #include "Renderer/TextureRenderer.hpp"
 #include "Renderer/LightingRenderer.hpp"
 #include "Renderer/PointLightRenderer.hpp"
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,6 +31,10 @@ namespace OGLSample {
 Application::Application()
 {
     m_Window = CreateRef<Window>(Application::WIDTH, Application::HEIGHT, "OpenGL Tutorial");
+    m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+    g_RuntimeGlobalContext.m_Window = m_Window;
+    
+    g_RuntimeGlobalContext.m_Dispatcher->subscribe<MouseButtonPressedEvent>(EventType::MouseButtonPressed, std::bind(&Application::OnMouseButtonPressed, this, std::placeholders::_1));
 }
 
 Application::~Application()
@@ -36,12 +42,35 @@ Application::~Application()
 
 }
 
+void Application::OnEvent(Event &event)
+{
+    ImGuiIO& io = ImGui::GetIO();
+    
+    if (IsMouseEvent(event))
+        event.Handled |= io.WantCaptureMouse;
+
+    if (IsKeyboardEvent(event))
+        event.Handled |= io.WantCaptureKeyboard;
+
+    if (event.Handled)
+        return;
+    
+    g_RuntimeGlobalContext.m_Dispatcher->post(event);
+}
+
+bool Application::OnMouseButtonPressed(MouseButtonPressedEvent &event)
+{
+    if (event.GetButton() == GLFW_MOUSE_BUTTON_MIDDLE)
+    {
+        Ref<Input> inputSystem = g_RuntimeGlobalContext.m_InputSystem;
+        inputSystem->SetFocusMode(!inputSystem->GetFocusMode());
+    }
+    
+    return false;
+}
+
 void Application::run()
 {
-    glfwPollEvents();
-
-    Input::EnableDragging(m_Window, true);
-
     glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
     glEnable(GL_DEPTH_TEST);
@@ -97,21 +126,21 @@ void Application::run()
 //    suzanne->SetModelMatrix(glm::mat4(1.0));
 
 
-    Ref<Camera> camera = CreateRef<Camera>(m_Window);
-    camera->LookAt({5.0f, 5.f, 5.f});
+    m_Camera = CreateRef<Camera>(m_Window);
+    m_Camera->LookAt({5.0f, 5.f, 5.f});
 
 
     Ref<SimpleRenderer> simpleRenderer = CreateRef<SimpleRenderer>();
-    simpleRenderer->Init(camera);
+    simpleRenderer->Init(m_Camera);
 
     Ref<TextureRenderer> textureRenderer = CreateRef<TextureRenderer>();
-    textureRenderer->Init(camera);
+    textureRenderer->Init(m_Camera);
 
     Ref<LightingRenderer> lightingRenderer = CreateRef<LightingRenderer>();
-    lightingRenderer->Init(camera);
+    lightingRenderer->Init(m_Camera);
 
     Ref<PointLightRenderer> pointLightRenderer = CreateRef<PointLightRenderer>();
-    pointLightRenderer->Init(camera);
+    pointLightRenderer->Init(m_Camera);
 
 
     glm::vec4 lightPosition {4.f, 4.f, 4.f, 1.f};
@@ -133,7 +162,6 @@ void Application::run()
     PerfMonitor perfMonitor;
 
     auto currentTime = std::chrono::high_resolution_clock::now();
-    std::chrono::time_point<std::chrono::high_resolution_clock> cpuStartTimer, cpuStopTimer;
 
     do {
         glfwPollEvents();
@@ -141,6 +169,9 @@ void Application::run()
         auto newTime = std::chrono::high_resolution_clock::now();
         float frameTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
         currentTime = newTime;
+
+        m_Camera->UpdateFrameTime(frameTime);
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         ImGui_ImplOpenGL3_NewFrame();
@@ -152,10 +183,7 @@ void Application::run()
         perfMonitor.StartCPUTimer();
         perfMonitor.StartGPUTimer();
 
-        if (!io.WantCaptureMouse || !io.WantCaptureKeyboard)
-        {
-            camera->Update(frameTime);
-        }
+        m_Camera->Update(frameTime);
 
         lightingRenderer->Begin(lightPosition, lightColor);
         lightingRenderer->Draw(floorModel);
@@ -184,6 +212,7 @@ void Application::run()
         perfMonitor.StopGPUTimer();
         perfMonitor.StopCPUTimer();
 
+        
         ImGui::Begin("ImGui Window");
         ImGui::Text("CPU time: %f ms", perfMonitor.GetCPUTime());
         if (perfMonitor.GetGPUAvailable())
@@ -201,9 +230,11 @@ void Application::run()
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+        
+        g_RuntimeGlobalContext.m_InputSystem->Clear();
         // Swap buffers
         glfwSwapBuffers(m_Window->GetWindow());
-        glfwPollEvents();
+//        glfwPollEvents();
 
     }
     while(m_Window->ShouldClose());

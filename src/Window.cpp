@@ -1,4 +1,6 @@
 #include "Window.hpp"
+#include "Events/KeyEvent.hpp"
+#include "Events/MouseEvent.hpp"
 
 #include <GL/glew.h>
 
@@ -21,6 +23,93 @@ Window::Window(uint32_t width, uint32_t height, const std::string& name)
     glewInit();
 
     glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GL_TRUE);
+
+    glfwSetWindowUserPointer(m_Window, this);
+
+    //resize
+    glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
+        Window* handler = (Window*)glfwGetWindowUserPointer(window);
+        if (!handler)
+            return;
+        
+        handler->m_Width = width;
+        handler->m_Height = height;
+
+    });
+    
+    // window close
+    glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window){
+
+    });
+
+    // key
+    glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+        Window* handler = (Window*)glfwGetWindowUserPointer(window);
+        if (!handler)
+            return;
+        
+        if (action == GLFW_PRESS) {
+            KeyPressedEvent event(key, false);
+            handler->m_EventCallback(event);
+            return;
+        }
+
+        if (action == GLFW_RELEASE) {
+            KeyReleasedEvent event(key, false);
+            handler->m_EventCallback(event);
+            return;
+        }
+
+        if (action == GLFW_REPEAT) {
+            KeyPressedEvent event(key, true);
+            handler->m_EventCallback(event);
+            return;
+        }
+    });
+
+    glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode){
+        Window* handler = (Window*)glfwGetWindowUserPointer(window);
+        if (!handler)
+            return;
+
+    });
+
+    // mouse
+    glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods){
+        Window* handler = (Window*)glfwGetWindowUserPointer(window);
+        if (!handler)
+            return;
+        
+        if (action == GLFW_PRESS) {
+            MouseButtonPressedEvent event(button);
+            handler->m_EventCallback(event);
+            return;
+        }
+
+        if (action == GLFW_RELEASE) {
+            MouseButtonReleasedEvent event(button);
+            handler->m_EventCallback(event);
+            return;
+        }
+    });
+    
+    glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xOffset, double yOffset){
+        Window* handler = (Window*)glfwGetWindowUserPointer(window);
+        if (!handler)
+            return;
+
+        MouseScrolledEvent event(xOffset, yOffset);
+        handler->m_EventCallback(event);
+    });
+
+    glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos){
+        Window* handler = (Window*)glfwGetWindowUserPointer(window);
+        if (!handler)
+            return;
+        
+        MouseMovedEvent event(xPos, yPos);
+        handler->m_EventCallback(event);
+    });
 }
 
 Window::~Window()
@@ -49,9 +138,29 @@ float Window::GetHeight()
     return m_Height;
 }
 
+glm::vec2 Window::GetSize()
+{
+    return { m_Width,  m_Height };
+}
+
 float Window::GetRatio()
 {
     return (float)(m_Width / m_Height);
+}
+
+void Window::SetEventCallback(const EventCallbackFunc& callback)
+{
+    m_EventCallback = callback;
+}
+
+void Window::SwapBuffers()
+{
+    glfwSwapBuffers(m_Window);
+}
+
+void Window::PollEvents()
+{
+    glfwPollEvents();
 }
 
 }

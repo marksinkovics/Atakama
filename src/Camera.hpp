@@ -13,7 +13,17 @@ class Camera
 {
 public:
     Camera(Ref<Window>& window);
+
     void Update(float frameTime);
+    void UpdateFrameTime(float frameTime);
+
+    enum class CameraMovement{
+        Forward, Backward,
+        Left, Right
+    };
+
+    void Move(CameraMovement movement);
+    void Rotate(glm::vec2 delta);
 
     glm::mat4 GetViewMatrix();
     glm::mat4 GetProjectionMatrix();
@@ -32,6 +42,8 @@ private:
 
     glm::mat4 m_ViewMatrix {1.f};
     glm::mat4 m_ProjectionMatrix {1.f};
+
+    float m_FrameTime;
 
     Ref<Window> m_Window;
 };
