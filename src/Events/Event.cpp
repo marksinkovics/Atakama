@@ -3,8 +3,6 @@
 namespace OGLSample
 {
 
-
-
 bool IsKeyboardEvent(Event& event)
 {
     EventType type = event.GetType();

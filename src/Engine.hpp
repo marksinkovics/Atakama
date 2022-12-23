@@ -1,6 +1,22 @@
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
 
+#include "Shader.hpp"
+#include "Texture.hpp"
+#include "Mesh.hpp"
+#include "Camera.hpp"
+
+#include "Lights/PointLight.hpp"
+
+#include "Renderer/SimpleRenderer.hpp"
+#include "Renderer/TextureRenderer.hpp"
+#include "Renderer/LightingRenderer.hpp"
+#include "Renderer/PointLightRenderer.hpp"
+#include "Perf/PerfMonitor.hpp"
+
+#include "Scene.hpp"
+
+
 #include <chrono>
 
 namespace OGLSample
@@ -9,13 +25,42 @@ namespace OGLSample
 class Engine
 {
 public:
-    void Init();
+    void Init(Ref<Window>& window);
     void Shutdown();
     void Run();
     void CalculateDeltaTime();
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> m_LastTime {std::chrono::high_resolution_clock::now()};
     float m_FrameTime;
+    
+    Ref<Scene> m_Scene;
+    
+    Ref<Window> m_Window;
+    
+    Ref<Camera> m_Camera;
+    
+//    Ref<Shader> simpleProgram;
+//    Ref<Shader> textureProgram;
+//    
+//    Ref<Texture> texture1;
+//    Ref<Texture> texture2;
+//    Ref<Texture> vikingRoomTexture;
+//    Ref<Texture> wallTexture;
+//    
+//    Ref<Mesh> cubeModel;
+//    Ref<Mesh> triangleModel;
+//    Ref<Mesh> cubeModel2;
+//    Ref<Mesh> vikingRoomModel;
+//    Ref<Mesh> smoothVaseModel;
+//    Ref<Mesh> floorModel;
+//    Ref<Mesh> axisModel;
+//    
+    Ref<SimpleRenderer> simpleRenderer;
+    Ref<TextureRenderer> textureRenderer;
+    Ref<LightingRenderer> lightingRenderer;
+    Ref<PointLightRenderer> pointLightRenderer;
+        
+    PerfMonitor perfMonitor;
 };
 
 }

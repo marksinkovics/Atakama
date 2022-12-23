@@ -10,7 +10,7 @@ Mesh::Mesh()
 }
 
 Mesh::Mesh(std::vector<Scope<SubMesh>>& subMeshes)
-    : m_SubMeshes(std::move(subMeshes))
+: m_SubMeshes(std::move(subMeshes)), m_ModelMatrix(glm::mat4(1.0f))
 {
 
 }
@@ -28,6 +28,21 @@ void Mesh::SetModelMatrix(glm::mat4 modelMatrix)
 glm::mat3 Mesh::GetNormalMatrix()
 {
     return glm::inverseTranspose(glm::mat3(m_ModelMatrix));
+}
+
+void Mesh::Translate(glm::vec3 translate)
+{
+    m_ModelMatrix = glm::translate(m_ModelMatrix, translate);
+}
+
+void Mesh::Rotate(float angle, glm::vec3 rotate)
+{
+    m_ModelMatrix = glm::rotate(m_ModelMatrix, angle, rotate);
+}
+
+void Mesh::Scale(glm::vec3 scale)
+{
+    m_ModelMatrix = glm::scale(m_ModelMatrix, scale);
 }
 
 std::vector<Scope<SubMesh>>& Mesh::GetSubMeshes()

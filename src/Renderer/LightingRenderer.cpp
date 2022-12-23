@@ -10,11 +10,10 @@ void LightingRenderer::Init(Ref<Camera> camera)
     Renderer::Init(camera, shader);
 }
 
-void LightingRenderer::Begin(glm::vec4 lightPosition, glm::vec4 lightColor)
+void LightingRenderer::Begin(Ref<PointLight> light)
 {
     Renderer::Begin();
-    m_LightPosition = lightPosition;
-    m_LightColor = lightColor;
+    m_Light = light;
 }
 
 void LightingRenderer::Draw(Ref<Mesh> mesh)
@@ -22,8 +21,8 @@ void LightingRenderer::Draw(Ref<Mesh> mesh)
     m_Shader->SetUniformMat4("uView", m_Camera->GetViewMatrix());
     m_Shader->SetUniformMat4("uProjection", m_Camera->GetProjectionMatrix());
     // Lights
-    m_Shader->SetUniformFloat4("uLightPosition", m_LightPosition);
-    m_Shader->SetUniformFloat4("uLightColor", m_LightColor);
+    m_Shader->SetUniformFloat4("uLightPosition", m_Light->GetPosition());
+    m_Shader->SetUniformFloat4("uLightColor", m_Light->GetColor());
     // Camera / View
     m_Shader->SetUniformFloat3("uViewPosition", m_Camera->GetPosition());
 

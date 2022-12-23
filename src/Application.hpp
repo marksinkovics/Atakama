@@ -8,6 +8,8 @@
 #include "Events/KeyEvent.hpp"
 #include "Events/MouseEvent.hpp"
 
+#include "Engine.hpp"
+
 #include <stdint.h>
 
 namespace OGLSample
@@ -36,7 +38,8 @@ namespace OGLSample
   private:
 
     Ref<Window> m_Window;
-    Ref<Camera> m_Camera;
+//    Ref<Camera> m_Camera;
+    Ref<Engine> m_Engine;
   };
 
 }

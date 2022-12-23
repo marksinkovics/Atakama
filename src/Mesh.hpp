@@ -19,10 +19,15 @@ public:
     void SetModelMatrix(glm::mat4 modelMatrix);
     glm::mat3 GetNormalMatrix();
 
+    void Translate(glm::vec3 translate);
+    void Rotate(float angle, glm::vec3 rotate);
+    void Scale(glm::vec3 scale);
+    
     std::vector<Scope<SubMesh>>& GetSubMeshes();
     void AddSubMesh(Scope<SubMesh> subMesh);
 
     void Draw(Ref<Shader>& shader);
+    
 
 private:
     std::vector<Scope<SubMesh>> m_SubMeshes;

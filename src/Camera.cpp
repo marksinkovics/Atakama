@@ -8,10 +8,11 @@
 namespace OGLSample
 {
 
-Camera::Camera(Ref<Window>& window)
-: m_Window(window)
+Camera::Camera()
 {
-    m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), (float)m_Window->GetRatio(), 0.1f, 100.0f);
+    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
+    m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), (float)window->GetRatio(), 0.1f, 100.0f);
+    //m_ProjectionMatrix = glm::ortho(0.0f, (float)m_Window->GetWidth(), 0.0f, (float)m_Window->GetHeight(), 0.1f, 100.0f);
 }
 
 void Camera::LookAt(glm::vec3 position, glm::vec3 center, glm::vec3 up)

@@ -12,7 +12,7 @@ namespace OGLSample
 class Camera
 {
 public:
-    Camera(Ref<Window>& window);
+    Camera();
 
     void Update(float frameTime);
     void UpdateFrameTime(float frameTime);
@@ -44,8 +44,6 @@ private:
     glm::mat4 m_ProjectionMatrix {1.f};
 
     float m_FrameTime;
-
-    Ref<Window> m_Window;
 };
 
 }
