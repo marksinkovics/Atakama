@@ -4,6 +4,8 @@
 #include "Events/EventDispatcher.hpp"
 #include "Input.hpp"
 
+#include "Render/RenderSystem.hpp"
+
 namespace OGLSample
 {
 
@@ -15,8 +17,8 @@ void RuntimeGlobalContext::Init()
 
     m_InputSystem = CreateRef<Input>();
     m_InputSystem->Init();
+    
+    m_RenderSystem = CreateRef<RenderSystem>();
 }
-
-
 
 }

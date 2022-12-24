@@ -50,7 +50,7 @@ file(GLOB_RECURSE SHADERS
 set(SHADERS_ROOT ${PROJECT_SOURCE_DIR}/src/shaders)
 
 target_add_assets(app shaders
-${SHADERS}
+    ${SHADERS}
 )
 
 set(ASSETS_ROOT ${PROJECT_SOURCE_DIR}/assets)

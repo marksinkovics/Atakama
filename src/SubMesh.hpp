@@ -2,6 +2,7 @@
 #define MODEL_HPP
 
 #include "Texture.hpp"
+#include "Render/VertexBuffer.hpp"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -17,18 +18,13 @@ public:
         glm::vec3 position;
         glm::vec2 uv;
         glm::vec3 normal;
-        glm::vec3 color{1.0f, 1.0f, 1.0f};
+        glm::vec3 color {1.0f, 1.0f, 1.0f};
 
         bool operator==(const Vertex &other) const;
     };
 
+    SubMesh(std::vector<Vertex>& vertices);
     SubMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
-
-    SubMesh(std::vector<glm::vec3> positions,
-          std::vector<uint32_t> indices,
-          std::vector<glm::vec2> uvs,
-          std::vector<glm::vec3> normals,
-          std::vector<glm::vec3> colors);
 
     ~SubMesh();
 
@@ -52,27 +48,32 @@ private:
 private:
     GLuint m_Type = GL_TRIANGLES;
 
-    std::vector<glm::vec3> m_Positions;
-    std::vector<uint32_t> m_Indices;
-    std::vector<glm::vec2> m_UVs;
-    std::vector<glm::vec3> m_Normals;
-    std::vector<glm::vec3> m_Colors;
-
     Ref<Texture> m_Texture;
-
-    GLuint m_VAOId;
-
-    GLuint m_VertexBufferId;
-    GLuint m_IndexBufferId;
-    GLuint m_NormalBufferId;
-    GLuint m_UVBufferId;
-    GLuint m_ColorBufferId;
-
+    
     glm::mat4 m_ModelMatrix {1.0f};
+
+    Ref<VertexBuffer> m_VertexBuffer;
+    Ref<IndexBuffer> m_IndexBuffer;
+    Ref<VertexArray> m_VertexArray;
 
     friend class Mesh;
 };
 
 }
+
+namespace std
+{
+    template<>
+    struct hash<OGLSample::SubMesh::Vertex>
+    {
+        size_t operator()(const OGLSample::SubMesh::Vertex &vertex) const
+        {
+            size_t seed = 0;
+            OGLSample::hashCombine(seed, vertex.position, vertex.color, vertex.normal, vertex.uv);
+            return seed;
+        }
+    };
+}
+
 
 #endif

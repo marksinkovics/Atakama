@@ -7,6 +7,7 @@ namespace OGLSample
 class Window;
 class EventDispatcher;
 class Input;
+class RenderSystem;
 
 class RuntimeGlobalContext
 {
@@ -16,6 +17,7 @@ public:
     Ref<Window> m_Window;
     Ref<EventDispatcher> m_Dispatcher;
     Ref<Input> m_InputSystem;
+    Ref<RenderSystem> m_RenderSystem;
 };
 
 extern RuntimeGlobalContext g_RuntimeGlobalContext;

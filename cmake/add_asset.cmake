@@ -20,7 +20,7 @@ function(target_add_asset TARGET FOLDER ASSET_PATH)
         VERBATIM
     )
 
-    source_group("Assets" FILES ${ASSET_PATH})
+source_group("${FOLDER}" FILES ${ASSET_PATH})
     target_sources(${TARGET} PRIVATE ${ASSET_PATH})
 
 endfunction(target_add_asset)

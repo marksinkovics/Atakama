@@ -1,6 +1,7 @@
 #include "PointLight.hpp"
 #include "Mesh.hpp"
 #include "AssetManager.hpp"
+#include "FileSystem.hpp"
 
 namespace OGLSample
 {
@@ -9,7 +10,7 @@ PointLight::PointLight(const glm::vec4& position, const glm::vec4& color)
 : m_Position(position), m_Color(color)
 {
 
-    m_Mesh = AssetManager::LoadCube(glm::vec3(m_Color));
+    m_Mesh = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
     m_Mesh->SetModelMatrix(glm::scale(m_Mesh->GetModelMatrix(), {0.2f, 0.2f, 0.2f}));
     m_Mesh->SetModelMatrix(glm::translate(m_Mesh->GetModelMatrix(), glm::vec3(m_Position)));
 }
