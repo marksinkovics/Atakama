@@ -7,7 +7,7 @@
 #include "Camera.hpp"
 
 #include "Lights/PointLight.hpp"
-
+#include "Render/RenderSystem.hpp"
 #include "Renderer/SimpleRenderer.hpp"
 #include "Renderer/TextureRenderer.hpp"
 #include "Renderer/LightingRenderer.hpp"
@@ -25,7 +25,7 @@ namespace OGLSample
 class Engine
 {
 public:
-    void Init(Ref<Window>& window);
+    void Init(Ref<Window>& window, Ref<RenderSystem>& renderSystem);
     void Shutdown();
     void Run();
     void CalculateDeltaTime();
@@ -34,27 +34,10 @@ private:
     float m_FrameTime;
     
     Ref<Scene> m_Scene;
-    
     Ref<Window> m_Window;
-    
+    Ref<RenderSystem> m_RenderSystem;
     Ref<Camera> m_Camera;
     
-//    Ref<Shader> simpleProgram;
-//    Ref<Shader> textureProgram;
-//    
-//    Ref<Texture> texture1;
-//    Ref<Texture> texture2;
-//    Ref<Texture> vikingRoomTexture;
-//    Ref<Texture> wallTexture;
-//    
-//    Ref<Mesh> cubeModel;
-//    Ref<Mesh> triangleModel;
-//    Ref<Mesh> cubeModel2;
-//    Ref<Mesh> vikingRoomModel;
-//    Ref<Mesh> smoothVaseModel;
-//    Ref<Mesh> floorModel;
-//    Ref<Mesh> axisModel;
-//    
     Ref<SimpleRenderer> simpleRenderer;
     Ref<TextureRenderer> textureRenderer;
     Ref<LightingRenderer> lightingRenderer;

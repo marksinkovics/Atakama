@@ -47,7 +47,6 @@ void PerfMonitor::StopGPUTimer()
         glEndQuery(GL_TIME_ELAPSED);
         m_GPUTimerActivated = true;
     }
-
 }
 
 float PerfMonitor::GetCPUTime()

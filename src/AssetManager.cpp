@@ -63,10 +63,10 @@ Ref<Mesh> AssetManager::LoadAxis()
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
     
     auto subMesh1 = CreateScope<SubMesh>(rawVertices);
-    subMesh1->SetType(GL_LINES);
+    subMesh1->SetMode(DrawingMode::Lines);
     
     auto subMesh2 = CreateScope<SubMesh>(rawVertices);
-    subMesh2->SetType(GL_LINES);
+    subMesh1->SetMode(DrawingMode::Lines);
     subMesh2->SetModelMatrix(glm::translate(glm::mat4(1.0f), {1.0f, 0.0f, 1.0f}));
 
     std::vector<Scope<SubMesh>> subMeshes;

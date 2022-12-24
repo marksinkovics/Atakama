@@ -12,17 +12,12 @@
 namespace OGLSample
 {
 
-void Engine::Init(Ref<Window>& window)
+void Engine::Init(Ref<Window>& window, Ref<RenderSystem>& renderSystem)
 {
     m_Window = window;
-    
-    glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-
-    glEnable(GL_DEPTH_TEST);
-    // Accept fragment if it closer to the camera than the former one
-    glDepthFunc(GL_LESS);
-    // Cull triangles which normal is not towards the camera
-    glEnable(GL_CULL_FACE);
+    m_RenderSystem = renderSystem;
+    m_RenderSystem->Init();
+    m_RenderSystem->SetClearColor({0.0f, 0.0f, 0.4f, 0.0f});
     
     m_Camera = CreateRef<Camera>();
     m_Camera->LookAt({5.0f, 5.f, 5.f});
@@ -66,6 +61,8 @@ void Engine::CalculateDeltaTime()
 
 void Engine::Run()
 {
+    m_RenderSystem->Clear();
+    
     CalculateDeltaTime();
     
     m_Camera->UpdateFrameTime(m_FrameTime);

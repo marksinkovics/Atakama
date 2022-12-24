@@ -1,11 +1,9 @@
-#ifndef MODEL_HPP
-#define MODEL_HPP
+#ifndef SUBMESH_HPP
+#define SUBMESH_HPP
 
+#include "Render/RenderSystem.hpp"
 #include "Texture.hpp"
 #include "Render/VertexBuffer.hpp"
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 namespace OGLSample
 {
@@ -21,6 +19,8 @@ public:
         glm::vec3 color {1.0f, 1.0f, 1.0f};
 
         bool operator==(const Vertex &other) const;
+        
+        static VertexBufferLayout GetLayout();
     };
 
     SubMesh(std::vector<Vertex>& vertices);
@@ -41,12 +41,12 @@ public:
     void SetTexture(Ref<Texture> texture);
     Ref<Texture> GetTexture();
 
-    GLuint GetType();
-    void SetType(GLuint type);
+    DrawingMode GetMode();
+    void SetMode(DrawingMode mode);
 private:
     void GenerateVertexArray();
 private:
-    GLuint m_Type = GL_TRIANGLES;
+    DrawingMode m_Mode = DrawingMode::Triangles;
 
     Ref<Texture> m_Texture;
     

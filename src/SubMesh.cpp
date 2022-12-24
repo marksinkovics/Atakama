@@ -12,15 +12,20 @@ bool SubMesh::Vertex::operator==(const Vertex &other) const
         uv == other.uv;
 }
 
-SubMesh::SubMesh(std::vector<Vertex>& vertices)
+VertexBufferLayout SubMesh::Vertex::GetLayout()
 {
-    m_VertexBuffer = CreateRef<VertexBuffer>((float*)vertices.data(), sizeof(Vertex) * vertices.size());
-    m_VertexBuffer->SetLayout({
+    return {
         { VertexBufferElement::Type::Float3, "aPosition"},
         { VertexBufferElement::Type::Float2, "aUV"},
         { VertexBufferElement::Type::Float3, "aNormal"},
         { VertexBufferElement::Type::Float3, "aColor"},
-    });
+    };
+}
+
+SubMesh::SubMesh(std::vector<Vertex>& vertices)
+{
+    m_VertexBuffer = CreateRef<VertexBuffer>((float*)vertices.data(), sizeof(Vertex) * vertices.size());
+    m_VertexBuffer->SetLayout(SubMesh::Vertex::GetLayout());
     m_VertexArray = CreateRef<VertexArray>();
     m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 }
@@ -28,12 +33,7 @@ SubMesh::SubMesh(std::vector<Vertex>& vertices)
 SubMesh::SubMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices)
 {
     m_VertexBuffer = CreateRef<VertexBuffer>((float*)vertices.data(), sizeof(Vertex) * vertices.size());
-    m_VertexBuffer->SetLayout({
-        { VertexBufferElement::Type::Float3, "aPosition"},
-        { VertexBufferElement::Type::Float2, "aUV"},
-        { VertexBufferElement::Type::Float3, "aNormal"},
-        { VertexBufferElement::Type::Float3, "aColor"},
-    });
+    m_VertexBuffer->SetLayout(SubMesh::Vertex::GetLayout());
     m_IndexBuffer = CreateRef<IndexBuffer>(indices.data(), indices.size());
     m_VertexArray = CreateRef<VertexArray>();
     m_VertexArray->AddVertexBuffer(m_VertexBuffer);
@@ -56,20 +56,7 @@ void SubMesh::Unbind()
 
 void SubMesh::Draw()
 {
-    m_VertexArray->Bind();
-    
-    if (m_VertexArray->GetIndexBuffer() && m_VertexArray->GetIndexBuffer()->GetCount() > 0)
-    {
-        glDrawElements(m_Type, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-    }
-    else
-    {
-        glDrawArrays(m_Type, 0, m_VertexArray->GetVertexCount());
-    }
-    
-    m_VertexArray->Unbind();
-    
-    return;
+    g_RuntimeGlobalContext.m_RenderSystem->Draw(m_Mode, m_VertexArray);
 }
 
 glm::mat4 SubMesh::GetModelMatrix()
@@ -97,14 +84,14 @@ Ref<Texture> SubMesh::GetTexture()
     return m_Texture;
 }
 
-GLuint SubMesh::GetType()
+DrawingMode SubMesh::GetMode()
 {
-    return m_Type;
+    return m_Mode;
 }
 
-void SubMesh::SetType(GLuint type)
+void SubMesh::SetMode(DrawingMode mode)
 {
-    m_Type = type;
+    m_Mode = mode;
 }
 
 }

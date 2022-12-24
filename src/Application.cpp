@@ -73,7 +73,7 @@ bool Application::OnMouseButtonPressed(MouseButtonPressedEvent &event)
 
 void Application::run()
 {
-    m_Engine->Init(m_Window);
+    m_Engine->Init(m_Window, g_RuntimeGlobalContext.m_RenderSystem);
     do {
         m_Engine->Run();
     } while(m_Window->ShouldClose());
