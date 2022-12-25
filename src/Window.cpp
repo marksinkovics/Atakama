@@ -2,7 +2,9 @@
 #include "Events/KeyEvent.hpp"
 #include "Events/MouseEvent.hpp"
 
-#include <GL/glew.h>
+#include "Platform/OpenGL3/OpenGL3GraphicsContext.hpp"
+
+#include <GLFW/glfw3.h>
 
 namespace OGLSample
 {
@@ -10,23 +12,17 @@ namespace OGLSample
 Window::Window(uint32_t width, uint32_t height, const std::string& name)
 : m_Width(width), m_Height(height), m_Name(name)
 {
-    glfwInit();
-    glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL
-    m_Window = glfwCreateWindow(m_Width, m_Height, m_Name.c_str(), NULL, NULL); // Present it in a window
-    // m_Window = glfwCreateWindow(m_Width, m_Height, m_Name.c_str(), glfwGetPrimaryMonitor(), NULL); // Present it in fullscreen
-
-    glfwMakeContextCurrent(m_Window); // Initialize GLEW
-
-    glewExperimental = GL_TRUE;
-    GLenum error = glewInit();
-    if (GLEW_OK != error)
+    if(!glfwInit())
     {
-        LOG_FATAL("glewInit Error: {}", (char*)glewGetErrorString(error));
+        LOG_FATAL("Failed to initialize GLFW");
     }
+    
+    m_GraphicsContext = GraphicsContext::Create();
+    m_GraphicsContext->Init();
+
+    m_Window = glfwCreateWindow(m_Width, m_Height, m_Name.c_str(), NULL, NULL); // Present it in a window
+
+    m_GraphicsContext->Register(m_Window);
     
     glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSetWindowUserPointer(m_Window, this);
@@ -44,7 +40,7 @@ Window::Window(uint32_t width, uint32_t height, const std::string& name)
     
     // window close
     glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window){
-
+        
     });
 
     // key
@@ -76,6 +72,7 @@ Window::Window(uint32_t width, uint32_t height, const std::string& name)
         Window* handler = (Window*)glfwGetWindowUserPointer(window);
         if (!handler)
             return;
+        LOG_DEBUG("Keycode: {}", keycode);
 
     });
 
@@ -160,7 +157,7 @@ void Window::SetEventCallback(const EventCallbackFunc& callback)
 
 void Window::SwapBuffers()
 {
-    glfwSwapBuffers(m_Window);
+    m_GraphicsContext->SwapBuffers();
 }
 
 void Window::PollEvents()

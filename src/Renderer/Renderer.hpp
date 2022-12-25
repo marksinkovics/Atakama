@@ -1,9 +1,9 @@
 #ifndef RENDERER_HPP
 #define RENDERER_HPP
 
-#include "Camera.hpp"
-#include "Shader.hpp"
-#include "SubMesh.hpp"
+#include "Engine/Camera.hpp"
+#include "Engine/Shader.hpp"
+#include "Engine/SubMesh.hpp"
 
 namespace OGLSample
 {
@@ -13,7 +13,7 @@ class Renderer
 public:
     Renderer() {}
 
-    virtual void Init(Ref<Camera> camera, Ref<Shader> shader);
+    virtual void Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera, Ref<Shader> shader);
     virtual ~Renderer() = default;
 
     virtual void Begin();
@@ -23,6 +23,7 @@ public:
 protected:
     Ref<Shader> m_Shader;
     Ref<Camera> m_Camera;
+    Ref<RenderSystem> m_RenderSystem;
 };
 
 }

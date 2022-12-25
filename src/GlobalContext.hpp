@@ -6,9 +6,9 @@ namespace OGLSample
 
 class Window;
 class EventDispatcher;
-class Input;
-class RenderSystem;
+class InputSystem;
 class LogSystem;
+enum class GraphicsAPI;
 
 class RuntimeGlobalContext
 {
@@ -16,11 +16,13 @@ public:
     void Init();
     void Shutdown();
 
-    Ref<Window> m_Window;
-    Ref<EventDispatcher> m_Dispatcher;
-    Ref<Input> m_InputSystem;
-    Ref<RenderSystem> m_RenderSystem;
     Ref<LogSystem> m_LogSystem;
+    Ref<EventDispatcher> m_Dispatcher;
+    Ref<InputSystem> m_InputSystem;
+    
+    Ref<Window> m_Window;
+    
+    GraphicsAPI m_GraphicsAPI;
 };
 
 extern RuntimeGlobalContext g_RuntimeGlobalContext;

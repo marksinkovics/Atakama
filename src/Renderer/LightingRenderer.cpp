@@ -4,10 +4,10 @@
 namespace OGLSample
 {
 
-void LightingRenderer::Init(Ref<Camera> camera)
+void LightingRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera)
 {
-    Ref<Shader> shader = CreateRef<Shader>(FileSystem::GetShaderFile("lighting_shader.vert"), FileSystem::GetShaderFile("lighting_shader.frag"));
-    Renderer::Init(camera, shader);
+    Ref<Shader> shader = Shader::Create(FileSystem::GetShaderFile("lighting_shader.vert"), FileSystem::GetShaderFile("lighting_shader.frag"));
+    Renderer::Init(renderSystem, camera, shader);
 }
 
 void LightingRenderer::Begin(Ref<PointLight> light)
@@ -26,7 +26,7 @@ void LightingRenderer::Draw(Ref<Mesh> mesh)
     // Camera / View
     m_Shader->SetUniformFloat3("uViewPosition", m_Camera->GetPosition());
 
-    mesh->Draw(m_Shader);
+    mesh->Draw(m_RenderSystem, m_Shader);
 }
 
 }

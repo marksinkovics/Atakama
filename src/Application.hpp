@@ -1,14 +1,12 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include "Camera.hpp"
 #include "Window.hpp"
 #include "Events/Event.hpp"
-#include "Events/EventDispatcher.hpp"
 #include "Events/KeyEvent.hpp"
 #include "Events/MouseEvent.hpp"
 
-#include "Engine.hpp"
+#include "Engine/Engine.hpp"
 
 #include <stdint.h>
 
@@ -18,9 +16,6 @@ namespace OGLSample
   class Application
   {
   public:
-    static constexpr uint32_t WIDTH = 1024;
-    static constexpr uint32_t HEIGHT = 768;
-
     Application();
     ~Application();
 
@@ -36,9 +31,7 @@ namespace OGLSample
     void run();
 
   private:
-
     Ref<Window> m_Window;
-//    Ref<Camera> m_Camera;
     Ref<Engine> m_Engine;
   };
 

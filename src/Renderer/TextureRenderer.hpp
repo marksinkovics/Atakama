@@ -2,7 +2,7 @@
 #define TEXTURE_RENDERER_HPP
 
 #include "Renderer/Renderer.hpp"
-#include "Mesh.hpp"
+#include "Engine/Mesh.hpp"
 
 namespace OGLSample
 {
@@ -10,7 +10,7 @@ namespace OGLSample
 class TextureRenderer: public Renderer
 {
 public:
-    void Init(Ref<Camera> camera);
+    void Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera);
     void Draw(Ref<Mesh> mesh);
 };
 

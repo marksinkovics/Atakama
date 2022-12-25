@@ -2,9 +2,7 @@
 #define WINDOW_H
 
 #include "Events/Event.hpp"
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "Platform/GraphicsContext.hpp"
 
 #include <string>
 
@@ -41,6 +39,9 @@ private:
     uint32_t m_Width;
     uint32_t m_Height;
     std::string m_Name;
+    
+    Ref<GraphicsContext> m_GraphicsContext;
+    
     GLFWwindow* m_Window;
     EventCallbackFunc m_EventCallback;
 };

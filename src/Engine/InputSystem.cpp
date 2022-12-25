@@ -1,0 +1,103 @@
+#include "InputSystem.hpp"
+
+#include <iostream>
+
+#include "Events/EventDispatcher.hpp"
+#include "Events/MouseEvent.hpp"
+#include "Events/KeyEvent.hpp"
+
+namespace OGLSample
+{
+
+void InputSystem::Init()
+{
+    Ref<EventDispatcher> dispatcher = g_RuntimeGlobalContext.m_Dispatcher;
+    dispatcher->subscribe<MouseMovedEvent>(EventType::MouseMoved, std::bind(&InputSystem::OnMouseMoved, this, std::placeholders::_1));
+    dispatcher->subscribe<MouseButtonPressedEvent>(EventType::MouseButtonPressed, std::bind(&InputSystem::OnMouseButtonPressed, this, std::placeholders::_1));
+    dispatcher->subscribe<MouseButtonReleasedEvent>(EventType::MouseButtonReleased, std::bind(&InputSystem::OnMouseButtonReleased, this, std::placeholders::_1));
+    dispatcher->subscribe<KeyPressedEvent>(EventType::KeyPressed, std::bind(&InputSystem::OnKeyPressed, this, std::placeholders::_1));
+    dispatcher->subscribe<KeyReleasedEvent>(EventType::KeyReleased, std::bind(&InputSystem::OnKeyReleased, this, std::placeholders::_1));
+}
+
+bool InputSystem::OnMouseMoved(MouseMovedEvent &event)
+{
+    m_DeltaCursorPos = m_LastCursorPos - event.GetPos();
+    m_LastCursorPos = event.GetPos();
+    
+    return false;
+}
+
+bool InputSystem::OnMouseButtonPressed(MouseButtonPressedEvent &event)
+{
+    auto it = m_ButtonPressed.find(event.GetButton());
+    if (it == m_ButtonPressed.end())
+        m_ButtonPressed[event.GetButton()] = true;
+    
+    return false;
+}
+
+bool InputSystem::OnMouseButtonReleased(MouseButtonReleasedEvent &event)
+{
+    auto it = m_ButtonPressed.find(event.GetButton());
+    if (it != m_ButtonPressed.end())
+        m_ButtonPressed.erase(it);
+    
+    return false;
+}
+
+bool InputSystem::OnKeyPressed(KeyPressedEvent &event)
+{
+    auto it = m_KeyPressed.find(event.GetKeyCode());
+    if (it == m_KeyPressed.end())
+        m_KeyPressed[event.GetKeyCode()] = true;
+    
+    return false;
+}
+
+bool InputSystem::OnKeyReleased(KeyReleasedEvent &event)
+{
+    auto it = m_KeyPressed.find(event.GetKeyCode());
+    if (it != m_KeyPressed.end())
+        m_KeyPressed.erase(it);
+    
+    return false;
+}
+
+void InputSystem::SetFocusMode(bool mode)
+{
+    m_FocusMode = mode;
+    glfwSetInputMode(g_RuntimeGlobalContext.m_Window->GetWindow(), GLFW_CURSOR, mode ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+}
+
+bool InputSystem::GetFocusMode() const
+{
+    return m_FocusMode;
+}
+
+bool InputSystem::IsKeyPressed(uint32_t key) const
+{
+    auto it = m_KeyPressed.find(key);
+    if (it == m_KeyPressed.end())
+        return false;
+    return it->second;
+}
+
+glm::dvec2 InputSystem::GetMouseDelta()
+{
+    return m_DeltaCursorPos;
+}
+
+void InputSystem::Clear()
+{
+    m_DeltaCursorPos = {0.f, 0.f};
+}
+
+bool InputSystem::IsMouseButtonPressed(int button) const
+{
+    auto it = m_ButtonPressed.find(button);
+    if (it == m_ButtonPressed.end())
+        return false;
+    return it->second;
+}
+
+}

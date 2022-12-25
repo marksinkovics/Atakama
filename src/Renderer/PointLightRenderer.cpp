@@ -1,15 +1,15 @@
 #include "PointLightRenderer.hpp"
 #include "FileSystem.hpp"
-#include "SubMesh.hpp"
-#include "AssetManager.hpp"
+#include "Engine/SubMesh.hpp"
+#include "Engine/AssetManager.hpp"
 
 namespace OGLSample
 {
 
-void PointLightRenderer::Init(Ref<Camera> camera)
+void PointLightRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera)
 {
-    Ref<Shader> shader = CreateRef<Shader>(FileSystem::GetShaderFile("point_light.vert"), FileSystem::GetShaderFile("point_light.frag"));
-    Renderer::Init(camera, shader);
+    Ref<Shader> shader = Shader::Create(FileSystem::GetShaderFile("point_light.vert"), FileSystem::GetShaderFile("point_light.frag"));
+    Renderer::Init(renderSystem, camera, shader);
 }
 
 void PointLightRenderer::Draw(Ref<PointLight> light)
@@ -24,7 +24,7 @@ void PointLightRenderer::Draw(Ref<PointLight> light)
     // Camera / View
     m_Shader->SetUniformFloat3("uViewPosition", m_Camera->GetPosition());
 
-    light->GetMesh()->Draw(m_Shader);
+    light->GetMesh()->Draw(m_RenderSystem, m_Shader);
 }
 
 }
