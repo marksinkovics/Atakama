@@ -19,6 +19,9 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/hash.hpp>
 
-
+#include "Macro.hpp"
 #include "Utils/Utils.hpp"
+#include "Log/LogSystem.hpp"
+#include "Debug/Debug.hpp"
 #include "GlobalContext.hpp"
+

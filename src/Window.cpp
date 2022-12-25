@@ -16,14 +16,19 @@ Window::Window(uint32_t width, uint32_t height, const std::string& name)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL
-    m_Window = glfwCreateWindow(m_Width, m_Height, m_Name.c_str(), NULL, NULL);
+    m_Window = glfwCreateWindow(m_Width, m_Height, m_Name.c_str(), NULL, NULL); // Present it in a window
+    // m_Window = glfwCreateWindow(m_Width, m_Height, m_Name.c_str(), glfwGetPrimaryMonitor(), NULL); // Present it in fullscreen
+
     glfwMakeContextCurrent(m_Window); // Initialize GLEW
 
-    glewExperimental = true;
-    glewInit();
-
+    glewExperimental = GL_TRUE;
+    GLenum error = glewInit();
+    if (GLEW_OK != error)
+    {
+        LOG_FATAL("glewInit Error: {}", (char*)glewGetErrorString(error));
+    }
+    
     glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GL_TRUE);
-
     glfwSetWindowUserPointer(m_Window, this);
 
     //resize

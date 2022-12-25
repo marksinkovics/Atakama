@@ -43,6 +43,8 @@ void Engine::Init(Ref<Window>& window, Ref<RenderSystem>& renderSystem)
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(m_Window->GetWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 330");
+    
+    m_perfMonitor = CreateRef<PerfMonitor>();
 }
 
 void Engine::Shutdown()
@@ -74,8 +76,8 @@ void Engine::Run()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    perfMonitor.StartCPUTimer();
-    perfMonitor.StartGPUTimer();
+    m_perfMonitor->StartCPUTimer();
+    m_perfMonitor->StartGPUTimer();
     
     lightingRenderer->Begin(m_Scene->GetLight());
     lightingRenderer->Draw(m_Scene->GetModelById("floor"));
@@ -92,19 +94,13 @@ void Engine::Run()
     pointLightRenderer->Draw(m_Scene->GetLight());
     pointLightRenderer->End();
 
-    perfMonitor.StopGPUTimer();
-    perfMonitor.StopCPUTimer();
+    m_perfMonitor->StopGPUTimer();
+    m_perfMonitor->StopCPUTimer();
     
     ImGui::Begin("ImGui Window");
-    ImGui::Text("CPU time: %f ms", perfMonitor.GetCPUTime());
-    if (perfMonitor.GetGPUAvailable())
-    {
-        ImGui::Text("GPU time: %f ms", perfMonitor.GetGPUTime());
-    }
-    else
-    {
-        ImGui::Text("GPU time: not available");
-    }
+    ImGui::Text("CPU time: %f ms", m_perfMonitor->GetCPUTime());
+    ImGui::Text("GPU time: %f ms", m_perfMonitor->GetGPUTime());
+
     ImGui::DragFloat3("Light position", (float*)&m_Scene->GetLight()->GetPositionRef(), 0.01);
     ImGui::ColorEdit3("Light color", (float*)&m_Scene->GetLight()->GetColorRef());
     ImGui::End();

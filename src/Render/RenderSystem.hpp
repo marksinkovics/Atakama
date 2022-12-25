@@ -17,8 +17,6 @@ public:
     void Clear() const;
     void SetClearColor(const glm::vec4& clearColor);
     void Draw(DrawingMode mode, Ref<VertexArray>& vertexArray) const;
-private:
-    glm::vec4 m_ClearColor;
 };
 
 }

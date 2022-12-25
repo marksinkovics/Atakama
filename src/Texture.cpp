@@ -10,13 +10,14 @@ namespace OGLSample
 
 Texture::Texture(const std::filesystem::path& path)
 {
-    std::cerr << "Loading texture from path: " << path.c_str() << std::endl;
+    LOG_DEBUG("Loading texture from path: {}", path)
+
     int width, height, channels;
     unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
     if (data == NULL)
     {
-        std::cerr << "Cannot load texture from path: " << path.c_str() << std::endl;
+        LOG_ERROR("Cannot load texture from path: {}", path);
         stbi_image_free(data);
         return;
     }
@@ -39,7 +40,7 @@ GLuint Texture::GetId()
 
 void Texture::Bind(int index)
 {
-    assert((index < m_TotalUnits) && "Texture index is higher than the limit");
+    ASSERT((index < m_TotalUnits) && "Texture index is higher than the limit");
 
     glActiveTexture((GL_TEXTURE0 + index));
 	glBindTexture(GL_TEXTURE_2D, m_Id);

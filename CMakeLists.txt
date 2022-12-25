@@ -95,6 +95,7 @@ target_link_libraries(app
         stb
         Vulkan::Vulkan
         imgui
+        spdlog
         # tinyobjloader
 )
 

@@ -2,28 +2,6 @@
 
 #include <unordered_map>
 
-GLenum glCheckError_(const char *file, int line)
-{
-    GLenum errorCode;
-    while ((errorCode = glGetError()) != GL_NO_ERROR)
-    {
-        std::string error;
-        switch (errorCode)
-        {
-            case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
-            case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
-            case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
-            case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
-            case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
-            case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
-            case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
-        }
-        std::cout << error << " | " << file << " (" << line << ")" << std::endl;
-    }
-    return errorCode;
-}
-#define glCheckError() glCheckError_(__FILE__, __LINE__)
-
 namespace OGLSample
 {
 
@@ -62,11 +40,11 @@ Ref<Mesh> AssetManager::LoadAxis()
         
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
     
-    auto subMesh1 = CreateScope<SubMesh>(rawVertices);
+    auto subMesh1 = CreateScope<SubMesh>(vertices, indices);
     subMesh1->SetMode(DrawingMode::Lines);
     
-    auto subMesh2 = CreateScope<SubMesh>(rawVertices);
-    subMesh1->SetMode(DrawingMode::Lines);
+    auto subMesh2 = CreateScope<SubMesh>(vertices, indices);
+    subMesh2->SetMode(DrawingMode::Lines);
     subMesh2->SetModelMatrix(glm::translate(glm::mat4(1.0f), {1.0f, 0.0f, 1.0f}));
 
     std::vector<Scope<SubMesh>> subMeshes;
@@ -106,7 +84,8 @@ Ref<Mesh> AssetManager::LoadOBJFile(const std::filesystem::path& path)
     std::vector<SubMesh::Vertex> vertices{};
     std::vector<uint32_t> indices {};
     
-    std::cout << "Loading OBJ model from path: " << path << "\n";
+    LOG_DEBUG("Loading OBJ from path: {}", path);
+
     FILE* file = fopen(path.c_str(), "r");
     if(!file)
     {

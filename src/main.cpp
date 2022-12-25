@@ -11,5 +11,7 @@ int main(int argc, char **argv)
     OGLSample::Application app;
     app.run();
 
+    OGLSample::g_RuntimeGlobalContext.Shutdown();
+    
     return 0;
 }

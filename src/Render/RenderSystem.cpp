@@ -20,8 +20,7 @@ void RenderSystem::Init()
     glDepthFunc(GL_LESS);
     // Cull triangles which normal is not towards the camera
     glEnable(GL_CULL_FACE);
-    glEnable(GL_LINE_SMOOTH);
-    
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -50,7 +49,7 @@ void RenderSystem::Draw(DrawingMode mode, Ref<VertexArray>& vertexArray) const
     }
     
     vertexArray->Unbind();
-
 }
 
 }
+

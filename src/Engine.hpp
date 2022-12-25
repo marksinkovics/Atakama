@@ -43,7 +43,7 @@ private:
     Ref<LightingRenderer> lightingRenderer;
     Ref<PointLightRenderer> pointLightRenderer;
         
-    PerfMonitor perfMonitor;
+    Ref<PerfMonitor> m_perfMonitor;
 };
 
 }

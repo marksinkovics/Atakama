@@ -25,3 +25,8 @@ if(NOT TARGET glm)
     add_subdirectory(glm)
     set_target_properties(glm PROPERTIES FOLDER ${vendor_folder}/glm)
 endif()
+
+if (NOT TARGET spdlog)
+    add_subdirectory(spdlog)
+    set_target_properties(spdlog PROPERTIES FOLDER ${vendor_folder}/spdlog)
+endif()

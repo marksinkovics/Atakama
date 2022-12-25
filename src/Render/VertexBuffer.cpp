@@ -146,6 +146,7 @@ void VertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
                       layout.GetStride(),
                       (const void*)(element.Offset + sizeof(float) * count * i)
                     );
+                    glVertexAttribDivisor(m_VertexBufferIndex, 1);
                     m_VertexBufferIndex++;
                 }
                 break;
