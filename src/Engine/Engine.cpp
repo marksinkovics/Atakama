@@ -18,7 +18,7 @@ void Engine::Init(Ref<Window>& window)
     m_RenderSystem->Init();
     m_RenderSystem->SetClearColor({0.0f, 0.0f, 0.4f, 0.0f});
     
-    m_Camera = CreateRef<Camera>();
+    m_Camera = CreateRef<Camera>(Camera::Mode::Perspective);
     m_Camera->LookAt({5.0f, 5.f, 5.f});
         
     m_Scene = CreateRef<SandboxScene>();
@@ -58,7 +58,6 @@ void Engine::Run()
 {
     CalculateDeltaTime();
     
-    m_Camera->UpdateFrameTime(m_FrameTime);
     m_Camera->Update(m_FrameTime);
  
     m_RenderSystem->Clear();

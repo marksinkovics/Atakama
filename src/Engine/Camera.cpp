@@ -1,5 +1,9 @@
 #include "Camera.hpp"
 #include "InputSystem.hpp"
+#include "Events/Event.hpp"
+#include "Events/WindowEvent.hpp"
+#include "Events/MouseEvent.hpp"
+#include "Events/EventDispatcher.hpp"
 
 #include <cmath>
 
@@ -8,27 +12,105 @@
 namespace OGLSample
 {
 
-Camera::Camera()
+Camera::Camera(Mode mode)
+: m_WorldUp(glm::vec3(0.0f, 1.0f, 0.0f)), m_Position({0.0f, 0.0f, 0.0f})
 {
-    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
-    m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), (float)window->GetRatio(), 0.1f, 100.0f);
-    //m_ProjectionMatrix = glm::ortho(0.0f, (float)m_Window->GetWidth(), 0.0f, (float)m_Window->GetHeight(), 0.1f, 100.0f);
+    SetMode(mode);
+    
+    g_RuntimeGlobalContext.m_Dispatcher->subscribe<MouseScrolledEvent>(EventType::MouseScrolled, std::bind(&Camera::OnMouseScrollEvent, this, std::placeholders::_1));
+    g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowResizeEvent>(EventType::WindowResize, std::bind(&Camera::OnWindowResize, this, std::placeholders::_1));
+}
+
+void Camera::Update(float frameTime)
+{
+    Ref<InputSystem> inputSystem = g_RuntimeGlobalContext.m_InputSystem;
+    glm::dvec2 mousePos = {0.f, 0.f};
+    
+    if (inputSystem->IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) || inputSystem->GetFocusMode())
+    {
+        mousePos = inputSystem->GetMouseDelta();
+    }
+    
+    Rotate(mousePos, frameTime);
+    Move(inputSystem->GetMovement(), frameTime);
+
+    // Direction : Spherical coordinates to Cartesian coordinates conversion
+    glm::vec3 direction = glm::vec3(
+        cos(m_Pitch) * sin(m_Yaw),
+        sin(m_Pitch),
+        cos(m_Pitch) * cos(m_Yaw)
+    );
+    
+    m_Direction = glm::normalize(direction);
+    m_Right = glm::normalize(glm::cross(m_Direction, m_WorldUp));
+    m_Up = glm::normalize(glm::cross(m_Right, m_Direction));
+
+    m_ViewMatrix = glm::lookAt(
+        m_Position,                 // Camera is here
+        m_Position + m_Direction,   // and looks here
+        m_Up                        // Head is up
+    );
+}
+
+void Camera::Move(Movement movement, float frameTime)
+{
+    // Move forward
+    if (movement == Movement::Forward){
+        m_Position += m_Direction * frameTime * m_Speed;
+    }
+    // Move backward
+    if (movement == Movement::Backward){
+        m_Position -= m_Direction * frameTime * m_Speed;
+    }
+    // Move right
+    if (movement == Movement::Right){
+        m_Position += m_Right * frameTime * m_Speed;
+    }
+    // Move left
+    if (movement == Movement::Left){
+        m_Position -= m_Right * frameTime * m_Speed;
+    }
+    
+    if (movement == Movement::Up){
+        m_Position += m_Up * frameTime * m_Speed;
+    }
+    
+    if (movement == Movement::Down){
+        m_Position -= m_Up * frameTime * m_Speed;
+    }
+}
+
+void Camera::Rotate(glm::vec2 delta, float frameTime, bool constrainPitch)
+{
+    m_Yaw   += delta.x * m_MouseSpeed;
+    m_Pitch += delta.y * m_MouseSpeed;
+    
+    if (constrainPitch) {
+        if (m_Pitch > 89.0f)
+        {
+            m_Pitch = 89.0f;
+        }
+        
+        if (m_Pitch < -89.0f)
+        {
+            m_Pitch = -89.0f;
+        }
+    }
 }
 
 void Camera::LookAt(glm::vec3 position, glm::vec3 center, glm::vec3 up)
 {
     m_Position = position;
+    m_Up = up;
+    m_WorldUp = up;
     m_ViewMatrix = glm::lookAt(m_Position, center, up);
 
     glm::vec3 direction = m_Position - center;
 
-    float length = glm::distance(center, m_Position);
-    float verticalAngle = -glm::asin(direction.y / length);
-    m_VerticalAngle = verticalAngle;
-
-    float horizontalAngle = glm::pi<float>() + glm::atan(direction.x, direction.z);
-    m_HorizontalAngle = horizontalAngle;
+    m_Pitch = -glm::asin(direction.y / glm::distance(center, m_Position));
+    m_Yaw = glm::pi<float>() + glm::atan(direction.x, direction.z);
 }
+
 
 glm::mat4 Camera::GetViewMatrix()
 {
@@ -45,144 +127,79 @@ glm::vec3 Camera::GetPosition()
 	return m_Position;
 }
 
-void Camera::UpdateFrameTime(float frameTime)
+Camera::Mode Camera::GetMode() const
 {
-	m_FrameTime = frameTime;
+    return m_Mode;
 }
 
-void Camera::Update(float frameTime)
+void Camera::SetMode(Mode mode)
 {
-    Ref<InputSystem> inputSystem = g_RuntimeGlobalContext.m_InputSystem;
-    glm::dvec2 mousePos = {0.f, 0.f};
+    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
+    m_Mode = mode;
     
-    if (inputSystem->IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) || inputSystem->GetFocusMode())
+    switch(mode)
     {
-        mousePos = inputSystem->GetMouseDelta();
+        case Mode::Perspective:
+        {
+            m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), (float)window->GetRatio(), 0.1f, 100.0f);
+            break;
+        }
+        case Mode::Ortho:
+        {
+            float aspectRatio = window->GetRatio();
+            m_ProjectionMatrix = glm::ortho(-aspectRatio * m_Zoom, aspectRatio * m_Zoom, -m_Zoom, m_Zoom, -1.0f, 100.0f);
+            break;
+        }
+        default:
+            LOG_FATAL("Unknown camera mode.")
     }
-    
-    m_HorizontalAngle += m_MouseSpeed * float(mousePos.x);
-	m_VerticalAngle   += m_MouseSpeed * float(mousePos.y);
-
-    // Direction : Spherical coordinates to Cartesian coordinates conversion
-    glm::vec3 direction = glm::vec3(
-		cos(m_VerticalAngle) * sin(m_HorizontalAngle),
-		sin(m_VerticalAngle),
-		cos(m_VerticalAngle) * cos(m_HorizontalAngle)
-	);
-
-    // Right vector
-	glm::vec3 right(
-		sin(m_HorizontalAngle - glm::half_pi<float>()),
-		0,
-		cos(m_HorizontalAngle - glm::half_pi<float>())
-	);
-
-    // Up vector (perpendicular)
-	glm::vec3 up = glm::cross(right, direction);
-
-    // Move forward
-	if (inputSystem->IsKeyPressed(GLFW_KEY_UP) || inputSystem->IsKeyPressed(GLFW_KEY_W))
-    {
-		m_Position += direction * frameTime * m_Speed;
-	}
-	// Move backward
-	if (inputSystem->IsKeyPressed(GLFW_KEY_DOWN) || inputSystem->IsKeyPressed(GLFW_KEY_S))
-    {
-		m_Position -= direction * frameTime * m_Speed;
-	}
-	// Move right
-	if (inputSystem->IsKeyPressed(GLFW_KEY_RIGHT) || inputSystem->IsKeyPressed(GLFW_KEY_D))
-    {
-		m_Position += right * frameTime * m_Speed;
-	}
-	// Move left
-	if (inputSystem->IsKeyPressed(GLFW_KEY_LEFT) || inputSystem->IsKeyPressed(GLFW_KEY_A))
-    {
-		m_Position -= right * frameTime * m_Speed;
-	}
-
-    float FoV = m_InitialFoV;
-
-    m_ViewMatrix = glm::lookAt(
-        m_Position,               // Camera is here
-        m_Position + direction,   // and looks here
-        up                        // Head is up
-    );
 }
 
-void Camera::Move(CameraMovement movement)
+bool Camera::OnMouseScrollEvent(MouseScrolledEvent& event)
 {
-	glm::vec3 direction = glm::vec3(
-		cos(m_VerticalAngle) * sin(m_HorizontalAngle),
-		sin(m_VerticalAngle),
-		cos(m_VerticalAngle) * cos(m_HorizontalAngle)
-	);
-
-	glm::vec3 right(
-		sin(m_HorizontalAngle - glm::half_pi<float>()),
-		0,
-		cos(m_HorizontalAngle - glm::half_pi<float>())
-	);
-
-    // Up vector (perpendicular)
-	glm::vec3 up = glm::cross(right, direction);
-
-    // Move forward
-	if (movement == CameraMovement::Forward){
-		m_Position += direction * m_FrameTime * m_Speed;
-	}
-	// Move backward
-	if (movement == CameraMovement::Backward){
-		m_Position -= direction * m_FrameTime * m_Speed;
-	}
-	// Move right
-	if (movement == CameraMovement::Right){
-		m_Position += right * m_FrameTime * m_Speed;
-	}
-	// Move left
-	if (movement == CameraMovement::Left){
-		m_Position -= right * m_FrameTime * m_Speed;
-	}
-
-
-
-    m_ViewMatrix = glm::lookAt(
-        m_Position,               // Camera is here
-        m_Position + direction,   // and looks here
-        up                        // Head is up
-    );
-
+    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
+    switch(m_Mode)
+    {
+        case Mode::Perspective:
+        {
+            m_InitialFoV += event.GetYOffset() * 0.1f;
+            m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), (float)window->GetRatio(), 0.1f, 100.0f);
+            break;
+        }
+        case Mode::Ortho:
+        {
+            m_Zoom += event.GetYOffset() * 0.1f;
+            float aspectRatio = window->GetRatio();
+            m_ProjectionMatrix = glm::ortho(-aspectRatio * m_Zoom, aspectRatio * m_Zoom, -m_Zoom, m_Zoom, -1.0f, 100.0f);
+            break;
+        }
+        default:
+            LOG_FATAL("Unknown camera mode.")
+    }
+    return false;
 }
 
-void Camera::Rotate(glm::vec2 delta)
+bool Camera::OnWindowResize(WindowResizeEvent& event)
 {
-	m_HorizontalAngle += m_MouseSpeed * float(delta.x);
-	m_VerticalAngle   += m_MouseSpeed * float(delta.y);
+    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
+    switch(m_Mode)
+    {
+        case Mode::Perspective:
+        {
+            m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), (float)window->GetRatio(), 0.1f, 100.0f);
+            break;
+        }
+        case Mode::Ortho:
+        {
+            float aspectRatio = window->GetRatio();
+            m_ProjectionMatrix = glm::ortho(-aspectRatio * m_Zoom, aspectRatio * m_Zoom, -m_Zoom, m_Zoom, -1.0f, 100.0f);
+            break;
+        }
+        default:
+            LOG_FATAL("Unknown camera mode.")
+    }
 
-    // Direction : Spherical coordinates to Cartesian coordinates conversion
-    glm::vec3 direction = glm::vec3(
-		cos(m_VerticalAngle) * sin(m_HorizontalAngle),
-		sin(m_VerticalAngle),
-		cos(m_VerticalAngle) * cos(m_HorizontalAngle)
-	);
-
-    // Right vector
-	glm::vec3 right(
-		sin(m_HorizontalAngle - glm::half_pi<float>()),
-		0,
-		cos(m_HorizontalAngle - glm::half_pi<float>())
-	);
-
-    // Up vector (perpendicular)
-	glm::vec3 up = glm::cross(right, direction);
-
-    m_ViewMatrix = glm::lookAt(
-        m_Position,               // Camera is here
-        m_Position + direction,   // and looks here
-        up                        // Head is up
-    );
+    return false;
 }
-
-
 
 }

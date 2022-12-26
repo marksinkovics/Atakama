@@ -100,4 +100,73 @@ bool InputSystem::IsMouseButtonPressed(int button) const
     return it->second;
 }
 
+bool InputSystem::IsMovement(Movement movement) const
+{
+    if (movement == Movement::Forward)
+    {
+        return IsKeyPressed(GLFW_KEY_UP) || IsKeyPressed(GLFW_KEY_W);
+    }
+    
+    if (movement == Movement::Backward)
+    {
+        return IsKeyPressed(GLFW_KEY_DOWN) || IsKeyPressed(GLFW_KEY_S);
+    }
+
+    if (movement == Movement::Left)
+    {
+        return IsKeyPressed(GLFW_KEY_LEFT) || IsKeyPressed(GLFW_KEY_A);
+    }
+    
+    if (movement == Movement::Right)
+    {
+        return IsKeyPressed(GLFW_KEY_RIGHT) || IsKeyPressed(GLFW_KEY_D);
+    }
+    
+    if (movement == Movement::Up)
+    {
+        return IsKeyPressed(GLFW_KEY_Q);
+    }
+    
+    if (movement == Movement::Down)
+    {
+        return IsKeyPressed(GLFW_KEY_E);
+    }
+
+}
+
+Movement InputSystem::GetMovement() const
+{
+    if (IsKeyPressed(GLFW_KEY_UP) || IsKeyPressed(GLFW_KEY_W))
+    {
+        return Movement::Forward;
+    }
+
+    if (IsKeyPressed(GLFW_KEY_DOWN) || IsKeyPressed(GLFW_KEY_S))
+    {
+        return Movement::Backward;
+    }
+
+    if (IsKeyPressed(GLFW_KEY_RIGHT) || IsKeyPressed(GLFW_KEY_D))
+    {
+        return Movement::Right;
+    }
+
+    if (IsKeyPressed(GLFW_KEY_LEFT) || IsKeyPressed(GLFW_KEY_A))
+    {
+        return Movement::Left;
+    }
+    
+    if (IsKeyPressed(GLFW_KEY_Q))
+    {
+        return Movement::Up;
+    }
+
+    if (IsKeyPressed(GLFW_KEY_E))
+    {
+        return Movement::Down;
+    }
+
+
+}
+
 }

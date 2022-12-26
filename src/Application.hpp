@@ -22,8 +22,6 @@ namespace OGLSample
     void OnEvent(Event &event);
     bool OnKeyPressed(KeyPressedEvent &event);
     bool OnMouseButtonPressed(MouseButtonPressedEvent &event);
-    bool OnMouseButtonReleased(MouseButtonReleasedEvent &event);
-    bool OnMouseMoved(MouseMovedEvent &event);
 
     Application(const Application &) = delete;
     Application &operator=(const Application &) = delete;

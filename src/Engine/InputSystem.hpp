@@ -14,6 +14,13 @@ class MouseButtonReleasedEvent;
 class KeyPressedEvent;
 class KeyReleasedEvent;
 
+enum class Movement
+{
+    Forward, Backward,
+    Left, Right,
+    Up, Down
+};
+
 class InputSystem
 {
 public:
@@ -30,6 +37,8 @@ public:
     
     bool IsKeyPressed(uint32_t key) const;
     bool IsMouseButtonPressed(int button) const;
+    bool IsMovement(Movement movement) const;
+    Movement GetMovement() const;
 
     glm::dvec2 GetMouseDelta();
     

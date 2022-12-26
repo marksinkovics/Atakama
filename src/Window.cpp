@@ -1,6 +1,7 @@
 #include "Window.hpp"
 #include "Events/KeyEvent.hpp"
 #include "Events/MouseEvent.hpp"
+#include "Events/WindowEvent.hpp"
 
 #include "Platform/OpenGL3/OpenGL3GraphicsContext.hpp"
 
@@ -36,11 +37,18 @@ Window::Window(uint32_t width, uint32_t height, const std::string& name)
         handler->m_Width = width;
         handler->m_Height = height;
 
+        WindowResizeEvent event(width, height);
+        handler->m_EventCallback(event);
     });
     
     // window close
     glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window){
+        Window* handler = (Window*)glfwGetWindowUserPointer(window);
+        if (!handler)
+            return;
         
+        WindowCloseEvent event;
+        handler->m_EventCallback(event);
     });
 
     // key
