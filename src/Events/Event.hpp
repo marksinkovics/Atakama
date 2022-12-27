@@ -14,17 +14,17 @@ enum class EventType
     KeyPressed, KeyReleased, KeyTyped
 };
 
+#define EVENT_PROPERTIES(Type) \
+    virtual EventType GetType() const override { return Type; } \
+    static EventType GetStaticType() { return Type; } \
+    virtual const char* GetName() const override { return #Type; };
+
 class Event
 {
-protected:
-    EventType m_Type;
-    std::string m_Name;
 public:
     Event() = default;
-    Event(EventType type, const std::string &name = "") : m_Type(type), m_Name(name) {}
-    inline const EventType GetType() const { return m_Type; }
-    inline const std::string &GetName() const { return m_Name; }
-    
+    virtual EventType GetType() const = 0;
+    virtual const char* GetName() const = 0;
     bool Handled = false;
 };
 

@@ -12,11 +12,11 @@ namespace OGLSample
 void InputSystem::Init()
 {
     Ref<EventDispatcher> dispatcher = g_RuntimeGlobalContext.m_Dispatcher;
-    dispatcher->subscribe<MouseMovedEvent>(EventType::MouseMoved, std::bind(&InputSystem::OnMouseMoved, this, std::placeholders::_1));
-    dispatcher->subscribe<MouseButtonPressedEvent>(EventType::MouseButtonPressed, std::bind(&InputSystem::OnMouseButtonPressed, this, std::placeholders::_1));
-    dispatcher->subscribe<MouseButtonReleasedEvent>(EventType::MouseButtonReleased, std::bind(&InputSystem::OnMouseButtonReleased, this, std::placeholders::_1));
-    dispatcher->subscribe<KeyPressedEvent>(EventType::KeyPressed, std::bind(&InputSystem::OnKeyPressed, this, std::placeholders::_1));
-    dispatcher->subscribe<KeyReleasedEvent>(EventType::KeyReleased, std::bind(&InputSystem::OnKeyReleased, this, std::placeholders::_1));
+    dispatcher->subscribe<MouseMovedEvent>(std::bind(&InputSystem::OnMouseMoved, this, std::placeholders::_1));
+    dispatcher->subscribe<MouseButtonPressedEvent>(std::bind(&InputSystem::OnMouseButtonPressed, this, std::placeholders::_1));
+    dispatcher->subscribe<MouseButtonReleasedEvent>(std::bind(&InputSystem::OnMouseButtonReleased, this, std::placeholders::_1));
+    dispatcher->subscribe<KeyPressedEvent>(std::bind(&InputSystem::OnKeyPressed, this, std::placeholders::_1));
+    dispatcher->subscribe<KeyReleasedEvent>(std::bind(&InputSystem::OnKeyReleased, this, std::placeholders::_1));
 }
 
 bool InputSystem::OnMouseMoved(MouseMovedEvent &event)

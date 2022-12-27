@@ -14,14 +14,14 @@ Application::Application()
     m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
     g_RuntimeGlobalContext.m_Window = m_Window;
     
-    g_RuntimeGlobalContext.m_Dispatcher->subscribe<MouseButtonPressedEvent>(EventType::MouseButtonPressed, std::bind(&Application::OnMouseButtonPressed, this, std::placeholders::_1));
+    g_RuntimeGlobalContext.m_Dispatcher->subscribe<MouseButtonPressedEvent>(std::bind(&Application::OnMouseButtonPressed, this, std::placeholders::_1));
     
     m_Engine = CreateRef<Engine>();
 }
 
 Application::~Application()
 {
-
+    
 }
 
 void Application::OnEvent(Event &event)

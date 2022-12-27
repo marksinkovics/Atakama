@@ -8,8 +8,10 @@ int main(int argc, char **argv)
 
     OGLSample::SetArguments({argc, argv});
 
-    OGLSample::Application app;
-    app.run();
+    {
+        OGLSample::Application app;
+        app.run();
+    }
 
     OGLSample::g_RuntimeGlobalContext.Shutdown();
     

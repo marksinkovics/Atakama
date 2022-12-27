@@ -14,11 +14,10 @@ void ScreenRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera)
     
     m_QuadMesh = AssetManager::LoadQuad();
     
-    g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowFrameBufferResizeEvent>(EventType::WindowFrameBufferResize, std::bind(&ScreenRenderer::OnWindowFrameBufferResize, this, std::placeholders::_1));
+    g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowFrameBufferResizeEvent>(std::bind(&ScreenRenderer::OnWindowFrameBufferResize, this, std::placeholders::_1));
 
     m_FrameBuffer = FrameBuffer::Create();
     m_QuadMesh->GetSubMeshes()[0]->SetTexture(m_FrameBuffer->GetTexture());
-
 }
 
 bool ScreenRenderer::OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event)

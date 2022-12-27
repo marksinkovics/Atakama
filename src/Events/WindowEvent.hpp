@@ -9,9 +9,11 @@ namespace OGLSample
 class WindowResizeEvent: public Event
 {
 public:
-    WindowResizeEvent(int width, int height): Event(EventType::WindowResize, "WindowResizeEvent"), m_Width(width), m_Height(height) {}
+    WindowResizeEvent(int width, int height): m_Width(width), m_Height(height) {}
+    virtual ~WindowResizeEvent() = default;
     virtual int GetWidth() const { return m_Width; }
     virtual int GetHeight() const { return m_Height; }
+    EVENT_PROPERTIES(EventType::WindowResize);
 protected:
     int m_Width;
     int m_Height;
@@ -20,9 +22,11 @@ protected:
 class WindowFrameBufferResizeEvent: public Event
 {
 public:
-    WindowFrameBufferResizeEvent(int width, int height): Event(EventType::WindowFrameBufferResize, "WindowFrameBufferResizeEvent"), m_Width(width), m_Height(height) {}
+    WindowFrameBufferResizeEvent(int width, int height): m_Width(width), m_Height(height) {}
+    virtual ~WindowFrameBufferResizeEvent() = default;
     virtual int GetWidth() const { return m_Width; }
     virtual int GetHeight() const { return m_Height; }
+    EVENT_PROPERTIES(EventType::WindowFrameBufferResize);
 protected:
     int m_Width;
     int m_Height;
@@ -32,7 +36,9 @@ protected:
 class WindowCloseEvent: public Event
 {
 public:
-    WindowCloseEvent(): Event(EventType::WindowClose, "WindowCloseEvent") {}
+    WindowCloseEvent() {}
+    virtual ~WindowCloseEvent() = default;
+    EVENT_PROPERTIES(EventType::WindowClose);
 };
 
 }

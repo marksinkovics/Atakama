@@ -20,7 +20,6 @@ namespace OGLSample
     ~Application();
 
     void OnEvent(Event &event);
-    bool OnKeyPressed(KeyPressedEvent &event);
     bool OnMouseButtonPressed(MouseButtonPressedEvent &event);
 
     Application(const Application &) = delete;

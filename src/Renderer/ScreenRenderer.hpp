@@ -14,6 +14,7 @@ class WindowFrameBufferResizeEvent;
 class ScreenRenderer: public Renderer
 {
 public:
+    virtual ~ScreenRenderer() = default;
     void Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera);
     bool OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event);
     void StartRecord();

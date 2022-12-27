@@ -17,8 +17,8 @@ Camera::Camera(Mode mode)
 {
     SetMode(mode);
     
-    g_RuntimeGlobalContext.m_Dispatcher->subscribe<MouseScrolledEvent>(EventType::MouseScrolled, std::bind(&Camera::OnMouseScrollEvent, this, std::placeholders::_1));
-    g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowResizeEvent>(EventType::WindowResize, std::bind(&Camera::OnWindowResize, this, std::placeholders::_1));
+    g_RuntimeGlobalContext.m_Dispatcher->subscribe<MouseScrolledEvent>(std::bind(&Camera::OnMouseScrollEvent, this, std::placeholders::_1));
+    g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowResizeEvent>(std::bind(&Camera::OnWindowResize, this, std::placeholders::_1));
 }
 
 void Camera::Update(float frameTime)
