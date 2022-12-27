@@ -39,6 +39,9 @@ void Engine::Init(Ref<Window>& window)
     m_UIRenderer = CreateRef<UIRenderer>();
     m_UIRenderer->Init(m_Window);
     
+    m_ScreenRenderer = CreateRef<ScreenRenderer>();
+    m_ScreenRenderer->Init(m_RenderSystem, m_Camera);
+    
     m_perfMonitor = CreateRef<PerfMonitor>();
 }
 
@@ -59,13 +62,18 @@ void Engine::Run()
     CalculateDeltaTime();
     
     m_Camera->Update(m_FrameTime);
- 
-    m_RenderSystem->Clear();
-    
+
     m_UIRenderer->Begin();
-    
+
     m_perfMonitor->StartCPUTimer();
     m_perfMonitor->StartGPUTimer();
+    
+    m_ScreenRenderer->StartRecord();
+    m_RenderSystem->SetViewport(0, 0, m_Window->GetFrameBufferWidth(), m_Window->GetFrameBufferHeight());
+    m_RenderSystem->SetDepthTest(true);
+    m_RenderSystem->SetClearColor({0.0f, 0.0f, 0.4f, 0.0f});
+    m_RenderSystem->Clear();
+
     
     lightingRenderer->Begin(m_Scene->GetLight());
     lightingRenderer->Draw(m_Scene->GetModelById("floor"));
@@ -73,7 +81,7 @@ void Engine::Run()
     lightingRenderer->Draw(m_Scene->GetModelById("cube2"));
     lightingRenderer->Draw(m_Scene->GetModelById("vikingRoom"));
     lightingRenderer->End();
-    
+
     simpleRenderer->Begin();
     simpleRenderer->Draw(m_Scene->GetModelById("axis"));
     simpleRenderer->End();
@@ -81,6 +89,17 @@ void Engine::Run()
     pointLightRenderer->Begin();
     pointLightRenderer->Draw(m_Scene->GetLight());
     pointLightRenderer->End();
+    
+    m_ScreenRenderer->StopRecord();
+    
+    m_RenderSystem->SetDepthTest(false);
+    m_RenderSystem->SetClearColor({1.0f, 1.0f, 1.0f, 0.0f});
+    m_RenderSystem->Clear();
+    m_RenderSystem->SetViewport(0, 0, m_Window->GetFrameBufferWidth(), m_Window->GetFrameBufferHeight());
+
+    m_ScreenRenderer->Begin();
+    m_ScreenRenderer->Draw((float)(glfwGetTime()*10.0f), glm::vec2(m_Window->GetFrameBufferWidth(), m_Window->GetFrameBufferHeight()));
+    m_ScreenRenderer->End();
 
     m_perfMonitor->StopGPUTimer();
     m_perfMonitor->StopCPUTimer();

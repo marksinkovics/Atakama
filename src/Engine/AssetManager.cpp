@@ -195,4 +195,27 @@ void AssetManager::GenerateIndices(const std::vector<SubMesh::Vertex>& input, st
     }
 }
 
+Ref<Mesh> AssetManager::LoadQuad()
+{
+    std::vector<SubMesh::Vertex> rawVertices {
+        {{-1.0f,  1.0f, 0.0f}, {0.0f, 1.0f}, {0.f, 0.f, 1.f}, { 1.0f, 0.0f, 1.0f}},
+        {{-1.0f, -1.0f, 0.0f}, {0.0f, 0.0f}, {0.f, 0.f, 1.f}, { 1.0f, 0.0f, 1.0f}},
+        {{ 1.0f, -1.0f, 0.0f}, {1.0f, 0.0f}, {0.f, 0.f, 1.f}, { 1.0f, 0.0f, 1.0f}},
+        
+        {{-1.0f,  1.0f, 0.0f}, {0.0f, 1.0f}, {0.f, 0.f, 1.f}, { 0.0f, 1.0f, 1.0f}},
+        {{ 1.0f, -1.0f, 0.0f}, {1.0f, 0.0f}, {0.f, 0.f, 1.f}, { 0.0f, 1.0f, 1.0f}},
+        {{ 1.0f,  1.0f, 0.0f}, {1.0f, 1.0f}, {0.f, 0.f, 1.f}, { 0.0f, 1.0f, 1.0f}}
+    };
+    
+    std::vector<SubMesh::Vertex> vertices;
+    std::vector<uint32_t> indices;
+    
+    AssetManager::GenerateIndices(rawVertices, vertices, indices);
+
+    auto subMesh = CreateScope<SubMesh>(vertices, indices);
+    auto mesh = CreateRef<Mesh>();
+    mesh->AddSubMesh(std::move(subMesh));
+    return mesh;
+}
+
 }

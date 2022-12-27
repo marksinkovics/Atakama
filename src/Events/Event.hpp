@@ -9,7 +9,7 @@ namespace OGLSample
 enum class EventType
 {
     None,
-    WindowClose, WindowResize,
+    WindowClose, WindowResize, WindowFrameBufferResize,
     MouseMoved, MouseButtonPressed, MouseButtonReleased, MouseScrolled,
     KeyPressed, KeyReleased, KeyTyped
 };

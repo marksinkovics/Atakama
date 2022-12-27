@@ -37,7 +37,10 @@ Ref<Texture> Scene::GetTextureById(const std::string& id) const
 {
     auto it = m_Textures.find(id);
     if (it == m_Textures.end())
+    {
+        LOG_ERROR("Cannot find texture by id {}", id)
         return nullptr;
+    }
     return it->second;
 }
 
@@ -45,7 +48,10 @@ Ref<Mesh> Scene::GetModelById(const std::string& id) const
 {
     auto it = m_Meshes.find(id);
     if (it == m_Meshes.end())
+    {
+        LOG_ERROR("Cannot find model by id {}", id)
         return nullptr;
+    }
     return it->second;
 }
 
@@ -67,6 +73,7 @@ void SandboxScene::LoadMeshes()
     m_Meshes["axis"] = AssetManager::LoadAxis();
     m_Meshes["triangle"] = AssetManager::LoadTriangle();
     m_Meshes["smoothVase"] = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "smooth_vase.obj");
+    m_Meshes["quad"] = AssetManager::LoadQuad();
 
     {
         auto mesh = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
@@ -98,6 +105,7 @@ void SandboxScene::LoadMeshes()
         mesh->Translate({0.f, 0.f, 0.f});
         m_Meshes["floor"] = mesh;
     }
+    
 }
  
 }

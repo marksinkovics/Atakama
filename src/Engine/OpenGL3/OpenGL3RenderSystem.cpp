@@ -51,5 +51,22 @@ void OpenGL3RenderSystem::Draw(DrawingMode mode, Ref<VertexArray>& vertexArray) 
     vertexArray->Unbind();
 }
 
+void OpenGL3RenderSystem::SetDepthTest(bool value)
+{
+    if (value)
+    {
+        glEnable(GL_DEPTH_TEST);
+    }
+    else
+    {
+        glDisable(GL_DEPTH_TEST);
+    }
+}
+
+void OpenGL3RenderSystem::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
+{
+    glViewport(x, y, width, height);
+}
+
 }
 

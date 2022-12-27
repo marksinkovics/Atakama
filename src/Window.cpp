@@ -50,6 +50,20 @@ Window::Window(uint32_t width, uint32_t height, const std::string& name)
         WindowCloseEvent event;
         handler->m_EventCallback(event);
     });
+    
+    glfwGetFramebufferSize(m_Window, (int*)&m_FrameBufferWidth, (int*)&m_FrameBufferHeight);
+    glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
+        Window* handler = (Window*)glfwGetWindowUserPointer(window);
+        if (!handler)
+            return;
+        
+        handler->m_FrameBufferWidth = width;
+        handler->m_FrameBufferHeight = height;
+
+        WindowFrameBufferResizeEvent event(width, height);
+        handler->m_EventCallback(event);
+    });
+
 
     // key
     glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -146,6 +160,16 @@ float Window::GetWidth()
 float Window::GetHeight()
 {
     return m_Height;
+}
+
+float Window::GetFrameBufferWidth()
+{
+    return m_FrameBufferWidth;
+}
+
+float Window::GetFrameBufferHeight()
+{
+    return m_FrameBufferHeight;
 }
 
 glm::vec2 Window::GetSize()

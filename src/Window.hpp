@@ -23,6 +23,9 @@ public:
 
     float GetWidth();
     float GetHeight();
+    float GetFrameBufferWidth();
+    float GetFrameBufferHeight();
+
     float GetRatio();
 
     glm::vec2 GetSize();
@@ -38,6 +41,10 @@ public:
 private:
     uint32_t m_Width;
     uint32_t m_Height;
+
+    uint32_t m_FrameBufferWidth;
+    uint32_t m_FrameBufferHeight;
+
     std::string m_Name;
     
     Ref<GraphicsContext> m_GraphicsContext;

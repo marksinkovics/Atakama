@@ -19,4 +19,17 @@ Ref<Texture> Texture::Create(const std::filesystem::path& path)
     }
 }
 
+Ref<Texture> Texture::Create(uint32_t id)
+{
+    switch(g_RuntimeGlobalContext.m_GraphicsAPI)
+    {
+        case GraphicsAPI::None:
+        {
+            LOG_FATAL("GraphicsAPI::None is not supported!");
+            break;
+        }
+        case GraphicsAPI::OpenGL3: return CreateRef<OpenGL3Texture>(id);
+    }
+}
+
 }

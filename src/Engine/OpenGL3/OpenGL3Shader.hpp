@@ -23,6 +23,8 @@ public:
     virtual void SetUniformMat3(const std::string& name, const glm::mat3& matrix) override;
     virtual void SetUniformMat4(const std::string& name, const glm::mat4& matrix) override;
     virtual void SetUniformVec4Array(const std::string& name, int count, const GLfloat* values) override;
+    virtual void SetUniformFloat(const std::string& name, const float value) override;
+    virtual void SetUniformFloat2(const std::string& name, const glm::vec2& value) override;
     virtual void SetUniformFloat3(const std::string& name, const glm::vec3& value) override;
     virtual void SetUniformFloat4(const std::string& name, const glm::vec4& value) override;
 

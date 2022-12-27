@@ -14,6 +14,7 @@ public:
     static Ref<Mesh> LoadAxis();
     static Ref<Mesh> LoadLightModel();
     static Ref<Mesh> LoadOBJFile(const std::filesystem::path& path);
+    static Ref<Mesh> LoadQuad();
     
     static void GenerateIndices(const std::vector<SubMesh::Vertex>& input, std::vector<SubMesh::Vertex>& output, std::vector<uint32_t>& indices);
 };

@@ -30,8 +30,18 @@ OpenGL3Texture::OpenGL3Texture(const std::filesystem::path& path)
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
     stbi_image_free(data);
     glBindTexture(GL_TEXTURE_2D, 0);
-
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &m_TotalUnits);
+}
+
+OpenGL3Texture::OpenGL3Texture(uint32_t id)
+: m_Id(id)
+{
+    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &m_TotalUnits);
+}
+
+OpenGL3Texture::~OpenGL3Texture()
+{
+    glDeleteTextures(1, &m_Id);
 }
 
 uint32_t OpenGL3Texture::GetId()
@@ -44,13 +54,13 @@ void OpenGL3Texture::Bind(int index)
     ASSERT((index < m_TotalUnits) && "Texture index is higher than the limit");
 
     glActiveTexture((GL_TEXTURE0 + index));
-	glBindTexture(GL_TEXTURE_2D, m_Id);
+    glBindTexture(GL_TEXTURE_2D, m_Id);
 }
 
 void OpenGL3Texture::Unbind()
 {
     glActiveTexture(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 }

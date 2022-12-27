@@ -14,6 +14,7 @@ public:
     virtual void Unbind() = 0;
     
     static Ref<Texture> Create(const std::filesystem::path& path);
+    static Ref<Texture> Create(uint32_t id);
 };
 
 }

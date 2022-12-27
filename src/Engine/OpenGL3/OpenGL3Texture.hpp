@@ -10,6 +10,8 @@ class OpenGL3Texture: public Texture
 {
 public:
     OpenGL3Texture(const std::filesystem::path& path);
+    OpenGL3Texture(uint32_t id);
+    ~OpenGL3Texture();
     uint32_t GetId();
     void Bind(int index);
     void Unbind();

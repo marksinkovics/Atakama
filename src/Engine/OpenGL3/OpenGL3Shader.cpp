@@ -152,6 +152,22 @@ void OpenGL3Shader::SetUniformVec4Array(const std::string& name, int count, cons
     glUniform4fv(location, count, values);
 }
 
+void OpenGL3Shader::SetUniformFloat(const std::string& name, const float value)
+{
+    GLint location = glGetUniformLocation(m_Id, name.c_str());
+    if (location == -1)
+        return;
+    glUniform1f(location, value);
+}
+
+void OpenGL3Shader::SetUniformFloat2(const std::string& name, const glm::vec2& value)
+{
+    GLint location = glGetUniformLocation(m_Id, name.c_str());
+    if (location == -1)
+        return;
+    glUniform2f(location, value.x, value.y);
+}
+
 void OpenGL3Shader::SetUniformFloat3(const std::string& name, const glm::vec3& value)
 {
     GLint location = glGetUniformLocation(m_Id, name.c_str());

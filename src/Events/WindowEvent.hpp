@@ -17,6 +17,18 @@ protected:
     int m_Height;
 };
 
+class WindowFrameBufferResizeEvent: public Event
+{
+public:
+    WindowFrameBufferResizeEvent(int width, int height): Event(EventType::WindowFrameBufferResize, "WindowFrameBufferResizeEvent"), m_Width(width), m_Height(height) {}
+    virtual int GetWidth() const { return m_Width; }
+    virtual int GetHeight() const { return m_Height; }
+protected:
+    int m_Width;
+    int m_Height;
+};
+
+
 class WindowCloseEvent: public Event
 {
 public:
