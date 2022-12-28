@@ -13,6 +13,8 @@ public:
     virtual void Bind() const = 0;
     virtual void Unbind() const = 0;
     virtual Ref<Texture> GetTexture() const = 0;
+    virtual int GetWidth() const = 0;
+    virtual int GetHeight() const = 0;
     
     static Ref<FrameBuffer> Create();
 };

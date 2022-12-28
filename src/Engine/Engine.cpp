@@ -63,8 +63,6 @@ void Engine::Run()
     
     m_Camera->Update(m_FrameTime);
 
-    m_UIRenderer->Begin();
-
     m_perfMonitor->StartCPUTimer();
     m_perfMonitor->StartGPUTimer();
     
@@ -104,7 +102,8 @@ void Engine::Run()
     m_perfMonitor->StopGPUTimer();
     m_perfMonitor->StopCPUTimer();
     
-    m_UIRenderer->Draw(m_Scene, m_perfMonitor);
+    m_UIRenderer->Begin();
+    m_UIRenderer->Draw(m_Scene, m_perfMonitor, m_ScreenRenderer->GetFrameBuffer());
     
     g_RuntimeGlobalContext.m_InputSystem->Clear();
     m_Window->SwapBuffers();

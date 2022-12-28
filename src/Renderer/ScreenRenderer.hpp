@@ -20,6 +20,8 @@ public:
     void StartRecord();
     void StopRecord();
     void Draw(float time, glm::vec2 frameSize);
+    
+    Ref<FrameBuffer>& GetFrameBuffer();
 private:
     Ref<FrameBuffer> m_FrameBuffer;
     Ref<Mesh> m_QuadMesh;

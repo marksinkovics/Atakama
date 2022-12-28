@@ -10,5 +10,5 @@ uniform float uTime;
 
 void main()
 {
-    color = vec4(texture(textureSampler, UV).rgb, 1.0);
+    color = texture(textureSampler, UV);
 }

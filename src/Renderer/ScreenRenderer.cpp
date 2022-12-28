@@ -53,4 +53,9 @@ void ScreenRenderer::Draw(float time, glm::vec2 frameSize)
     }
 }
 
+Ref<FrameBuffer>& ScreenRenderer::GetFrameBuffer()
+{
+    return m_FrameBuffer;
+}
+
 }

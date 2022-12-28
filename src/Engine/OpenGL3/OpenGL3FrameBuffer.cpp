@@ -8,8 +8,8 @@ namespace OGLSample
 OpenGL3FrameBuffer::OpenGL3FrameBuffer()
 {
     Ref<Window> window = g_RuntimeGlobalContext.m_Window;
-    int width = window->GetFrameBufferWidth();
-    int height = window->GetFrameBufferHeight();
+    m_Width = window->GetFrameBufferWidth();
+    m_Height = window->GetFrameBufferHeight();
         
     // Frame buffer
     glGenFramebuffers(1, &m_Id);
@@ -18,7 +18,7 @@ OpenGL3FrameBuffer::OpenGL3FrameBuffer()
     // Texture
     glGenTextures(1, &m_TextureId);
     glBindTexture(GL_TEXTURE_2D, m_TextureId);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -28,9 +28,9 @@ OpenGL3FrameBuffer::OpenGL3FrameBuffer()
     // Render buffer
     glGenRenderbuffers(1, &m_RenderBufferId);
     glBindRenderbuffer(GL_RENDERBUFFER, m_RenderBufferId);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Width, m_Height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RenderBufferId);
-    
+
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if(status != GL_FRAMEBUFFER_COMPLETE)
     {
@@ -64,5 +64,16 @@ Ref<Texture> OpenGL3FrameBuffer::GetTexture() const
 {
     return m_Texture;
 }
+
+int OpenGL3FrameBuffer::GetWidth() const
+{
+    return m_Width;
+}
+
+int OpenGL3FrameBuffer::GetHeight() const
+{
+    return m_Height;
+}
+
 
 }
