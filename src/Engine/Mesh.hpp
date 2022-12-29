@@ -7,6 +7,7 @@ namespace OGLSample
 {
 
 class Shader;
+class RenderSystem;
 
 class Mesh
 {

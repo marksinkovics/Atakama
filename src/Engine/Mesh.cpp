@@ -1,5 +1,6 @@
 #include "Mesh.hpp"
 #include "Shader.hpp"
+#include "RenderSystem.hpp"
 
 namespace OGLSample
 {
@@ -77,8 +78,8 @@ void Mesh::Draw(Ref<RenderSystem>& renderSystem, Ref<Shader>& shader)
             shader->SetUniformInt("textureSampler", 0);
         }
         
-        subMesh->Draw(renderSystem);
-        
+        renderSystem->Draw(subMesh->GetMode(), subMesh->GetVertexArray());
+                
         if (texture != nullptr)
         {
             subMesh->GetTexture()->Unbind();

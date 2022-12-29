@@ -6,7 +6,7 @@ namespace OGLSample
 
 void LightingRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera)
 {
-    Ref<Shader> shader = Shader::Create(FileSystem::GetShaderFile("lighting_shader.vert"), FileSystem::GetShaderFile("lighting_shader.frag"));
+    Ref<Shader> shader = CreateRef<Shader>(FileSystem::GetShaderFile("lighting_shader.vert"), FileSystem::GetShaderFile("lighting_shader.frag"));
     Renderer::Init(renderSystem, camera, shader);
 }
 

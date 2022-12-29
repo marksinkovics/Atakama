@@ -27,9 +27,6 @@ void Engine::Init(Ref<Window>& window)
     simpleRenderer = CreateRef<SimpleRenderer>();
     simpleRenderer->Init(m_RenderSystem, m_Camera);
 
-    textureRenderer = CreateRef<TextureRenderer>();
-    textureRenderer->Init(m_RenderSystem, m_Camera);
-
     lightingRenderer = CreateRef<LightingRenderer>();
     lightingRenderer->Init(m_RenderSystem, m_Camera);
 

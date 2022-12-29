@@ -5,6 +5,8 @@
 #include "Engine/Shader.hpp"
 #include "Engine/SubMesh.hpp"
 
+#include "Engine/RenderSystem.hpp"
+
 namespace OGLSample
 {
 

@@ -4,6 +4,8 @@
 #include "Engine/InputSystem.hpp"
 #include "Events/Event.hpp"
 
+#include <imgui.h>
+
 namespace OGLSample {
 
 Application::Application()

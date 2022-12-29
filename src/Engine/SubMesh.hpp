@@ -1,7 +1,7 @@
 #ifndef SUBMESH_HPP
 #define SUBMESH_HPP
 
-#include "Engine/RenderSystem.hpp"
+#include "Engine/RenderTypes.hpp"
 #include "Engine/Texture.hpp"
 
 #include "Engine/VertexBuffer.hpp"
@@ -31,10 +31,6 @@ public:
 
     ~SubMesh();
 
-    void Bind();
-    void Unbind();
-    void Draw(Ref<RenderSystem>& renderSystem);
-
     // model = T * S * R
     glm::mat4 GetModelMatrix();
     void SetModelMatrix(glm::mat4 modelMatrix);
@@ -46,6 +42,8 @@ public:
 
     DrawingMode GetMode();
     void SetMode(DrawingMode mode);
+    
+    Ref<VertexArray>& GetVertexArray();
 private:
     DrawingMode m_Mode = DrawingMode::Triangles;
 

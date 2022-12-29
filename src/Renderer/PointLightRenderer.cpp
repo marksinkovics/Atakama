@@ -8,7 +8,7 @@ namespace OGLSample
 
 void PointLightRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera)
 {
-    Ref<Shader> shader = Shader::Create(FileSystem::GetShaderFile("point_light.vert"), FileSystem::GetShaderFile("point_light.frag"));
+    Ref<Shader> shader = CreateRef<Shader>(FileSystem::GetShaderFile("point_light.vert"), FileSystem::GetShaderFile("point_light.frag"));
     Renderer::Init(renderSystem, camera, shader);
 }
 

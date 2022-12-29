@@ -5,6 +5,11 @@
 #include "Engine/Texture.hpp"
 #include "Engine/FrameBuffer.hpp"
 
+#include <imgui.h>
+#include <imgui_internal.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
 namespace OGLSample
 {
 
@@ -36,14 +41,29 @@ void UIRenderer::Begin()
 void UIRenderer::Draw(Ref<Scene>& scene, Ref<PerfMonitor>& perfMonitor, Ref<FrameBuffer>& frameBuffer)
 {
     
-    GLuint texture = frameBuffer->GetTexture()->GetId();
-    ImGui::Begin("Scene window");
+    ImGui::Begin("Depth window");
     ImVec2 sceneWindowSize= ImGui::GetContentRegionAvail();
-    ImGui::GetWindowDrawList()->AddImage(
-        (void *)texture, ImVec2(ImGui::GetCursorScreenPos()),
-        ImVec2(ImGui::GetCursorScreenPos().x + frameBuffer->GetWidth()/2, ImGui::GetCursorScreenPos().y + frameBuffer->GetHeight()/2), ImVec2(0, 1), ImVec2(1, 0));
-    ImGui::End();
+//    ImDrawList* drawList = ImGui::GetWindowDrawList();
+    {
+        ImVec2 wSize = ImGui::GetContentRegionAvail();
+        ImGui::Image((ImTextureID)frameBuffer->GetDepthTexture()->GetId(), wSize, ImVec2(0, 1), ImVec2(1, 0));
+    //    drawList->AddImage(
+    //        (void *)frameBuffer->GetDepthTexture()->GetId(),
+    //        ImVec2(ImGui::GetCursorScreenPos()),
+    //        ImVec2(ImGui::GetCursorScreenPos().x + frameBuffer->GetWidth()/2, ImGui::GetCursorScreenPos().y + frameBuffer->GetHeight()/2), ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::End();
+    }
     
+    {
+        ImGui::Begin("Scene window");
+        ImVec2 wSize = ImGui::GetContentRegionAvail();
+        ImGui::Image((ImTextureID)frameBuffer->GetColorTexture()->GetId(), wSize, ImVec2(0, 1), ImVec2(1, 0));
+    //    ImGui::GetWindowDrawList()->AddImage(
+    //        (void *)frameBuffer->GetColorTexture()->GetId(), ImVec2(ImGui::GetCursorScreenPos()),
+    //        ImVec2(ImGui::GetCursorScreenPos().x + frameBuffer->GetWidth()/2, ImGui::GetCursorScreenPos().y + frameBuffer->GetHeight()/2), ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::End();
+    }
+
     ImGui::Begin("ImGui Window");
     ImGui::Text("CPU time: %f ms", perfMonitor->GetCPUTime());
     ImGui::Text("GPU time: %f ms", perfMonitor->GetGPUTime());

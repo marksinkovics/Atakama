@@ -1,5 +1,5 @@
 
-#include "OpenGL3Shader.hpp"
+#include "OpenGL3ShaderBackend.hpp"
 #include "FileSystem.hpp"
 
 #include <fstream>
@@ -10,23 +10,23 @@
 namespace OGLSample
 {
 
-OpenGL3Shader::OpenGL3Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
+OpenGL3ShaderBackend::OpenGL3ShaderBackend(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
 {
     Compile(vertexPath, fragmentPath);
 }
 
-OpenGL3Shader::~OpenGL3Shader()
+OpenGL3ShaderBackend::~OpenGL3ShaderBackend()
 {
 	glDeleteProgram(m_Id);
 }
 
-std::string OpenGL3Shader::LoadFile(const std::filesystem::path& path)
+std::string OpenGL3ShaderBackend::LoadFile(const std::filesystem::path& path)
 {
     std::string code;
     std::ifstream fileStream(path.c_str(), std::ios::in);
     if(!fileStream.is_open())
     {
-        std::cerr << "Cannot open: " << path << "\n";
+        LOG_ERROR("Cannot open: {}", path);
         return "";
     }
     std::stringstream stream;
@@ -36,7 +36,7 @@ std::string OpenGL3Shader::LoadFile(const std::filesystem::path& path)
     return code;
 }
 
-GLuint OpenGL3Shader::CompileShaderFile(const std::filesystem::path& path, GLuint type)
+GLuint OpenGL3ShaderBackend::CompileShaderFile(const std::filesystem::path& path, GLuint type)
 {
     const std::string content = LoadFile(path);
 
@@ -50,7 +50,6 @@ GLuint OpenGL3Shader::CompileShaderFile(const std::filesystem::path& path, GLuin
     glShaderSource(shaderId, 1, &contentPointer, NULL);
     glCompileShader(shaderId);
 
-
     GLint isCompiled = GL_FALSE;
 
     glGetShaderiv(shaderId, GL_COMPILE_STATUS, &isCompiled);
@@ -60,17 +59,15 @@ GLuint OpenGL3Shader::CompileShaderFile(const std::filesystem::path& path, GLuin
         glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
         std::vector<GLchar> errorLog(infoLogLength);
         glGetShaderInfoLog(shaderId, infoLogLength, &infoLogLength, &errorLog[0]);
-        std::cerr << "Error during shader (" << path << ") compilation: \n" << &errorLog[0];
+        LOG_ERROR("Error during shader ({}) compilation: {}", path, &errorLog[0]);
         glDeleteShader(shaderId);
-
-        assert(false && "Shader compilation failed");
     }
 
     return shaderId;
 
 }
 
-void OpenGL3Shader::CompileProgram(const GLuint vertexId, const GLuint fragmentId)
+void OpenGL3ShaderBackend::CompileProgram(const GLuint vertexId, const GLuint fragmentId)
 {
     m_Id = glCreateProgram();
 
@@ -88,7 +85,7 @@ void OpenGL3Shader::CompileProgram(const GLuint vertexId, const GLuint fragmentI
     {
         char* msg = (char*)malloc(infoLogLength + 1);
         glGetProgramInfoLog(m_Id, infoLogLength, NULL, msg);
-        std::cerr << "Error during program compilation (length: " << infoLogLength << "): \n" << msg << "\n";
+        LOG_ERROR("Error during program compilation (length: {}):\n {}", infoLogLength, msg);
         free(msg);
     }
 
@@ -98,29 +95,29 @@ void OpenGL3Shader::CompileProgram(const GLuint vertexId, const GLuint fragmentI
     glDeleteShader(fragmentId);
 }
 
-void OpenGL3Shader::Compile(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
+void OpenGL3ShaderBackend::Compile(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
 {
     GLuint vertexId = CompileShaderFile(vertexPath, GL_VERTEX_SHADER);
     GLuint fragmentId = CompileShaderFile(fragmentPath, GL_FRAGMENT_SHADER);
     CompileProgram(vertexId, fragmentId);
 }
 
-uint32_t OpenGL3Shader::GetId()
+uint32_t OpenGL3ShaderBackend::GetId()
 {
     return m_Id;
 }
 
-void OpenGL3Shader::Bind()
+void OpenGL3ShaderBackend::Bind()
 {
     glUseProgram(m_Id);
 }
 
-void OpenGL3Shader::Unbind()
+void OpenGL3ShaderBackend::Unbind()
 {
     glUseProgram(0);
 }
 
-void OpenGL3Shader::SetUniformInt(const std::string& name, const int value)
+void OpenGL3ShaderBackend::SetUniformInt(const std::string& name, const int value)
 {
     GLint location = glGetUniformLocation(m_Id, name.c_str());
     if (location == -1)
@@ -128,7 +125,7 @@ void OpenGL3Shader::SetUniformInt(const std::string& name, const int value)
     glUniform1i(location, value);
 }
 
-void OpenGL3Shader::SetUniformMat3(const std::string& name, const glm::mat3& matrix)
+void OpenGL3ShaderBackend::SetUniformMat3(const std::string& name, const glm::mat3& matrix)
 {
     GLint location = glGetUniformLocation(m_Id, name.c_str());
     if (location == -1)
@@ -136,7 +133,7 @@ void OpenGL3Shader::SetUniformMat3(const std::string& name, const glm::mat3& mat
     glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
-void OpenGL3Shader::SetUniformMat4(const std::string& name, const glm::mat4& matrix)
+void OpenGL3ShaderBackend::SetUniformMat4(const std::string& name, const glm::mat4& matrix)
 {
     GLint location = glGetUniformLocation(m_Id, name.c_str());
     if (location == -1)
@@ -144,7 +141,7 @@ void OpenGL3Shader::SetUniformMat4(const std::string& name, const glm::mat4& mat
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
-void OpenGL3Shader::SetUniformVec4Array(const std::string& name, int count, const GLfloat* values)
+void OpenGL3ShaderBackend::SetUniformVec4Array(const std::string& name, int count, const GLfloat* values)
 {
     GLint location = glGetUniformLocation(m_Id, name.c_str());
     if (location == -1)
@@ -152,7 +149,7 @@ void OpenGL3Shader::SetUniformVec4Array(const std::string& name, int count, cons
     glUniform4fv(location, count, values);
 }
 
-void OpenGL3Shader::SetUniformFloat(const std::string& name, const float value)
+void OpenGL3ShaderBackend::SetUniformFloat(const std::string& name, const float value)
 {
     GLint location = glGetUniformLocation(m_Id, name.c_str());
     if (location == -1)
@@ -160,7 +157,7 @@ void OpenGL3Shader::SetUniformFloat(const std::string& name, const float value)
     glUniform1f(location, value);
 }
 
-void OpenGL3Shader::SetUniformFloat2(const std::string& name, const glm::vec2& value)
+void OpenGL3ShaderBackend::SetUniformFloat2(const std::string& name, const glm::vec2& value)
 {
     GLint location = glGetUniformLocation(m_Id, name.c_str());
     if (location == -1)
@@ -168,7 +165,7 @@ void OpenGL3Shader::SetUniformFloat2(const std::string& name, const glm::vec2& v
     glUniform2f(location, value.x, value.y);
 }
 
-void OpenGL3Shader::SetUniformFloat3(const std::string& name, const glm::vec3& value)
+void OpenGL3ShaderBackend::SetUniformFloat3(const std::string& name, const glm::vec3& value)
 {
     GLint location = glGetUniformLocation(m_Id, name.c_str());
     if (location == -1)
@@ -176,7 +173,7 @@ void OpenGL3Shader::SetUniformFloat3(const std::string& name, const glm::vec3& v
 	glUniform3f(location, value.x, value.y, value.z);
 }
 
-void OpenGL3Shader::SetUniformFloat4(const std::string& name, const glm::vec4& value)
+void OpenGL3ShaderBackend::SetUniformFloat4(const std::string& name, const glm::vec4& value)
 {
     GLint location = glGetUniformLocation(m_Id, name.c_str());
     if (location == -1)

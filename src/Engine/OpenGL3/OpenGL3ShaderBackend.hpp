@@ -1,5 +1,5 @@
-#ifndef OPENGL3_SHADER_HPP
-#define OPENGL3_SHADER_HPP
+#ifndef OPENGL3_SHADER_BACKEND_HPP
+#define OPENGL3_SHADER_BACKEND_HPP
  
 #include "Engine/Shader.hpp"
 
@@ -7,12 +7,12 @@
 
 namespace OGLSample {
 
-class OpenGL3Shader: public Shader
+class OpenGL3ShaderBackend: public ShaderBackend
 {
 public:
-    OpenGL3Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath);
+    OpenGL3ShaderBackend(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath);
 
-    virtual ~OpenGL3Shader();
+    virtual ~OpenGL3ShaderBackend();
 
     virtual uint32_t GetId() override;
 

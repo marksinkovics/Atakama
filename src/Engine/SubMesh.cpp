@@ -44,20 +44,15 @@ SubMesh::~SubMesh()
 {
 }
 
-void SubMesh::Bind()
-{
-    m_VertexArray->Bind();
-}
-
-void SubMesh::Unbind()
-{
-    m_VertexArray->Unbind();
-}
-
-void SubMesh::Draw(Ref<RenderSystem>& renderSystem)
-{
-    renderSystem->Draw(m_Mode, m_VertexArray);
-}
+//void SubMesh::Bind()
+//{
+//    m_VertexArray->Bind();
+//}
+//
+//void SubMesh::Unbind()
+//{
+//    m_VertexArray->Unbind();
+//}
 
 glm::mat4 SubMesh::GetModelMatrix()
 {
@@ -92,6 +87,11 @@ DrawingMode SubMesh::GetMode()
 void SubMesh::SetMode(DrawingMode mode)
 {
     m_Mode = mode;
+}
+
+Ref<VertexArray>& SubMesh::GetVertexArray()
+{
+    return m_VertexArray;
 }
 
 }

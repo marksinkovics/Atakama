@@ -35,7 +35,7 @@ void OpenGL3RenderSystem::SetClearColor(const glm::vec4& clearColor)
     glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 }
 
-void OpenGL3RenderSystem::Draw(DrawingMode mode, Ref<VertexArray>& vertexArray) const
+void OpenGL3RenderSystem::Draw(DrawingMode mode, Ref<VertexArray>& vertexArray)
 {
     vertexArray->Bind();
     

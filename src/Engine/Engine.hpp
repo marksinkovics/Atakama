@@ -8,7 +8,6 @@
 #include "Engine/Lights/PointLight.hpp"
 #include "Engine/RenderSystem.hpp"
 #include "Renderer/SimpleRenderer.hpp"
-#include "Renderer/TextureRenderer.hpp"
 #include "Renderer/LightingRenderer.hpp"
 #include "Renderer/PointLightRenderer.hpp"
 #include "Renderer/UIRenderer.hpp"
@@ -39,7 +38,6 @@ private:
     Ref<Camera> m_Camera;
     
     Ref<SimpleRenderer> simpleRenderer;
-    Ref<TextureRenderer> textureRenderer;
     Ref<LightingRenderer> lightingRenderer;
     Ref<PointLightRenderer> pointLightRenderer;
     Ref<UIRenderer> m_UIRenderer;

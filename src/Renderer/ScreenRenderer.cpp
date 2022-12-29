@@ -9,7 +9,7 @@ namespace OGLSample
 
 void ScreenRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera)
 {
-    Ref<Shader> shader = Shader::Create(FileSystem::GetShaderFile("screen_shader.vert"), FileSystem::GetShaderFile("screen_shader.frag"));
+    Ref<Shader> shader = CreateRef<Shader>(FileSystem::GetShaderFile("screen_shader.vert"), FileSystem::GetShaderFile("screen_shader.frag"));
     Renderer::Init(renderSystem, camera, shader);
     
     m_QuadMesh = AssetManager::LoadQuad();
