@@ -4,6 +4,7 @@
 #include "Perf/PerfMonitor.hpp"
 #include "Engine/Texture.hpp"
 #include "Engine/FrameBuffer.hpp"
+#include "FileSystem.hpp"
 
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -38,29 +39,21 @@ void UIRenderer::Begin()
     ImGui::NewFrame();
 }
 
-void UIRenderer::Draw(Ref<Scene>& scene, Ref<PerfMonitor>& perfMonitor, Ref<FrameBuffer>& frameBuffer)
+void UIRenderer::Draw(Ref<Scene>& scene, Ref<PerfMonitor>& perfMonitor, Ref<Texture> colorTexture, Ref<Texture> depthTexture)
 {
-    
     ImGui::Begin("Depth window");
     ImVec2 sceneWindowSize= ImGui::GetContentRegionAvail();
-//    ImDrawList* drawList = ImGui::GetWindowDrawList();
+    
     {
         ImVec2 wSize = ImGui::GetContentRegionAvail();
-        ImGui::Image((ImTextureID)frameBuffer->GetDepthTexture()->GetId(), wSize, ImVec2(0, 1), ImVec2(1, 0));
-    //    drawList->AddImage(
-    //        (void *)frameBuffer->GetDepthTexture()->GetId(),
-    //        ImVec2(ImGui::GetCursorScreenPos()),
-    //        ImVec2(ImGui::GetCursorScreenPos().x + frameBuffer->GetWidth()/2, ImGui::GetCursorScreenPos().y + frameBuffer->GetHeight()/2), ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::Image((ImTextureID)depthTexture->GetId(), wSize, ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }
     
     {
         ImGui::Begin("Scene window");
         ImVec2 wSize = ImGui::GetContentRegionAvail();
-        ImGui::Image((ImTextureID)frameBuffer->GetColorTexture()->GetId(), wSize, ImVec2(0, 1), ImVec2(1, 0));
-    //    ImGui::GetWindowDrawList()->AddImage(
-    //        (void *)frameBuffer->GetColorTexture()->GetId(), ImVec2(ImGui::GetCursorScreenPos()),
-    //        ImVec2(ImGui::GetCursorScreenPos().x + frameBuffer->GetWidth()/2, ImGui::GetCursorScreenPos().y + frameBuffer->GetHeight()/2), ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::Image((ImTextureID)colorTexture->GetId(), wSize, ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }
 
@@ -69,6 +62,7 @@ void UIRenderer::Draw(Ref<Scene>& scene, Ref<PerfMonitor>& perfMonitor, Ref<Fram
     ImGui::Text("GPU time: %f ms", perfMonitor->GetGPUTime());
     ImGui::DragFloat3("Light position", (float*)&scene->GetLight()->GetPositionRef(), 0.01);
     ImGui::ColorEdit3("Light color", (float*)&scene->GetLight()->GetColorRef());
+    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::Text("Scene window size: (%f, %f)", sceneWindowSize.x, sceneWindowSize.y);
     ImGui::End();
     

@@ -15,17 +15,23 @@ public:
     
     virtual void Bind() const;
     virtual void Unbind() const;
-    virtual Ref<Texture> GetTexture() const;
+    virtual Ref<Texture> GetColorTexture() const;
+    virtual Ref<Texture> GetDepthTexture() const;
     virtual int GetWidth() const;
     virtual int GetHeight() const;
 private:
     uint32_t m_Id;
-    uint32_t m_TextureId;
+    
+    uint32_t m_ColorTextureId;
+    uint32_t m_DepthTextureId;
+    
+    uint32_t m_DepthRenderBufferId;
     uint32_t m_RenderBufferId;
     int m_Width;
     int m_Height;
     
-    Ref<Texture> m_Texture;
+    Ref<Texture> m_ColorTexture;
+    Ref<Texture> m_DepthTexture;
 };
 
 }

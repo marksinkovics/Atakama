@@ -16,7 +16,7 @@ public:
     void Init(Ref<Window>& window);
     void Shutdown();
     void Begin();
-    void Draw(Ref<Scene>& scene, Ref<PerfMonitor>& perfMonitor, Ref<FrameBuffer>& frameBuffer);
+    void Draw(Ref<Scene>& scene, Ref<PerfMonitor>& perfMonitor, Ref<Texture> colorTexture, Ref<Texture> depthTexture);
 };
 
 }

@@ -12,6 +12,7 @@
 #include "Renderer/PointLightRenderer.hpp"
 #include "Renderer/UIRenderer.hpp"
 #include "Renderer/ScreenRenderer.hpp"
+#include "Renderer/ScreenDepthRenderer.hpp"
 #include "Perf/PerfMonitor.hpp"
 
 #include "Scene.hpp"
@@ -42,7 +43,8 @@ private:
     Ref<PointLightRenderer> pointLightRenderer;
     Ref<UIRenderer> m_UIRenderer;
     Ref<ScreenRenderer> m_ScreenRenderer;
-        
+    Ref<ScreenDepthRenderer> m_ScreenDepthRenderer;
+
     Ref<PerfMonitor> m_perfMonitor;
 };
 

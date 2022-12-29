@@ -12,7 +12,8 @@ public:
     ~FrameBuffer() = default;
     virtual void Bind() const = 0;
     virtual void Unbind() const = 0;
-    virtual Ref<Texture> GetTexture() const = 0;
+    virtual Ref<Texture> GetColorTexture() const = 0;
+    virtual Ref<Texture> GetDepthTexture() const = 0;
     virtual int GetWidth() const = 0;
     virtual int GetHeight() const = 0;
     

@@ -38,6 +38,9 @@ void Engine::Init(Ref<Window>& window)
     
     m_ScreenRenderer = CreateRef<ScreenRenderer>();
     m_ScreenRenderer->Init(m_RenderSystem, m_Camera);
+
+    m_ScreenDepthRenderer = CreateRef<ScreenDepthRenderer>();
+    m_ScreenDepthRenderer->Init(m_RenderSystem, m_Camera);
     
     m_perfMonitor = CreateRef<PerfMonitor>();
 }
@@ -95,12 +98,22 @@ void Engine::Run()
     m_ScreenRenderer->Begin();
     m_ScreenRenderer->Draw((float)(glfwGetTime()*10.0f), glm::vec2(m_Window->GetFrameBufferWidth(), m_Window->GetFrameBufferHeight()));
     m_ScreenRenderer->End();
+    
+    m_ScreenDepthRenderer->Begin();
+    m_ScreenDepthRenderer->StartRecord();
+    m_ScreenDepthRenderer->Draw((float)(glfwGetTime()*10.0f), glm::vec2(m_Window->GetFrameBufferWidth(), m_Window->GetFrameBufferHeight()), m_ScreenRenderer->GetFrameBuffer()->GetDepthTexture());
+    m_ScreenDepthRenderer->StopRecord();
+    m_ScreenRenderer->End();
 
     m_perfMonitor->StopGPUTimer();
     m_perfMonitor->StopCPUTimer();
     
     m_UIRenderer->Begin();
-    m_UIRenderer->Draw(m_Scene, m_perfMonitor, m_ScreenRenderer->GetFrameBuffer());
+    m_UIRenderer->Draw(m_Scene,
+                       m_perfMonitor,
+                       m_ScreenRenderer->GetFrameBuffer()->GetColorTexture(),
+                       m_ScreenDepthRenderer->GetFrameBuffer()->GetColorTexture()
+                       );
     
     g_RuntimeGlobalContext.m_InputSystem->Clear();
     m_Window->SwapBuffers();
