@@ -3,7 +3,7 @@
 namespace OGLSample
 {
 
-OpenGL3IndexBuffer::OpenGL3IndexBuffer(uint32_t* indices, uint32_t count)
+OpenGL3IndexBuffer::OpenGL3IndexBuffer(uint32_t* indices, size_t count)
 : m_Count(count)
 {
     glGenBuffers(1, &m_Id);
@@ -26,7 +26,7 @@ void OpenGL3IndexBuffer::Unbind() const
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-uint32_t OpenGL3IndexBuffer::GetCount() const
+size_t OpenGL3IndexBuffer::GetCount() const
 {
     return m_Count;
 }

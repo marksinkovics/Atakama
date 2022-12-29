@@ -146,34 +146,34 @@ GLFWwindow* Window::GetWindow() const
     return m_Window;
 }
 
-float Window::GetWidth()
+uint32_t Window::GetWidth()
 {
     return m_Width;
 }
 
-float Window::GetHeight()
+uint32_t Window::GetHeight()
 {
     return m_Height;
 }
 
-float Window::GetFrameBufferWidth()
+uint32_t Window::GetFrameBufferWidth()
 {
     return m_FrameBufferWidth;
 }
 
-float Window::GetFrameBufferHeight()
+uint32_t Window::GetFrameBufferHeight()
 {
     return m_FrameBufferHeight;
 }
 
-glm::vec2 Window::GetSize()
+glm::vec<2, uint32_t, glm::defaultp> Window::GetSize()
 {
     return { m_Width,  m_Height };
 }
 
 float Window::GetRatio()
 {
-    return (float)(m_Width / m_Height);
+    return (float)m_Width / (float)m_Height;
 }
 
 void Window::SetEventCallback(const EventCallbackFunc& callback)

@@ -5,7 +5,7 @@
 namespace OGLSample
 {
 
-Ref<FrameBuffer> FrameBuffer::Create()
+Ref<FrameBuffer> FrameBuffer::Create(uint32_t width, uint32_t height)
 {
     switch(g_RuntimeGlobalContext.m_GraphicsAPI)
     {
@@ -14,7 +14,7 @@ Ref<FrameBuffer> FrameBuffer::Create()
             LOG_FATAL("GraphicsAPI::None is not supported!");
             break;
         }
-        case GraphicsAPI::OpenGL3: return CreateRef<OpenGL3FrameBuffer>();
+        case GraphicsAPI::OpenGL3: return CreateRef<OpenGL3FrameBuffer>(width, height);
     }
 }
 

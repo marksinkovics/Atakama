@@ -9,14 +9,14 @@ namespace OGLSample
 class OpenGL3IndexBuffer: public IndexBuffer
 {
 public:
-    OpenGL3IndexBuffer(uint32_t* indices, uint32_t count);
+    OpenGL3IndexBuffer(uint32_t* indices, size_t count);
     virtual ~OpenGL3IndexBuffer();
     virtual void Bind() const;
     virtual void Unbind() const;
-    virtual uint32_t GetCount() const;
+    virtual size_t GetCount() const;
 private:
     uint32_t m_Id;
-    uint32_t m_Count;
+    size_t m_Count;
 };
 
 }

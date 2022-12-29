@@ -41,7 +41,7 @@ void OpenGL3RenderSystem::Draw(DrawingMode mode, Ref<VertexArray>& vertexArray)
     
     if (vertexArray->GetIndexBuffer() && vertexArray->GetIndexBuffer()->GetCount() > 0)
     {
-        glDrawElements(GetOpenGLDrawingMode(mode), vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GetOpenGLDrawingMode(mode), (GLsizei)vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
     }
     else
     {

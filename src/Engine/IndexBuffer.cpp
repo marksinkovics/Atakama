@@ -5,7 +5,7 @@
 namespace OGLSample
 {
 
-Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count)
+Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, size_t count)
 {
     switch(g_RuntimeGlobalContext.m_GraphicsAPI)
     {

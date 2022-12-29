@@ -21,14 +21,14 @@ public:
 
     GLFWwindow* GetWindow() const;
 
-    float GetWidth();
-    float GetHeight();
-    float GetFrameBufferWidth();
-    float GetFrameBufferHeight();
+    uint32_t GetWidth();
+    uint32_t GetHeight();
+    uint32_t GetFrameBufferWidth();
+    uint32_t GetFrameBufferHeight();
 
     float GetRatio();
 
-    glm::vec2 GetSize();
+    glm::vec<2, uint32_t, glm::defaultp> GetSize();
 
     typedef std::function<void(Event&)> EventCallbackFunc;
     

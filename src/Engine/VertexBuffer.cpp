@@ -5,7 +5,7 @@
 namespace OGLSample
 {
 
-Ref<VertexBuffer> VertexBuffer::Create(uint32_t size)
+Ref<VertexBuffer> VertexBuffer::Create(size_t size)
 {
     switch(g_RuntimeGlobalContext.m_GraphicsAPI)
     {
@@ -18,7 +18,7 @@ Ref<VertexBuffer> VertexBuffer::Create(uint32_t size)
     }
 }
 
-Ref<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size)
+Ref<VertexBuffer> VertexBuffer::Create(float* vertices, size_t size)
 {
     switch(g_RuntimeGlobalContext.m_GraphicsAPI)
     {

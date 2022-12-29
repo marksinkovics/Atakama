@@ -10,7 +10,7 @@ namespace OGLSample
 class OpenGL3FrameBuffer: public FrameBuffer
 {
 public:
-    OpenGL3FrameBuffer();
+    OpenGL3FrameBuffer(uint32_t width, uint32_t height);
     virtual ~OpenGL3FrameBuffer();
     
     virtual void Bind() const;
@@ -27,8 +27,8 @@ private:
     
     uint32_t m_DepthRenderBufferId;
     uint32_t m_RenderBufferId;
-    int m_Width;
-    int m_Height;
+    uint32_t m_Width;
+    uint32_t m_Height;
     
     Ref<Texture> m_ColorTexture;
     Ref<Texture> m_DepthTexture;

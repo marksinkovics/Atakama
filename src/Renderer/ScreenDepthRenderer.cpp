@@ -16,14 +16,15 @@ void ScreenDepthRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camer
     
     g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowFrameBufferResizeEvent>(std::bind(&ScreenDepthRenderer::OnWindowFrameBufferResize, this, std::placeholders::_1));
 
-    m_FrameBuffer = FrameBuffer::Create();
+    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
+    m_FrameBuffer = FrameBuffer::Create(window->GetFrameBufferWidth(), window->GetFrameBufferHeight());
 }
 
 bool ScreenDepthRenderer::OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event)
 {
     m_QuadMesh->GetSubMeshes()[0]->SetTexture(nullptr);
     m_FrameBuffer.reset();
-    m_FrameBuffer = FrameBuffer::Create();
+    m_FrameBuffer = FrameBuffer::Create(event.GetWidth(), event.GetHeight());
     return false;
 }
 

@@ -16,7 +16,8 @@ void ScreenRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera)
     
     g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowFrameBufferResizeEvent>(std::bind(&ScreenRenderer::OnWindowFrameBufferResize, this, std::placeholders::_1));
 
-    m_FrameBuffer = FrameBuffer::Create();
+    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
+    m_FrameBuffer = FrameBuffer::Create(window->GetFrameBufferWidth(), window->GetFrameBufferHeight());
     m_QuadMesh->GetSubMeshes()[0]->SetTexture(m_FrameBuffer->GetColorTexture());
 }
 
@@ -24,7 +25,7 @@ bool ScreenRenderer::OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& eve
 {
     m_QuadMesh->GetSubMeshes()[0]->SetTexture(nullptr);
     m_FrameBuffer.reset();
-    m_FrameBuffer = FrameBuffer::Create();
+    m_FrameBuffer = FrameBuffer::Create(event.GetWidth(), event.GetHeight());
     m_QuadMesh->GetSubMeshes()[0]->SetTexture(m_FrameBuffer->GetColorTexture());
     return false;
 }

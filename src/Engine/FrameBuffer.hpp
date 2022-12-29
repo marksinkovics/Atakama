@@ -17,7 +17,7 @@ public:
     virtual int GetWidth() const = 0;
     virtual int GetHeight() const = 0;
     
-    static Ref<FrameBuffer> Create();
+    static Ref<FrameBuffer> Create(uint32_t width, uint32_t height);
 };
 
 }

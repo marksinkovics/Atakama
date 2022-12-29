@@ -357,12 +357,9 @@ void printFramebufferInfo(GLuint fbo)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-OpenGL3FrameBuffer::OpenGL3FrameBuffer()
+OpenGL3FrameBuffer::OpenGL3FrameBuffer(uint32_t width, uint32_t height)
+: m_Width(width), m_Height(height)
 {
-    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
-    m_Width = window->GetFrameBufferWidth();
-    m_Height = window->GetFrameBufferHeight();
-            
     // Texture
     glGenTextures(1, &m_ColorTextureId);
     m_ColorTexture = CreateRef<OpenGL3Texture>(m_ColorTextureId);

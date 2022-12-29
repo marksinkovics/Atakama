@@ -10,24 +10,24 @@ namespace OGLSample
 class OpenGL3VertexBuffer: public VertexBuffer
 {
 public:
-    OpenGL3VertexBuffer(uint32_t size);
-    OpenGL3VertexBuffer(float* vertices, uint32_t size);
+    OpenGL3VertexBuffer(size_t size);
+    OpenGL3VertexBuffer(float* vertices, size_t size);
     
     virtual ~OpenGL3VertexBuffer();
     
     virtual void Bind() const;
     virtual void Unbind() const;
     
-    virtual void SetData(const void* data, uint32_t size);
+    virtual void SetData(const void* data, size_t size);
     
-    virtual uint32_t GetCount();
+    virtual size_t GetCount();
     
     virtual VertexBufferLayout& GetLayout();
     virtual void SetLayout(const VertexBufferLayout& layout);
 private:
     uint32_t m_Id;
     VertexBufferLayout m_Layout;
-    uint32_t m_Size;
+    size_t m_Size;
 };
 
 }

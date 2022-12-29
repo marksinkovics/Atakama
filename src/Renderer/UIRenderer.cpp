@@ -46,14 +46,14 @@ void UIRenderer::Draw(Ref<Scene>& scene, Ref<PerfMonitor>& perfMonitor, Ref<Text
     
     {
         ImVec2 wSize = ImGui::GetContentRegionAvail();
-        ImGui::Image((ImTextureID)depthTexture->GetId(), wSize, ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::Image(reinterpret_cast<ImTextureID>(depthTexture->GetId()), wSize, ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }
     
     {
         ImGui::Begin("Scene window");
         ImVec2 wSize = ImGui::GetContentRegionAvail();
-        ImGui::Image((ImTextureID)colorTexture->GetId(), wSize, ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::Image(reinterpret_cast<ImTextureID>(colorTexture->GetId()), wSize, ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
     }
 
