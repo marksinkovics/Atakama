@@ -74,11 +74,11 @@ public:
 
         for (auto &&observer : m_Observers.at(type))
         {
-            if (!event.Handled)
-            {
-                if (observer) {
-                    event.Handled |= observer->Invoke(event);
-                }
+            if (event.Handled)
+                break;
+            
+            if (observer) {
+                event.Handled |= observer->Invoke(event);
             }
         }
     }
