@@ -2,6 +2,9 @@
 #include "OpenGL3ShaderBackend.hpp"
 #include "FileSystem.hpp"
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -36,7 +39,7 @@ std::string OpenGL3ShaderBackend::LoadFile(const std::filesystem::path& path)
     return code;
 }
 
-GLuint OpenGL3ShaderBackend::CompileShaderFile(const std::filesystem::path& path, GLuint type)
+uint32_t OpenGL3ShaderBackend::CompileShaderFile(const std::filesystem::path& path, uint32_t type)
 {
     const std::string content = LoadFile(path);
 
@@ -44,7 +47,7 @@ GLuint OpenGL3ShaderBackend::CompileShaderFile(const std::filesystem::path& path
         return 0;
     }
 
-    GLuint shaderId = glCreateShader(type);
+    uint32_t shaderId = glCreateShader(type);
 
     const GLchar* contentPointer = content.c_str();
     glShaderSource(shaderId, 1, &contentPointer, NULL);
@@ -67,7 +70,7 @@ GLuint OpenGL3ShaderBackend::CompileShaderFile(const std::filesystem::path& path
 
 }
 
-void OpenGL3ShaderBackend::CompileProgram(const GLuint vertexId, const GLuint fragmentId)
+void OpenGL3ShaderBackend::CompileProgram(const uint32_t vertexId, const uint32_t fragmentId)
 {
     m_Id = glCreateProgram();
 
@@ -97,8 +100,8 @@ void OpenGL3ShaderBackend::CompileProgram(const GLuint vertexId, const GLuint fr
 
 void OpenGL3ShaderBackend::Compile(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
 {
-    GLuint vertexId = CompileShaderFile(vertexPath, GL_VERTEX_SHADER);
-    GLuint fragmentId = CompileShaderFile(fragmentPath, GL_FRAGMENT_SHADER);
+    uint32_t vertexId = CompileShaderFile(vertexPath, GL_VERTEX_SHADER);
+    uint32_t fragmentId = CompileShaderFile(fragmentPath, GL_FRAGMENT_SHADER);
     CompileProgram(vertexId, fragmentId);
 }
 

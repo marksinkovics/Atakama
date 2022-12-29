@@ -1,6 +1,7 @@
 #include "Shader.hpp"
 #include "RenderTypes.hpp"
 #include "Engine/OpenGL3/OpenGL3ShaderBackend.hpp"
+#include "SubMesh.hpp"
 
 namespace OGLSample
 {
@@ -39,6 +40,11 @@ void Shader::Bind()
     return m_ShaderBackend->Bind();
 }
 
+void Shader::Bind(Ref<SubMesh>& subMesh)
+{
+    m_ShaderBackend->Bind();
+}
+
 void Shader::Unbind()
 {
     return m_ShaderBackend->Unbind();
@@ -59,7 +65,7 @@ void Shader::SetUniformMat4(const std::string& name, const glm::mat4& value)
     return m_ShaderBackend->SetUniformMat4(name, value);
 }
 
-void Shader::SetUniformVec4Array(const std::string& name, int count, const GLfloat* values)
+void Shader::SetUniformVec4Array(const std::string& name, int count, const float* values)
 {
     return m_ShaderBackend->SetUniformVec4Array(name, count, values);
 }

@@ -1,6 +1,8 @@
 #include "Engine/OpenGL3/OpenGL3RenderSystem.hpp"
 #include "Engine/VertexArray.hpp"
 
+#include <GL/glew.h>
+
 namespace OGLSample
 {
 

@@ -5,6 +5,7 @@
 #include "Events/Event.hpp"
 
 #include <imgui.h>
+#include <GLFW/glfw3.h>
 
 namespace OGLSample {
 

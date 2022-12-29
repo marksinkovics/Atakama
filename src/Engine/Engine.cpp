@@ -7,6 +7,8 @@
 
 #include "OpenGL3/OpenGL3RenderSystem.hpp"
 
+#include <GLFW/glfw3.h>
+
 namespace OGLSample
 {
 

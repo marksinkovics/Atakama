@@ -5,8 +5,9 @@
 #include "Events/MouseEvent.hpp"
 #include "Events/EventDispatcher.hpp"
 
-#include <cmath>
+#include <GLFW/glfw3.h>
 
+#include <cmath>
 #include <iostream>
 
 namespace OGLSample

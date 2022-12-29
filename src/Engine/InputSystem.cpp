@@ -1,10 +1,11 @@
 #include "InputSystem.hpp"
-
-#include <iostream>
-
 #include "Events/EventDispatcher.hpp"
 #include "Events/MouseEvent.hpp"
 #include "Events/KeyEvent.hpp"
+
+#include <GLFW/glfw3.h>
+
+#include <iostream>
 
 namespace OGLSample
 {

@@ -6,6 +6,8 @@
 
 #include <string>
 
+class GLFWwindow;
+
 namespace OGLSample {
 
 class Window

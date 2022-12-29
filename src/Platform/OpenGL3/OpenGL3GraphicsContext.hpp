@@ -3,7 +3,7 @@
 
 #include "Platform/GraphicsContext.hpp"
 
-#include <GLFW/glfw3.h>
+class GLFWwindow;
 
 namespace OGLSample
 {

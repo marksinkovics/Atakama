@@ -1,9 +1,9 @@
-#include "FlatColorShader.hpp"
+#include "SimpleShader.hpp"
 
 namespace OGLSample
 {
 
-void FlatColorShader::Bind(Ref<SubMesh>& subMesh)
+void SimpleShader::Bind(Ref<SubMesh>& subMesh)
 {
     Shader::Bind(subMesh);
 }
