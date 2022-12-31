@@ -3,6 +3,7 @@
 #include "Events/WindowEvent.hpp"
 #include "Events/EventDispatcher.hpp"
 #include "Engine/AssetManager.hpp"
+#include "Window.hpp"
 
 namespace OGLSample
 {

@@ -5,6 +5,7 @@
 #include "Engine/Texture.hpp"
 #include "Engine/FrameBuffer.hpp"
 #include "FileSystem.hpp"
+#include "Window.hpp"
 
 #include <imgui.h>
 #include <imgui_internal.h>

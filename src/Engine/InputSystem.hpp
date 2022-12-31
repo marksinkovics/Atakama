@@ -1,8 +1,6 @@
 #ifndef INPUT_SYSTEM_HPP
 #define INPUT_SYSTEM_HPP
 
-#include "Window.hpp"
-
 #include <map>
 
 namespace OGLSample

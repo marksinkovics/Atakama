@@ -2,6 +2,7 @@
 #include "Events/EventDispatcher.hpp"
 #include "Events/MouseEvent.hpp"
 #include "Events/KeyEvent.hpp"
+#include "Window.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -166,7 +167,6 @@ Movement InputSystem::GetMovement() const
     {
         return Movement::Down;
     }
-
 
 }
 
