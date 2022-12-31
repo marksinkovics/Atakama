@@ -1,11 +1,10 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
-#include "Window.hpp"
+#include "Math/Transform.hpp"
 
 namespace OGLSample
 {
-
 
 enum class Movement;
 class MouseScrolledEvent;
@@ -26,7 +25,7 @@ public:
     virtual void Update(float frameTime);
     virtual void Move(Movement movement, float frameTime);
     virtual void Rotate(glm::vec2 delta, float frameTime, bool constrainPitch = true);
-    virtual void LookAt(glm::vec3 position, glm::vec3 center = {0.0f, 0.0f, 0.0f}, glm::vec3 up = {0.0f, 1.0f, 0.0f});
+    virtual void LookAt(const glm::vec3& cameraPostion, const glm::vec3& cameraTarget);
 
     virtual glm::mat4 GetViewMatrix();
     virtual glm::mat4 GetProjectionMatrix();
@@ -38,22 +37,14 @@ public:
     virtual bool OnMouseScrollEvent(MouseScrolledEvent& event);
     virtual bool OnWindowResize(WindowResizeEvent& event);
 protected:
-    glm::vec3 m_Position {0.f, 5.f, 5.f};
+    Transform m_Transform;
 
     float m_Speed = 3.0f;
     float m_MouseSpeed = 0.001f;
-    
-    float m_Yaw = 3.14f; // Horizontal angle
-    float m_Pitch = 0.0f; // Vertical angle
+
     float m_InitialFoV = 45.0f; // Perspective only
     float m_Zoom = 2.0f; // Ortho only
-    
-    glm::vec3 m_Direction;
-    glm::vec3 m_Right;
-    glm::vec3 m_Up;
-    glm::vec3 m_WorldUp;
 
-    glm::mat4 m_ViewMatrix {1.f};
     glm::mat4 m_ProjectionMatrix {1.f};
     
     Mode m_Mode;

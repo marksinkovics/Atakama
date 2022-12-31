@@ -4,8 +4,11 @@
 #include "Events/WindowEvent.hpp"
 #include "Events/MouseEvent.hpp"
 #include "Events/EventDispatcher.hpp"
+#include "Window.hpp"
+
 
 #include <GLFW/glfw3.h>
+#include <glm/gtx/vector_angle.hpp>
 
 #include <cmath>
 #include <iostream>
@@ -14,7 +17,6 @@ namespace OGLSample
 {
 
 Camera::Camera(Mode mode)
-: m_WorldUp(glm::vec3(0.0f, 1.0f, 0.0f)), m_Position({0.0f, 0.0f, 0.0f})
 {
     SetMode(mode);
     
@@ -25,97 +27,77 @@ Camera::Camera(Mode mode)
 void Camera::Update(float frameTime)
 {
     Ref<InputSystem> inputSystem = g_RuntimeGlobalContext.m_InputSystem;
+    if (inputSystem->IsKeyPressed(GLFW_KEY_X)){
+        LookAt(glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+        return;
+    }
+
+    if (inputSystem->IsKeyPressed(GLFW_KEY_Y)){
+        LookAt(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+        return;
+    }
+
+    if (inputSystem->IsKeyPressed(GLFW_KEY_Z)){
+        LookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+        return;
+    }
+
+
     glm::dvec2 mousePos = {0.f, 0.f};
     
     if (inputSystem->IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) || inputSystem->GetFocusMode())
     {
         mousePos = inputSystem->GetMouseDelta();
+        Rotate(mousePos, frameTime);
     }
-    
-    Rotate(mousePos, frameTime);
+
     Move(inputSystem->GetMovement(), frameTime);
-
-    // Direction : Spherical coordinates to Cartesian coordinates conversion
-    glm::vec3 direction = glm::vec3(
-        cos(m_Pitch) * sin(m_Yaw),
-        sin(m_Pitch),
-        cos(m_Pitch) * cos(m_Yaw)
-    );
-    
-    m_Direction = glm::normalize(direction);
-    m_Right = glm::normalize(glm::cross(m_Direction, m_WorldUp));
-    m_Up = glm::normalize(glm::cross(m_Right, m_Direction));
-
-    m_ViewMatrix = glm::lookAt(
-        m_Position,                 // Camera is here
-        m_Position + m_Direction,   // and looks here
-        m_Up                        // Head is up
-    );
 }
 
 void Camera::Move(Movement movement, float frameTime)
 {
-    // Move forward
-    if (movement == Movement::Forward){
-        m_Position += m_Direction * frameTime * m_Speed;
-    }
-    // Move backward
-    if (movement == Movement::Backward){
-        m_Position -= m_Direction * frameTime * m_Speed;
-    }
-    // Move right
-    if (movement == Movement::Right){
-        m_Position += m_Right * frameTime * m_Speed;
-    }
-    // Move left
-    if (movement == Movement::Left){
-        m_Position -= m_Right * frameTime * m_Speed;
-    }
-    
-    if (movement == Movement::Up){
-        m_Position += m_Up * frameTime * m_Speed;
-    }
-    
-    if (movement == Movement::Down){
-        m_Position -= m_Up * frameTime * m_Speed;
-    }
+    m_Transform.Move(movement, m_Speed * frameTime);
 }
 
 void Camera::Rotate(glm::vec2 delta, float frameTime, bool constrainPitch)
 {
-    m_Yaw   += delta.x * m_MouseSpeed;
-    m_Pitch += delta.y * m_MouseSpeed;
-    
+    float yaw   = m_Transform.GetYaw() + delta.x * m_MouseSpeed;
+    float pitch = m_Transform.GetPitch() + delta.y * m_MouseSpeed;
+
     if (constrainPitch) {
-        if (m_Pitch > 89.0f)
+        if (pitch > 89.0f)
         {
-            m_Pitch = 89.0f;
+            pitch = 89.0f;
         }
-        
-        if (m_Pitch < -89.0f)
+
+        if (pitch < -89.0f)
         {
-            m_Pitch = -89.0f;
+            pitch = -89.0f;
         }
     }
+
+    m_Transform.SetYaw(yaw);
+    m_Transform.SetPitch(pitch);
+
 }
 
-void Camera::LookAt(glm::vec3 position, glm::vec3 center, glm::vec3 up)
+// Note: https://stackoverflow.com/a/33790309/5218198
+void Camera::LookAt(const glm::vec3& cameraPostion, const glm::vec3& cameraTarget)
 {
-    m_Position = position;
-    m_Up = up;
-    m_WorldUp = up;
-    m_ViewMatrix = glm::lookAt(m_Position, center, up);
+    m_Transform.SetTranslate(cameraPostion);
+    glm::vec3 direction = glm::normalize(cameraTarget - cameraPostion);
 
-    glm::vec3 direction = m_Position - center;
+    float yaw = std::atan2(direction.x, -direction.z);
+    m_Transform.SetYaw(yaw);
 
-    m_Pitch = -glm::asin(direction.y / glm::distance(center, m_Position));
-    m_Yaw = glm::pi<float>() + glm::atan(direction.x, direction.z);
+    float pitch = glm::asin(-direction.y);
+    m_Transform.SetPitch(pitch);
 }
 
 
 glm::mat4 Camera::GetViewMatrix()
 {
-    return m_ViewMatrix;
+    return m_Transform.GetMat4();
 }
 
 glm::mat4 Camera::GetProjectionMatrix()
@@ -125,7 +107,7 @@ glm::mat4 Camera::GetProjectionMatrix()
 
 glm::vec3 Camera::GetPosition()
 {
-	return m_Position;
+	return m_Transform.GetTranslate();
 }
 
 Camera::Mode Camera::GetMode() const

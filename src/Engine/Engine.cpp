@@ -21,7 +21,7 @@ void Engine::Init(Ref<Window>& window)
     m_RenderSystem->SetClearColor({0.0f, 0.0f, 0.4f, 0.0f});
     
     m_Camera = CreateRef<Camera>(Camera::Mode::Perspective);
-    m_Camera->LookAt({5.0f, 5.f, 5.f});
+    m_Camera->LookAt({5.0f, 5.f, 5.f}, {0.0f, 0.0f, 0.0f});
         
     m_Scene = CreateRef<SandboxScene>();
     m_Scene->Init();
