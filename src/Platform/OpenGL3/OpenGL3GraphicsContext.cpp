@@ -25,6 +25,7 @@ void OpenGL3GraphicsContext::Register(void *window)
     m_Window = static_cast<GLFWwindow*>(window);
     
     glfwMakeContextCurrent(m_Window); // Initialize GLEW
+    SetVSync(true);
 
     glewExperimental = GL_TRUE;
     GLenum error = glewInit();
@@ -32,12 +33,29 @@ void OpenGL3GraphicsContext::Register(void *window)
     {
         LOG_FATAL("glewInit Error: {}", (char*)glewGetErrorString(error));
     }
-
 }
 
 void OpenGL3GraphicsContext::SwapBuffers()
 {
     glfwSwapBuffers(m_Window);
+}
+
+void OpenGL3GraphicsContext::SetVSync(bool enable)
+{
+    m_VSyncEnabled = enable;
+    if (m_VSyncEnabled)
+    {
+        glfwSwapInterval(1);
+    }
+    else
+    {
+        glfwSwapInterval(0);
+    }
+}
+
+bool OpenGL3GraphicsContext::GetVSync() const
+{
+    return m_VSyncEnabled;
 }
 
 }
