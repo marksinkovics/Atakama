@@ -30,7 +30,7 @@ public:
 
     float GetRatio();
 
-    glm::vec<2, uint32_t, glm::defaultp> GetSize();
+    glm::uvec2 GetSize();
 
     typedef std::function<void(Event&)> EventCallbackFunc;
     

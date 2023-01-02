@@ -9,18 +9,17 @@
 namespace OGLSample
 {
 
-class WindowFrameBufferResizeEvent;
-
 class ScreenDepthRenderer: public Renderer
 {
 public:
     virtual ~ScreenDepthRenderer() = default;
     void Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera);
-    bool OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event);
     void StartRecord();
     void StopRecord();
-    void Draw(float time, glm::vec2 frameSize, Ref<Texture> depthTexture);
-    
+    void Draw(Ref<Texture> depthTexture);
+    void Resize(uint32_t width, uint32_t height);
+    glm::uvec2 GetSize();
+
     Ref<FrameBuffer>& GetFrameBuffer();
 private:
     Ref<FrameBuffer> m_FrameBuffer;

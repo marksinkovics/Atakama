@@ -17,6 +17,10 @@ public:
     void Shutdown();
     void Begin();
     void Draw(Ref<Scene>& scene, Ref<PerfMonitor>& perfMonitor, Ref<Texture> colorTexture, Ref<Texture> depthTexture);
+private:
+    bool m_ViewportFocused = false;
+    bool m_ViewportHovered = false;
+    glm::uvec2 m_ViewportSize;
 };
 
 }

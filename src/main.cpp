@@ -9,8 +9,12 @@ int main(int argc, char **argv)
     OGLSample::SetArguments({argc, argv});
 
     {
-        OGLSample::Application app;
-        app.run();
+        OGLSample::Ref<OGLSample::Application> app = OGLSample::CreateRef<OGLSample::Application>();
+        OGLSample::g_RuntimeGlobalContext.m_Application = app;
+
+        app->run();
+
+        OGLSample::g_RuntimeGlobalContext.m_Application.reset();
     }
 
     OGLSample::g_RuntimeGlobalContext.Shutdown();

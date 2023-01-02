@@ -9,6 +9,14 @@
 namespace OGLSample
 {
 
+OpenGL3Texture::OpenGL3Texture()
+{
+    glGenTextures(1, &m_Id);
+    glBindTexture(GL_TEXTURE_2D, m_Id);
+
+    glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &m_TotalUnits);
+}
+
 OpenGL3Texture::OpenGL3Texture(const std::filesystem::path& path)
 {
     LOG_DEBUG("Loading texture from path: {}", path)

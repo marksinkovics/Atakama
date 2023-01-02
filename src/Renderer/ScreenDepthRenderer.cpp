@@ -16,18 +16,19 @@ void ScreenDepthRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camer
     
     m_QuadMesh = AssetManager::LoadQuad();
     
-    g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowFrameBufferResizeEvent>(std::bind(&ScreenDepthRenderer::OnWindowFrameBufferResize, this, std::placeholders::_1));
-
     Ref<Window> window = g_RuntimeGlobalContext.m_Window;
     m_FrameBuffer = FrameBuffer::Create(window->GetFrameBufferWidth(), window->GetFrameBufferHeight());
 }
 
-bool ScreenDepthRenderer::OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event)
+void ScreenDepthRenderer::Resize(uint32_t width, uint32_t height)
 {
     m_QuadMesh->GetSubMeshes()[0]->SetTexture(nullptr);
-    m_FrameBuffer.reset();
-    m_FrameBuffer = FrameBuffer::Create(event.GetWidth(), event.GetHeight());
-    return false;
+    m_FrameBuffer->Resize(width, height);
+}
+
+glm::uvec2 ScreenDepthRenderer::GetSize()
+{
+    return { m_FrameBuffer->GetWidth(), m_FrameBuffer->GetHeight() };
 }
 
 void ScreenDepthRenderer::StartRecord()
@@ -40,11 +41,9 @@ void ScreenDepthRenderer::StopRecord()
     m_FrameBuffer->Unbind();
 }
 
-void ScreenDepthRenderer::Draw(float time, glm::vec2 frameSize, Ref<Texture> depthTexture)
+void ScreenDepthRenderer::Draw(Ref<Texture> depthTexture)
 {
     m_QuadMesh->GetSubMeshes()[0]->SetTexture(depthTexture);
-    m_Shader->SetUniformFloat("uTime", time);
-    m_Shader->SetUniformFloat2("uFrameSize", frameSize);
     m_QuadMesh->Draw(m_RenderSystem, m_Shader);
 }
 

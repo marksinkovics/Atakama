@@ -13,24 +13,26 @@
 namespace OGLSample
 {
 
-  class Application
-  {
-  public:
+class Application
+{
+public:
     Application();
     ~Application();
 
     void OnEvent(Event &event);
     bool OnMouseButtonPressed(MouseButtonPressedEvent &event);
 
+    void BlockEvent(bool value);
+
     Application(const Application &) = delete;
     Application &operator=(const Application &) = delete;
 
     void run();
-
-  private:
+private:
     Ref<Window> m_Window;
     Ref<Engine> m_Engine;
-  };
+    bool m_BlockEvents;
+};
 
 }
 

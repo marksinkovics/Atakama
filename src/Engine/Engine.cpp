@@ -22,7 +22,8 @@ void Engine::Init(Ref<Window>& window)
     
     m_Camera = CreateRef<Camera>(Camera::Mode::Perspective);
     m_Camera->LookAt({5.0f, 5.f, 5.f}, {0.0f, 0.0f, 0.0f});
-        
+    m_Camera->Resize(m_Window->GetWidth(), m_Window->GetHeight());
+
     m_Scene = CreateRef<SandboxScene>();
     m_Scene->Init();
 
@@ -69,12 +70,11 @@ void Engine::Run()
     m_perfMonitor->StartGPUTimer();
     
     m_ScreenRenderer->StartRecord();
-    m_RenderSystem->SetViewport(0, 0, m_Window->GetFrameBufferWidth(), m_Window->GetFrameBufferHeight());
+
     m_RenderSystem->SetDepthTest(true);
     m_RenderSystem->SetClearColor({0.0f, 0.0f, 0.4f, 0.0f});
     m_RenderSystem->Clear();
 
-    
     lightingRenderer->Begin(m_Scene->GetLight());
     lightingRenderer->Draw(m_Scene->GetModelById("floor"));
     lightingRenderer->Draw(m_Scene->GetModelById("cube"));
@@ -95,17 +95,16 @@ void Engine::Run()
     m_RenderSystem->SetDepthTest(false);
     m_RenderSystem->SetClearColor({1.0f, 1.0f, 1.0f, 0.0f});
     m_RenderSystem->Clear();
-    m_RenderSystem->SetViewport(0, 0, m_Window->GetFrameBufferWidth(), m_Window->GetFrameBufferHeight());
 
-    m_ScreenRenderer->Begin();
-    m_ScreenRenderer->Draw((float)(glfwGetTime()*10.0f), glm::vec2(m_Window->GetFrameBufferWidth(), m_Window->GetFrameBufferHeight()));
-    m_ScreenRenderer->End();
+//    m_ScreenRenderer->Begin();
+//    m_ScreenRenderer->Draw((float)(glfwGetTime()*10.0f), glm::vec2(m_Window->GetFrameBufferWidth(), m_Window->GetFrameBufferHeight()));
+//    m_ScreenRenderer->End();
     
     m_ScreenDepthRenderer->Begin();
     m_ScreenDepthRenderer->StartRecord();
-    m_ScreenDepthRenderer->Draw((float)(glfwGetTime()*10.0f), glm::vec2(m_Window->GetFrameBufferWidth(), m_Window->GetFrameBufferHeight()), m_ScreenRenderer->GetFrameBuffer()->GetDepthTexture());
+    m_ScreenDepthRenderer->Draw(m_ScreenRenderer->GetFrameBuffer()->GetDepthTexture());
     m_ScreenDepthRenderer->StopRecord();
-    m_ScreenRenderer->End();
+    m_ScreenDepthRenderer->End();
 
     m_perfMonitor->StopGPUTimer();
     m_perfMonitor->StopCPUTimer();
@@ -120,6 +119,16 @@ void Engine::Run()
     g_RuntimeGlobalContext.m_InputSystem->Clear();
     m_Window->SwapBuffers();
     m_Window->PollEvents();
+}
+
+Ref<ScreenRenderer> Engine::GetScreenRenderer()
+{
+    return m_ScreenRenderer;
+}
+
+Ref<ScreenDepthRenderer> Engine::GetScreenDepthRenderer()
+{
+    return m_ScreenDepthRenderer;
 }
 
 }

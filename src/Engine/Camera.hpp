@@ -35,7 +35,7 @@ public:
     virtual void SetMode(Mode mode);
     
     virtual bool OnMouseScrollEvent(MouseScrolledEvent& event);
-    virtual bool OnWindowResize(WindowResizeEvent& event);
+    virtual void Resize(uint32_t width, uint32_t height);
 protected:
     Transform m_Transform;
 
@@ -48,6 +48,9 @@ protected:
     glm::mat4 m_ProjectionMatrix {1.f};
     
     Mode m_Mode;
+
+    float m_Ratio;
+    glm::uvec2 m_Viewport;
 };
 
 }

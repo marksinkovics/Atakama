@@ -167,7 +167,7 @@ uint32_t Window::GetFrameBufferHeight()
     return m_FrameBufferHeight;
 }
 
-glm::vec<2, uint32_t, glm::defaultp> Window::GetSize()
+glm::uvec2 Window::GetSize()
 {
     return { m_Width,  m_Height };
 }

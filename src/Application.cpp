@@ -20,6 +20,7 @@ Application::Application()
     g_RuntimeGlobalContext.m_Dispatcher->subscribe<MouseButtonPressedEvent>(std::bind(&Application::OnMouseButtonPressed, this, std::placeholders::_1));
     
     m_Engine = CreateRef<Engine>();
+    g_RuntimeGlobalContext.m_Engine = m_Engine;
 }
 
 Application::~Application()
@@ -31,10 +32,10 @@ void Application::OnEvent(Event &event)
 {
     ImGuiIO& io = ImGui::GetIO();
     
-    if (IsMouseEvent(event))
+    if (IsMouseEvent(event) && m_BlockEvents)
         event.Handled |= io.WantCaptureMouse;
 
-    if (IsKeyboardEvent(event))
+    if (IsKeyboardEvent(event) && m_BlockEvents)
         event.Handled |= io.WantCaptureKeyboard;
 
     if (event.Handled)
@@ -52,6 +53,11 @@ bool Application::OnMouseButtonPressed(MouseButtonPressedEvent &event)
     }
     
     return false;
+}
+
+void Application::BlockEvent(bool value)
+{
+    m_BlockEvents = value;
 }
 
 void Application::run()

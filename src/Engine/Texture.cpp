@@ -6,6 +6,19 @@
 namespace OGLSample
 {
 
+Ref<Texture> Texture::Create()
+{
+    switch(g_RuntimeGlobalContext.m_GraphicsAPI)
+    {
+        case GraphicsAPI::None:
+        {
+            LOG_FATAL("GraphicsAPI::None is not supported!");
+            break;
+        }
+        case GraphicsAPI::OpenGL3: return CreateRef<OpenGL3Texture>();
+    }
+}
+
 Ref<Texture> Texture::Create(const std::filesystem::path& path)
 {
     switch(g_RuntimeGlobalContext.m_GraphicsAPI)

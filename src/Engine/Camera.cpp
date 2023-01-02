@@ -1,11 +1,8 @@
 #include "Camera.hpp"
 #include "InputSystem.hpp"
 #include "Events/Event.hpp"
-#include "Events/WindowEvent.hpp"
 #include "Events/MouseEvent.hpp"
 #include "Events/EventDispatcher.hpp"
-#include "Window.hpp"
-
 
 #include <GLFW/glfw3.h>
 #include <glm/gtx/vector_angle.hpp>
@@ -21,7 +18,6 @@ Camera::Camera(Mode mode)
     SetMode(mode);
     
     g_RuntimeGlobalContext.m_Dispatcher->subscribe<MouseScrolledEvent>(std::bind(&Camera::OnMouseScrollEvent, this, std::placeholders::_1));
-    g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowResizeEvent>(std::bind(&Camera::OnWindowResize, this, std::placeholders::_1));
 }
 
 void Camera::Update(float frameTime)
@@ -117,20 +113,18 @@ Camera::Mode Camera::GetMode() const
 
 void Camera::SetMode(Mode mode)
 {
-    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
     m_Mode = mode;
     
     switch(mode)
     {
         case Mode::Perspective:
         {
-            m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), (float)window->GetRatio(), 0.1f, 100.0f);
+            m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), m_Ratio, 0.1f, 100.0f);
             break;
         }
         case Mode::Ortho:
         {
-            float aspectRatio = window->GetRatio();
-            m_ProjectionMatrix = glm::ortho(-aspectRatio * m_Zoom, aspectRatio * m_Zoom, -m_Zoom, m_Zoom, -1.0f, 100.0f);
+            m_ProjectionMatrix = glm::ortho(-m_Ratio * m_Zoom, m_Ratio * m_Zoom, -m_Zoom, m_Zoom, -1.0f, 100.0f);
             break;
         }
         default:
@@ -140,20 +134,18 @@ void Camera::SetMode(Mode mode)
 
 bool Camera::OnMouseScrollEvent(MouseScrolledEvent& event)
 {
-    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
     switch(m_Mode)
     {
         case Mode::Perspective:
         {
             m_InitialFoV += event.GetYOffset() * 0.1f;
-            m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), (float)window->GetRatio(), 0.1f, 100.0f);
+            m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), m_Ratio, 0.1f, 100.0f);
             break;
         }
         case Mode::Ortho:
         {
             m_Zoom += event.GetYOffset() * 0.1f;
-            float aspectRatio = window->GetRatio();
-            m_ProjectionMatrix = glm::ortho(-aspectRatio * m_Zoom, aspectRatio * m_Zoom, -m_Zoom, m_Zoom, -1.0f, 100.0f);
+            m_ProjectionMatrix = glm::ortho(-m_Ratio * m_Zoom, m_Ratio * m_Zoom, -m_Zoom, m_Zoom, -1.0f, 100.0f);
             break;
         }
         default:
@@ -162,27 +154,26 @@ bool Camera::OnMouseScrollEvent(MouseScrolledEvent& event)
     return false;
 }
 
-bool Camera::OnWindowResize(WindowResizeEvent& event)
+void Camera::Resize(uint32_t width, uint32_t height)
 {
-    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
+    m_Viewport = { width, height };
+    m_Ratio = (float)m_Viewport.x / (float)m_Viewport.y;
+
     switch(m_Mode)
     {
         case Mode::Perspective:
         {
-            m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), (float)window->GetRatio(), 0.1f, 100.0f);
+            m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), m_Ratio, 0.1f, 100.0f);
             break;
         }
         case Mode::Ortho:
         {
-            float aspectRatio = window->GetRatio();
-            m_ProjectionMatrix = glm::ortho(-aspectRatio * m_Zoom, aspectRatio * m_Zoom, -m_Zoom, m_Zoom, -1.0f, 100.0f);
+            m_ProjectionMatrix = glm::ortho(-m_Ratio * m_Zoom, m_Ratio * m_Zoom, -m_Zoom, m_Zoom, -1.0f, 100.0f);
             break;
         }
         default:
             LOG_FATAL("Unknown camera mode.")
     }
-
-    return false;
 }
 
 }

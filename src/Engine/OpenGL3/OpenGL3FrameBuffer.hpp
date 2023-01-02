@@ -13,20 +13,18 @@ public:
     OpenGL3FrameBuffer(uint32_t width, uint32_t height);
     virtual ~OpenGL3FrameBuffer();
     
-    virtual void Bind() const;
-    virtual void Unbind() const;
-    virtual Ref<Texture> GetColorTexture() const;
-    virtual Ref<Texture> GetDepthTexture() const;
-    virtual int GetWidth() const;
-    virtual int GetHeight() const;
+    virtual void Bind() const override;
+    virtual void Unbind() const override;
+    virtual Ref<Texture> GetColorTexture() const override;
+    virtual Ref<Texture> GetDepthTexture() const override;
+    virtual int GetWidth() const override;
+    virtual int GetHeight() const override;
+    virtual void Resize(int width, int height) override;
 private:
     uint32_t m_Id;
-    
-    uint32_t m_ColorTextureId;
-    uint32_t m_DepthTextureId;
-    
+        
     uint32_t m_DepthRenderBufferId;
-    uint32_t m_RenderBufferId;
+    uint32_t m_ColorRenderBufferId;
     uint32_t m_Width;
     uint32_t m_Height;
     

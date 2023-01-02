@@ -29,6 +29,10 @@ public:
     void Shutdown();
     void Run();
     void CalculateDeltaTime();
+
+    Ref<ScreenRenderer> GetScreenRenderer();
+    Ref<ScreenDepthRenderer> GetScreenDepthRenderer();
+
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> m_LastTime {std::chrono::high_resolution_clock::now()};
     float m_FrameTime;

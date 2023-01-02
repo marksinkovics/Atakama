@@ -15,20 +15,20 @@ void ScreenRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera)
     
     m_QuadMesh = AssetManager::LoadQuad();
     
-    g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowFrameBufferResizeEvent>(std::bind(&ScreenRenderer::OnWindowFrameBufferResize, this, std::placeholders::_1));
-
-    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
-    m_FrameBuffer = FrameBuffer::Create(window->GetFrameBufferWidth(), window->GetFrameBufferHeight());
-    m_QuadMesh->GetSubMeshes()[0]->SetTexture(m_FrameBuffer->GetColorTexture());
+//    Ref<Window> window = g_RuntimeGlobalContext.m_Window;
+    m_FrameBuffer = FrameBuffer::Create(100.f, 100.f);
+//    m_QuadMesh->GetSubMeshes()[0]->SetTexture(m_FrameBuffer->GetColorTexture());
 }
 
-bool ScreenRenderer::OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event)
+void ScreenRenderer::Resize(uint32_t width, uint32_t height)
 {
-    m_QuadMesh->GetSubMeshes()[0]->SetTexture(nullptr);
-    m_FrameBuffer.reset();
-    m_FrameBuffer = FrameBuffer::Create(event.GetWidth(), event.GetHeight());
-    m_QuadMesh->GetSubMeshes()[0]->SetTexture(m_FrameBuffer->GetColorTexture());
-    return false;
+    m_FrameBuffer->Resize(width, height);
+//    m_QuadMesh->GetSubMeshes()[0]->SetTexture(m_FrameBuffer->GetColorTexture());
+}
+
+glm::uvec2 ScreenRenderer::GetSize()
+{
+    return { m_FrameBuffer->GetWidth(), m_FrameBuffer->GetHeight() };
 }
 
 void ScreenRenderer::StartRecord()
@@ -41,11 +41,9 @@ void ScreenRenderer::StopRecord()
     m_FrameBuffer->Unbind();
 }
 
-void ScreenRenderer::Draw(float time, glm::vec2 frameSize)
+void ScreenRenderer::Draw()
 {
-    m_Shader->SetUniformFloat("uTime", time);
-    m_Shader->SetUniformFloat2("uFrameSize", frameSize);
-    m_QuadMesh->Draw(m_RenderSystem, m_Shader);
+//    m_QuadMesh->Draw(m_RenderSystem, m_Shader);
 }
 
 Ref<FrameBuffer>& ScreenRenderer::GetFrameBuffer()

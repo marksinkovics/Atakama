@@ -16,6 +16,7 @@ public:
     virtual Ref<Texture> GetDepthTexture() const = 0;
     virtual int GetWidth() const = 0;
     virtual int GetHeight() const = 0;
+    virtual void Resize(int width, int height) = 0;
     
     static Ref<FrameBuffer> Create(uint32_t width, uint32_t height);
 };

@@ -1,5 +1,7 @@
 #include "GlobalContext.hpp"
 
+#include "Application.hpp"
+#include "Engine/Engine.hpp"
 #include "Events/Event.hpp"
 #include "Events/EventDispatcher.hpp"
 #include "Engine/InputSystem.hpp"
