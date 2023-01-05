@@ -1,12 +1,12 @@
 #include "Texture.hpp"
-#include "OpenGL3/OpenGL3Texture.hpp"
+#include "OpenGL3/OpenGL3Texture2D.hpp"
 #include "RenderTypes.hpp"
 
 
 namespace OGLSample
 {
 
-Ref<Texture> Texture::Create()
+Ref<Texture> Texture2D::Create()
 {
     switch(g_RuntimeGlobalContext.m_GraphicsAPI)
     {
@@ -15,11 +15,11 @@ Ref<Texture> Texture::Create()
             LOG_FATAL("GraphicsAPI::None is not supported!");
             break;
         }
-        case GraphicsAPI::OpenGL3: return CreateRef<OpenGL3Texture>();
+        case GraphicsAPI::OpenGL3: return CreateRef<OpenGL3Texture2D>();
     }
 }
 
-Ref<Texture> Texture::Create(const std::filesystem::path& path)
+Ref<Texture> Texture2D::Create(const std::filesystem::path& path)
 {
     switch(g_RuntimeGlobalContext.m_GraphicsAPI)
     {
@@ -28,11 +28,11 @@ Ref<Texture> Texture::Create(const std::filesystem::path& path)
             LOG_FATAL("GraphicsAPI::None is not supported!");
             break;
         }
-        case GraphicsAPI::OpenGL3: return CreateRef<OpenGL3Texture>(path);
+        case GraphicsAPI::OpenGL3: return CreateRef<OpenGL3Texture2D>(path);
     }
 }
 
-Ref<Texture> Texture::Create(uint32_t id)
+Ref<Texture> Texture2D::Create(uint32_t id)
 {
     switch(g_RuntimeGlobalContext.m_GraphicsAPI)
     {
@@ -41,7 +41,7 @@ Ref<Texture> Texture::Create(uint32_t id)
             LOG_FATAL("GraphicsAPI::None is not supported!");
             break;
         }
-        case GraphicsAPI::OpenGL3: return CreateRef<OpenGL3Texture>(id);
+        case GraphicsAPI::OpenGL3: return CreateRef<OpenGL3Texture2D>(id);
     }
 }
 

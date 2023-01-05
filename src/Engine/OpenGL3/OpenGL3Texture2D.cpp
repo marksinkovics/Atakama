@@ -1,4 +1,4 @@
-#include "OpenGL3Texture.hpp"
+#include "OpenGL3Texture2D.hpp"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -9,7 +9,7 @@
 namespace OGLSample
 {
 
-OpenGL3Texture::OpenGL3Texture()
+OpenGL3Texture2D::OpenGL3Texture2D()
 {
     glGenTextures(1, &m_Id);
     glBindTexture(GL_TEXTURE_2D, m_Id);
@@ -17,7 +17,7 @@ OpenGL3Texture::OpenGL3Texture()
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &m_TotalUnits);
 }
 
-OpenGL3Texture::OpenGL3Texture(const std::filesystem::path& path)
+OpenGL3Texture2D::OpenGL3Texture2D(const std::filesystem::path& path)
 {
     LOG_DEBUG("Loading texture from path: {}", path)
 
@@ -41,23 +41,23 @@ OpenGL3Texture::OpenGL3Texture(const std::filesystem::path& path)
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &m_TotalUnits);
 }
 
-OpenGL3Texture::OpenGL3Texture(uint32_t id)
+OpenGL3Texture2D::OpenGL3Texture2D(uint32_t id)
 : m_Id(id)
 {
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &m_TotalUnits);
 }
 
-OpenGL3Texture::~OpenGL3Texture()
+OpenGL3Texture2D::~OpenGL3Texture2D()
 {
     glDeleteTextures(1, &m_Id);
 }
 
-uint32_t OpenGL3Texture::GetId()
+uint32_t OpenGL3Texture2D::GetId()
 {
     return m_Id;
 }
 
-void OpenGL3Texture::Bind(int index)
+void OpenGL3Texture2D::Bind(int index)
 {
     ASSERT((index < m_TotalUnits) && "Texture index is higher than the limit");
 
@@ -65,7 +65,7 @@ void OpenGL3Texture::Bind(int index)
     glBindTexture(GL_TEXTURE_2D, m_Id);
 }
 
-void OpenGL3Texture::Unbind()
+void OpenGL3Texture2D::Unbind()
 {
     glActiveTexture(0);
     glBindTexture(GL_TEXTURE_2D, 0);

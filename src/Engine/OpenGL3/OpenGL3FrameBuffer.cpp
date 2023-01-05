@@ -1,5 +1,5 @@
 #include "OpenGL3FrameBuffer.hpp"
-#include "OpenGL3Texture.hpp"
+#include "OpenGL3Texture2D.hpp"
 #include "Window.hpp"
 #include "Debug/OpenGL3/OpenGL3Debug.hpp"
 
@@ -73,7 +73,7 @@ void OpenGL3FrameBuffer::Resize(int width, int height)
     m_Height = height;
 
     // Texture
-    m_ColorTexture = CreateRef<OpenGL3Texture>();
+    m_ColorTexture = CreateRef<OpenGL3Texture2D>();
     glBindTexture(GL_TEXTURE_2D, m_ColorTexture->GetId());
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -83,7 +83,7 @@ void OpenGL3FrameBuffer::Resize(int width, int height)
 //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
 
-    m_DepthTexture = CreateRef<OpenGL3Texture>();
+    m_DepthTexture = CreateRef<OpenGL3Texture2D>();
     glBindTexture(GL_TEXTURE_2D, m_DepthTexture->GetId());
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_Width, m_Height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);

@@ -60,9 +60,9 @@ void SandboxScene::LoadLight()
 
 void SandboxScene::LoadTextures()
 {
-    m_Textures["uvtemplate"] = Texture::Create(FileSystem::GetTexturePath() / "uvtemplate.bmp");
-    m_Textures["uvmap"] = Texture::Create(FileSystem::GetTexturePath() / "uvmap.png");
-    m_Textures["vikingRoom"] = Texture::Create(FileSystem::GetTexturePath() / "viking_room.png");
+    m_Textures["uvtemplate"] = Texture2D::Create(FileSystem::GetTexturePath() / "uvtemplate.bmp");
+    m_Textures["uvmap"] = Texture2D::Create(FileSystem::GetTexturePath() / "uvmap.png");
+    m_Textures["vikingRoom"] = Texture2D::Create(FileSystem::GetTexturePath() / "viking_room.png");
 }
 
 void SandboxScene::LoadMeshes()
