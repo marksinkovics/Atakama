@@ -31,4 +31,9 @@ void RuntimeGlobalContext::Shutdown()
     m_LogSystem.reset();
 }
 
+bool IsEditor()
+{
+    return g_RuntimeGlobalContext.m_Editor;
+}
+
 }

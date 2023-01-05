@@ -25,12 +25,12 @@ public:
 
     uint32_t GetWidth();
     uint32_t GetHeight();
+    glm::uvec2 GetSize();
     uint32_t GetFrameBufferWidth();
     uint32_t GetFrameBufferHeight();
+    glm::uvec2 GetFrameBufferSize();
 
     float GetRatio();
-
-    glm::uvec2 GetSize();
 
     typedef std::function<void(Event&)> EventCallbackFunc;
     

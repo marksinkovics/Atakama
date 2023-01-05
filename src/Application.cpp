@@ -21,6 +21,8 @@ Application::Application()
     
     m_Engine = CreateRef<Engine>();
     g_RuntimeGlobalContext.m_Engine = m_Engine;
+
+    m_BlockEvents = !IsEditor();
 }
 
 Application::~Application()
@@ -31,7 +33,7 @@ Application::~Application()
 void Application::OnEvent(Event &event)
 {
     ImGuiIO& io = ImGui::GetIO();
-    
+
     if (IsMouseEvent(event) && m_BlockEvents)
         event.Handled |= io.WantCaptureMouse;
 

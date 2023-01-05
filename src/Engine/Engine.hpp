@@ -5,14 +5,8 @@
 #include "Mesh.hpp"
 #include "Camera.hpp"
 
-#include "Engine/Lights/PointLight.hpp"
 #include "Engine/RenderSystem.hpp"
-#include "Renderer/SimpleRenderer.hpp"
-#include "Renderer/LightingRenderer.hpp"
-#include "Renderer/PointLightRenderer.hpp"
 #include "Renderer/UIRenderer.hpp"
-#include "Renderer/ScreenRenderer.hpp"
-#include "Renderer/ScreenDepthRenderer.hpp"
 #include "Perf/PerfMonitor.hpp"
 
 #include "Scene.hpp"
@@ -22,6 +16,14 @@
 namespace OGLSample
 {
 
+class RenderPass;
+class MainRenderPass;
+class DebugRenderPass;
+class EditorRenderPass;
+class DepthViewRenderPass;
+class ViewportRenderPass;
+class WindowFrameBufferResizeEvent;
+
 class Engine
 {
 public:
@@ -30,8 +32,8 @@ public:
     void Run();
     void CalculateDeltaTime();
 
-    Ref<ScreenRenderer> GetScreenRenderer();
-    Ref<ScreenDepthRenderer> GetScreenDepthRenderer();
+    bool OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event);
+    void UpdateRenderingViewportSize(glm::uvec2 size);
 
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> m_LastTime {std::chrono::high_resolution_clock::now()};
@@ -41,13 +43,17 @@ private:
     Ref<Window> m_Window;
     Ref<RenderSystem> m_RenderSystem;
     Ref<Camera> m_Camera;
+
+    Ref<MainRenderPass> m_MainRenderPass;
+    Ref<DebugRenderPass> m_DebugRenderPass;
+    Ref<DepthViewRenderPass> m_DepthViewRenderPass;
+    Ref<ViewportRenderPass> m_ViewportRenderPass;
+
+    std::vector<Ref<RenderPass>> m_MainRenderPasses;
+    std::vector<Ref<RenderPass>> m_PostRenderPasses;
     
-    Ref<SimpleRenderer> simpleRenderer;
-    Ref<LightingRenderer> lightingRenderer;
-    Ref<PointLightRenderer> pointLightRenderer;
     Ref<UIRenderer> m_UIRenderer;
-    Ref<ScreenRenderer> m_ScreenRenderer;
-    Ref<ScreenDepthRenderer> m_ScreenDepthRenderer;
+    std::vector<Ref<UIRenderView>> m_UIRenderViews;
 
     Ref<PerfMonitor> m_perfMonitor;
 };

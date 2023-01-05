@@ -10,6 +10,7 @@ namespace OGLSample
 class OpenGL3FrameBuffer: public FrameBuffer
 {
 public:
+    OpenGL3FrameBuffer();
     OpenGL3FrameBuffer(uint32_t width, uint32_t height);
     virtual ~OpenGL3FrameBuffer();
     

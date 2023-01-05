@@ -6,6 +6,11 @@
 namespace OGLSample
 {
 
+OpenGL3FrameBuffer::OpenGL3FrameBuffer()
+{
+
+}
+
 OpenGL3FrameBuffer::OpenGL3FrameBuffer(uint32_t width, uint32_t height)
 {
     Resize(width, height);
@@ -52,6 +57,9 @@ int OpenGL3FrameBuffer::GetHeight() const
 
 void OpenGL3FrameBuffer::Resize(int width, int height)
 {
+    if (width == m_Width && height == m_Height)
+        return;
+
     if (m_Id)
     {
         glDeleteFramebuffers(1, &m_Id);

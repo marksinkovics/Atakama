@@ -157,6 +157,11 @@ uint32_t Window::GetHeight()
     return m_Height;
 }
 
+glm::uvec2 Window::GetSize()
+{
+    return { m_Width,  m_Height };
+}
+
 uint32_t Window::GetFrameBufferWidth()
 {
     return m_FrameBufferWidth;
@@ -167,9 +172,9 @@ uint32_t Window::GetFrameBufferHeight()
     return m_FrameBufferHeight;
 }
 
-glm::uvec2 Window::GetSize()
+glm::uvec2 Window::GetFrameBufferSize()
 {
-    return { m_Width,  m_Height };
+    return { m_FrameBufferWidth, m_FrameBufferHeight };
 }
 
 float Window::GetRatio()

@@ -27,7 +27,11 @@ public:
     Ref<Engine> m_Engine;
     
     GraphicsAPI m_GraphicsAPI;
+
+    bool m_Editor { true };
 };
+
+extern bool IsEditor();
 
 extern RuntimeGlobalContext g_RuntimeGlobalContext;
 
