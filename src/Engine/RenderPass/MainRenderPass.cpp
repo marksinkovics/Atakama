@@ -8,12 +8,14 @@
 #include "Engine/Scene.hpp"
 #include "Engine/Camera.hpp"
 
+#include "Engine/AssetManager.hpp"
+
 namespace OGLSample
 {
 
 
 MainRenderPass::MainRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera> camera)
-: RenderPass(renderSystem), m_Scene(scene), m_Camera(camera)
+: SceneRenderPass(renderSystem, scene), m_Camera(camera)
 {
     m_Renderer = CreateRef<LightingRenderer>();
     m_Renderer->Init(m_RenderSystem, m_Camera);
@@ -26,10 +28,10 @@ void MainRenderPass::Draw()
     m_RenderSystem->Clear();
 
     m_Renderer->Begin(m_Scene->GetLight());
-    m_Renderer->Draw(m_Scene->GetModelById("floor"));
-    m_Renderer->Draw(m_Scene->GetModelById("cube"));
-    m_Renderer->Draw(m_Scene->GetModelById("cube2"));
-    m_Renderer->Draw(m_Scene->GetModelById("vikingRoom"));
+    for(const auto& mesh : *m_Scene)
+    {
+        m_Renderer->Draw(mesh);
+    }
     m_Renderer->End();
 }
 
@@ -39,7 +41,7 @@ std::string MainRenderPass::GetName()
 }
 
 DebugRenderPass::DebugRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera> camera, Ref<FrameBuffer> frameBuffer)
-: RenderPass(renderSystem), m_Scene(scene), m_Camera(camera)
+: SceneRenderPass(renderSystem, scene), m_Camera(camera), m_AxisMesh(AssetManager::LoadAxis())
 {
     m_FrameBuffer = frameBuffer;
     m_SimpleRenderer = CreateRef<SimpleRenderer>();
@@ -52,7 +54,7 @@ DebugRenderPass::DebugRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scen
 void DebugRenderPass::Draw()
 {
     m_SimpleRenderer->Begin();
-    m_SimpleRenderer->Draw(m_Scene->GetModelById("axis"));
+    m_SimpleRenderer->Draw(m_AxisMesh);
     m_SimpleRenderer->End();
 
     m_BillboardRenderer->Begin();

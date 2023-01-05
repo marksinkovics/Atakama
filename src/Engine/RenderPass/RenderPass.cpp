@@ -74,4 +74,14 @@ void RenderPass::RemoveDependency(Ref<RenderPass> renderPass)
     }));
 }
 
+//
+// SceneRenderPass
+//
+
+SceneRenderPass::SceneRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene>& scene)
+: RenderPass(renderSystem), m_Scene(scene)
+{
+
+}
+
 }

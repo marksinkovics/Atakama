@@ -23,12 +23,17 @@ public:
     virtual void LoadMeshes();
     
     Ref<PointLight> GetLight() const;
+
     Ref<Texture> GetTextureById(const std::string& id) const;
-    Ref<Mesh> GetModelById(const std::string& id) const;
+    
+    std::vector<Ref<Mesh>> GetMeshes() const;
+    std::vector<Ref<Mesh>>::iterator begin() { return m_Meshes.begin(); }
+    std::vector<Ref<Mesh>>::iterator end() { return m_Meshes.end(); }
+    std::vector<Ref<Mesh>>::const_iterator begin() const { return m_Meshes.begin(); }
+    std::vector<Ref<Mesh>>::const_iterator end() const { return m_Meshes.end(); }
 protected:
     std::map<std::string, Ref<Texture>> m_Textures;
-    std::map<std::string, Ref<Mesh>> m_Meshes;
-    
+    std::vector<Ref<Mesh>> m_Meshes;
     Ref<PointLight> m_PointLight;
 };
 

@@ -44,16 +44,14 @@ Ref<Texture> Scene::GetTextureById(const std::string& id) const
     return it->second;
 }
 
-Ref<Mesh> Scene::GetModelById(const std::string& id) const
+std::vector<Ref<Mesh>> Scene::GetMeshes() const
 {
-    auto it = m_Meshes.find(id);
-    if (it == m_Meshes.end())
-    {
-        LOG_ERROR("Cannot find model by id {}", id)
-        return nullptr;
-    }
-    return it->second;
+    return m_Meshes;
 }
+
+//
+// Sandbox scene
+//
 
 void SandboxScene::LoadLight()
 {
@@ -65,28 +63,22 @@ void SandboxScene::LoadTextures()
     m_Textures["uvtemplate"] = Texture::Create(FileSystem::GetTexturePath() / "uvtemplate.bmp");
     m_Textures["uvmap"] = Texture::Create(FileSystem::GetTexturePath() / "uvmap.png");
     m_Textures["vikingRoom"] = Texture::Create(FileSystem::GetTexturePath() / "viking_room.png");
-    m_Textures["wall"] = Texture::Create(FileSystem::GetTexturePath() / "wall.jpg");
 }
 
 void SandboxScene::LoadMeshes()
 {
-    m_Meshes["axis"] = AssetManager::LoadAxis();
-    m_Meshes["triangle"] = AssetManager::LoadTriangle();
-    m_Meshes["smoothVase"] = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "smooth_vase.obj");
-    m_Meshes["quad"] = AssetManager::LoadQuad();
-
     {
         auto mesh = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
         mesh->Translate({-1.8f, 1.0f, -1.f});
         mesh->GetSubMeshes()[0]->SetTexture(m_Textures["uvtemplate"]);
-        m_Meshes["cube"] = mesh;
+        m_Meshes.push_back(mesh);
     }
     
     {
         auto mesh = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
         mesh->Translate({ 1.8f, 1.0f, -1.f});
         mesh->GetSubMeshes()[0]->SetTexture(m_Textures["uvmap"]);
-        m_Meshes["cube2"] = mesh;
+        m_Meshes.push_back(mesh);
     }
     
     {
@@ -95,7 +87,7 @@ void SandboxScene::LoadMeshes()
         mesh->Scale({1.5f, 1.5f, 1.5f});
         mesh->Translate({-1.0f, 0.1f, 1.f});
         mesh->Rotate(glm::radians(90.0f), {-1.f, 0.f, 0.f});
-        m_Meshes["vikingRoom"] = mesh;
+        m_Meshes.push_back(mesh);
     }
     
     {
@@ -103,9 +95,8 @@ void SandboxScene::LoadMeshes()
         mesh->Rotate(glm::radians(180.0f), {0.f, 0.f, -1.f});
         mesh->Scale({3.f, 1.f, 3.f});
         mesh->Translate({0.f, 0.f, 0.f});
-        m_Meshes["floor"] = mesh;
+        m_Meshes.push_back(mesh);
     }
-    
 }
- 
+
 }

@@ -10,7 +10,7 @@ class Camera;
 class Scene;
 class LightingRenderer;
 
-class MainRenderPass: public RenderPass
+class MainRenderPass: public SceneRenderPass
 {
 public:
     MainRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera> camera);
@@ -20,15 +20,15 @@ protected:
     virtual void Draw() override;
     virtual std::string GetName() override;
 private:
-    Ref<Scene> m_Scene;
     Ref<Camera> m_Camera;
     Ref<LightingRenderer> m_Renderer;
 };
 
 class SimpleRenderer;
 class PointLightRenderer;
+class Mesh;
 
-class DebugRenderPass: public RenderPass
+class DebugRenderPass: public SceneRenderPass
 {
 public:
     DebugRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera> camera, Ref<FrameBuffer> frameBuffer);
@@ -38,7 +38,7 @@ protected:
     virtual void Draw() override;
     virtual std::string GetName() override;
 private:
-    Ref<Scene> m_Scene;
+    Ref<Mesh> m_AxisMesh;
     Ref<Camera> m_Camera;
     Ref<SimpleRenderer> m_SimpleRenderer;
     Ref<PointLightRenderer> m_BillboardRenderer;

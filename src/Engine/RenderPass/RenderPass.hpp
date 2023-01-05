@@ -17,7 +17,7 @@ public:
     virtual ~RenderPass() = default;
 
 protected:
-    virtual void Draw() = 0;
+    virtual void Draw();
 public:
     virtual void Render();
 
@@ -40,6 +40,15 @@ protected:
     std::vector<Ref<RenderPass>> m_Dependencies;
 
     glm::uvec2 m_Size;
+};
+
+class SceneRenderPass: public RenderPass
+{
+public:
+    SceneRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene>& scene);
+    virtual ~SceneRenderPass() = default;
+protected:
+    Ref<Scene> m_Scene;
 };
 
 }
