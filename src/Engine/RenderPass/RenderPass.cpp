@@ -34,6 +34,12 @@ Ref<FrameBuffer> RenderPass::GetFrameBuffer()
     return m_FrameBuffer;
 }
 
+void RenderPass::SetFrameBuffer(Ref<FrameBuffer> frameBuffer)
+{
+    ASSERT(frameBuffer != nullptr && "Cannot assign nullptr to a framebuffer");
+    m_FrameBuffer = frameBuffer;
+}
+
 Ref<Texture> RenderPass::GetOutputColorTexture()
 {
     return m_FrameBuffer->GetColorTexture();

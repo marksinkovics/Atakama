@@ -25,6 +25,8 @@ void OpenGL3RenderSystem::Init()
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glEnable(GL_TEXTURE_CUBE_MAP);
 }
 
 void OpenGL3RenderSystem::Clear() const
@@ -63,6 +65,27 @@ void OpenGL3RenderSystem::SetDepthTest(bool value)
     {
         glDisable(GL_DEPTH_TEST);
     }
+}
+
+GLenum GetOpenGLBaseType(DepthCompare depthCompare)
+{
+    switch (depthCompare)
+    {
+        case DepthCompare::Never: return GL_NEVER;
+        case DepthCompare::Less: return GL_LESS;
+        case DepthCompare::Equal: return GL_EQUAL;
+        case DepthCompare::LessOrEqual: return GL_LEQUAL;
+        case DepthCompare::Greater: return GL_GREATER;
+        case DepthCompare::NotEqual: return GL_NOTEQUAL;
+        case DepthCompare::GreaterOrEqual: return GL_GEQUAL;
+        case DepthCompare::Always: return GL_ALWAYS;
+    }
+}
+
+void OpenGL3RenderSystem::SetDepthCompare(DepthCompare depthCompare)
+{
+    GLenum value = GetOpenGLBaseType(depthCompare);
+    glDepthFunc(value);
 }
 
 void OpenGL3RenderSystem::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)

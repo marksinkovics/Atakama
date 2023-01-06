@@ -1,5 +1,5 @@
-#ifndef OPENGL3_TEXTURE2D_HPP
-#define OPENGL3_TEXTURE2D_HPP
+#ifndef OPENGL3_TEXTURE_2D_HPP
+#define OPENGL3_TEXTURE_2D_HPP
 
 #include "Engine/Texture.hpp"
 

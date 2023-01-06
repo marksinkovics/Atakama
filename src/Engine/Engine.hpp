@@ -17,6 +17,7 @@ namespace OGLSample
 {
 
 class RenderPass;
+class SkyBoxRenderPass;
 class MainRenderPass;
 class DebugRenderPass;
 class EditorRenderPass;
@@ -44,6 +45,7 @@ private:
     Ref<RenderSystem> m_RenderSystem;
     Ref<Camera> m_Camera;
 
+    Ref<SkyBoxRenderPass> m_SkyBoxRenderPass;
     Ref<MainRenderPass> m_MainRenderPass;
     Ref<DebugRenderPass> m_DebugRenderPass;
     Ref<DepthViewRenderPass> m_DepthViewRenderPass;

@@ -7,6 +7,7 @@
 
 #include "RenderSystem.hpp"
 
+#include "RenderPass/SkyBoxRenderPass.hpp"
 #include "RenderPass/MainRenderPass.hpp"
 #include "RenderPass/DepthViewRenderPass.hpp"
 #include "RenderPass/ViewportRenderPass.hpp"
@@ -44,7 +45,10 @@ void Engine::Init(Ref<Window>& window)
     m_perfMonitor = CreateRef<PerfMonitor>();
 
     m_MainRenderPass = CreateRef<MainRenderPass>(m_RenderSystem, m_Scene, m_Camera);
-    m_DebugRenderPass = CreateRef<DebugRenderPass>(m_RenderSystem, m_Scene, m_Camera, m_MainRenderPass->GetFrameBuffer());
+    m_DebugRenderPass = CreateRef<DebugRenderPass>(m_RenderSystem, m_Scene, m_Camera);
+    m_DebugRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
+    m_SkyBoxRenderPass = CreateRef<SkyBoxRenderPass>(m_RenderSystem, m_Camera);
+    m_SkyBoxRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
 
     m_DepthViewRenderPass = CreateRef<DepthViewRenderPass>(m_RenderSystem);
     m_DepthViewRenderPass->AddDependency(m_MainRenderPass);
@@ -54,6 +58,7 @@ void Engine::Init(Ref<Window>& window)
 
     m_MainRenderPasses.push_back(m_MainRenderPass);
     m_MainRenderPasses.push_back(m_DebugRenderPass);
+    m_MainRenderPasses.push_back(m_SkyBoxRenderPass);
     m_PostRenderPasses.push_back(m_DepthViewRenderPass);
 
     if (!IsEditor())

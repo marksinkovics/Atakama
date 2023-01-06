@@ -22,6 +22,7 @@ public:
     virtual void Render();
 
     virtual Ref<FrameBuffer> GetFrameBuffer();
+    virtual void SetFrameBuffer(Ref<FrameBuffer> frameBuffer);
     virtual Ref<Texture> GetOutputColorTexture();
     virtual Ref<Texture> GetOutputDepthTexture();
 

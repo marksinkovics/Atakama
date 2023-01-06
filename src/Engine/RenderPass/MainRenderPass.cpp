@@ -7,6 +7,7 @@
 
 #include "Engine/Scene.hpp"
 #include "Engine/Camera.hpp"
+#include "Engine/FrameBuffer.hpp"
 
 #include "Engine/AssetManager.hpp"
 
@@ -40,10 +41,9 @@ std::string MainRenderPass::GetName()
     return "Main RenderPass";
 }
 
-DebugRenderPass::DebugRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera> camera, Ref<FrameBuffer> frameBuffer)
+DebugRenderPass::DebugRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera> camera)
 : SceneRenderPass(renderSystem, scene), m_Camera(camera), m_AxisMesh(AssetManager::LoadAxis())
 {
-    m_FrameBuffer = frameBuffer;
     m_SimpleRenderer = CreateRef<SimpleRenderer>();
     m_SimpleRenderer->Init(m_RenderSystem, m_Camera);
 

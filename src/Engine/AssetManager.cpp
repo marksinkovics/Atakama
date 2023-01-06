@@ -5,6 +5,12 @@
 namespace OGLSample
 {
 
+static uint32_t s_MeshId = 1;
+uint32_t AssetManager::GenerateId()
+{
+    return s_MeshId++;
+}
+
 Ref<Mesh> AssetManager::LoadTriangle()
 {
     std::vector<SubMesh::Vertex> rawVertices {
@@ -19,7 +25,7 @@ Ref<Mesh> AssetManager::LoadTriangle()
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
 
     auto subMesh = CreateScope<SubMesh>(vertices, indices);
-    auto mesh = CreateRef<Mesh>();
+    auto mesh = CreateRef<Mesh>(AssetManager::GenerateId());
     mesh->AddSubMesh(std::move(subMesh));
     return mesh;
 }
@@ -50,7 +56,7 @@ Ref<Mesh> AssetManager::LoadAxis()
     std::vector<Scope<SubMesh>> subMeshes;
     subMeshes.push_back(std::move(subMesh1));
     subMeshes.push_back(std::move(subMesh2));
-    return CreateRef<Mesh>(subMeshes);
+    return CreateRef<Mesh>(AssetManager::GenerateId(), subMeshes);
 }
 
 Ref<Mesh> AssetManager::LoadLightModel()
@@ -69,7 +75,7 @@ Ref<Mesh> AssetManager::LoadLightModel()
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
     
     auto subMesh = CreateScope<SubMesh>(vertices, indices);
-    auto mesh = CreateRef<Mesh>();
+    auto mesh = CreateRef<Mesh>(AssetManager::GenerateId());
     mesh->AddSubMesh(std::move(subMesh));
     return mesh;
 }
@@ -174,7 +180,7 @@ Ref<Mesh> AssetManager::LoadOBJFile(const std::filesystem::path& path)
     fclose(file);
     
     auto subMesh = CreateScope<SubMesh>(vertices, indices);
-    auto mesh = CreateRef<Mesh>();
+    auto mesh = CreateRef<Mesh>(AssetManager::GenerateId());
     mesh->AddSubMesh(std::move(subMesh));
     return mesh;
 }
@@ -213,9 +219,67 @@ Ref<Mesh> AssetManager::LoadQuad()
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
 
     auto subMesh = CreateScope<SubMesh>(vertices, indices);
-    auto mesh = CreateRef<Mesh>();
+    auto mesh = CreateRef<Mesh>(AssetManager::GenerateId());
     mesh->AddSubMesh(std::move(subMesh));
     return mesh;
+}
+
+Ref<Mesh> AssetManager::LoadSkyBox()
+{
+    std::vector<SubMesh::Vertex> rawVertices {
+        {{-1.0f,  1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f, -1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f, -1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f,  1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f,  1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+
+        {{-1.0f, -1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f,  1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f,  1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f,  1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f, -1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+
+        {{ 1.0f, -1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f, -1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f,  1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f,  1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f,  1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f, -1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+
+        {{-1.0f, -1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f,  1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f,  1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f,  1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f, -1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f, -1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+
+        {{-1.0f,  1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f,  1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f,  1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f,  1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f,  1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f,  1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+
+        {{-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f, -1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f, -1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f, -1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{-1.0f, -1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
+        {{ 1.0f, -1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}}
+    };
+
+    std::vector<SubMesh::Vertex> vertices;
+    std::vector<uint32_t> indices;
+
+    AssetManager::GenerateIndices(rawVertices, vertices, indices);
+
+    auto subMesh = CreateScope<SubMesh>(vertices, indices);
+    auto mesh = CreateRef<Mesh>(AssetManager::GenerateId());
+    mesh->AddSubMesh(std::move(subMesh));
+    return mesh;
+
 }
 
 }

@@ -19,7 +19,7 @@ OpenGL3Texture2D::OpenGL3Texture2D()
 
 OpenGL3Texture2D::OpenGL3Texture2D(const std::filesystem::path& path)
 {
-    LOG_DEBUG("Loading texture from path: {}", path)
+    LOG_DEBUG("Loading Texture2D from path: {}", path)
 
     int width, height, channels;
     unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);

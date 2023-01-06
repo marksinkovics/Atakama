@@ -5,13 +5,14 @@
 namespace OGLSample
 {
 
-Mesh::Mesh()
+Mesh::Mesh(uint32_t id)
+: m_Id(id)
 {
 
 }
 
-Mesh::Mesh(std::vector<Scope<SubMesh>>& subMeshes)
-: m_SubMeshes(std::move(subMeshes)), m_ModelMatrix(glm::mat4(1.0f))
+Mesh::Mesh(uint32_t id, std::vector<Scope<SubMesh>>& subMeshes)
+: m_Id(id), m_SubMeshes(std::move(subMeshes)), m_ModelMatrix(glm::mat4(1.0f))
 {
 
 }
@@ -85,6 +86,16 @@ void Mesh::Draw(Ref<RenderSystem>& renderSystem, Ref<Shader>& shader)
             subMesh->GetTexture()->Unbind();
         }
     }
+}
+
+uint32_t Mesh::GetId() const
+{
+    return m_Id;
+}
+
+void Mesh::SetId(uint32_t id)
+{
+    m_Id = id;
 }
 
 }
