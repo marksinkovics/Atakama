@@ -6,6 +6,7 @@
 #include "Events/EventDispatcher.hpp"
 #include "Engine/InputSystem.hpp"
 #include "Engine/RenderSystem.hpp"
+#include "Engine/AssetManager.hpp"
 #include "Log/LogSystem.hpp"
 
 namespace OGLSample
@@ -22,6 +23,8 @@ void RuntimeGlobalContext::Init()
 
     m_InputSystem = CreateRef<InputSystem>();
     m_InputSystem->Init();
+
+    m_AssetManager = CreateRef<AssetManager>();
 }
 
 void RuntimeGlobalContext::Shutdown()

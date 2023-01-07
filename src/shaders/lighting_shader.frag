@@ -5,7 +5,8 @@ in vec3 fragColor;
 in vec3 fragPosition;
 in vec3 fragNormalWorld;
 
-out vec4 outColor;
+layout(location = 0) out vec4 o_Color;
+layout(location = 1) out int o_MeshId;
 
 // Model
 uniform mat4 uModel;
@@ -20,10 +21,12 @@ uniform vec3 uViewPosition;
 // Texture sampler
 uniform int uHasTexture;
 uniform sampler2D textureSampler;
+// MeshId
+uniform int u_MeshId;
+uniform int u_MeshSelected;
 
 void main()
 {
-
 	vec3 color = fragColor;
 	if (uHasTexture == 1) {
 		color = texture(textureSampler, UV).rgb;
@@ -47,5 +50,8 @@ void main()
     vec3 specular = specularStrength * spec * uLightColor.rgb;
 
     vec3 result = (ambient + diffuse + specular) * color;
-    outColor = vec4(result, 1.0);
+    o_Color = vec4(result, 1.0);
+    if (u_MeshSelected == 1)
+        o_Color = o_Color * vec4(1.0, 0.0, 0.0, 1.0);
+    o_MeshId = u_MeshId;
 }

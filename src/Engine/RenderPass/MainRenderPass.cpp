@@ -42,7 +42,7 @@ std::string MainRenderPass::GetName()
 }
 
 DebugRenderPass::DebugRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera> camera)
-: SceneRenderPass(renderSystem, scene), m_Camera(camera), m_AxisMesh(AssetManager::LoadAxis())
+: SceneRenderPass(renderSystem, scene), m_Camera(camera), m_AxisMesh(AssetManager::Get()->LoadAxis())
 {
     m_SimpleRenderer = CreateRef<SimpleRenderer>();
     m_SimpleRenderer->Init(m_RenderSystem, m_Camera);

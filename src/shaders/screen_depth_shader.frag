@@ -2,7 +2,7 @@
 
 in vec2 UV;
 
-out vec4 color;
+layout(location = 0) out vec4 o_Color;
 
 uniform sampler2D textureSampler;
 
@@ -19,5 +19,5 @@ void main()
 {
     float depth = texture(textureSampler, UV).r;
     depth = LinearizeDepth(depth) / far;
-    color = vec4(vec3(depth), 1.0);
+    o_Color = vec4(vec3(depth), 1.0);
 }

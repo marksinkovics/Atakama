@@ -5,14 +5,12 @@
 namespace OGLSample
 {
 
-Mesh::Mesh(uint32_t id)
-: m_Id(id)
+Mesh::Mesh()
 {
-
 }
 
-Mesh::Mesh(uint32_t id, std::vector<Scope<SubMesh>>& subMeshes)
-: m_Id(id), m_SubMeshes(std::move(subMeshes)), m_ModelMatrix(glm::mat4(1.0f))
+Mesh::Mesh(std::vector<Scope<SubMesh>>& subMeshes)
+: m_SubMeshes(std::move(subMeshes)), m_ModelMatrix(glm::mat4(1.0f))
 {
 
 }
@@ -67,6 +65,9 @@ void Mesh::Draw(Ref<RenderSystem>& renderSystem, Ref<Shader>& shader)
         glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(modelMatrix));
         shader->SetUniformMat3("uNormalMatrix", normalMatrix);
 
+        shader->SetUniformInt("u_MeshId", m_Id);
+        shader->SetUniformInt("u_MeshSelected", Selected ? 1 : 0);
+
         auto texture = subMesh->GetTexture();
         if (texture == nullptr)
         {
@@ -88,14 +89,15 @@ void Mesh::Draw(Ref<RenderSystem>& renderSystem, Ref<Shader>& shader)
     }
 }
 
-uint32_t Mesh::GetId() const
+int Mesh::GetId() const
 {
     return m_Id;
 }
 
-void Mesh::SetId(uint32_t id)
+void Mesh::SetId(int id)
 {
     m_Id = id;
+    LOG_DEBUG("Mesh registered with id: {}", m_Id);
 }
 
 }

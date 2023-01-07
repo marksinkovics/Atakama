@@ -5,10 +5,32 @@
 namespace OGLSample
 {
 
-static uint32_t s_MeshId = 1;
-uint32_t AssetManager::GenerateId()
+int AssetManager::RegisterMesh(Ref<Mesh>& mesh)
 {
-    return s_MeshId++;
+    m_AllocatedMeshes.push_back(mesh);
+    int id = (int)m_AllocatedMeshes.size();
+    mesh->SetId(id);
+    return id;
+}
+
+void AssetManager::UpdateSelected(int id)
+{
+    if (m_SelectedId != 0 && m_SelectedId < m_AllocatedMeshes.size())
+    {
+        m_AllocatedMeshes[m_SelectedId - 1]->Selected = false;
+    }
+
+    m_SelectedId = id;
+
+    if (m_SelectedId != 0 && m_SelectedId < m_AllocatedMeshes.size())
+    {
+        m_AllocatedMeshes[m_SelectedId - 1]->Selected = true;
+    }
+}
+
+Ref<AssetManager> AssetManager::Get()
+{
+    return g_RuntimeGlobalContext.m_AssetManager;
 }
 
 Ref<Mesh> AssetManager::LoadTriangle()
@@ -25,8 +47,9 @@ Ref<Mesh> AssetManager::LoadTriangle()
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
 
     auto subMesh = CreateScope<SubMesh>(vertices, indices);
-    auto mesh = CreateRef<Mesh>(AssetManager::GenerateId());
+    auto mesh = CreateRef<Mesh>();
     mesh->AddSubMesh(std::move(subMesh));
+    RegisterMesh(mesh);
     return mesh;
 }
 
@@ -56,7 +79,9 @@ Ref<Mesh> AssetManager::LoadAxis()
     std::vector<Scope<SubMesh>> subMeshes;
     subMeshes.push_back(std::move(subMesh1));
     subMeshes.push_back(std::move(subMesh2));
-    return CreateRef<Mesh>(AssetManager::GenerateId(), subMeshes);
+    auto mesh = CreateRef<Mesh>(subMeshes);
+    RegisterMesh(mesh);
+    return mesh;
 }
 
 Ref<Mesh> AssetManager::LoadLightModel()
@@ -75,8 +100,9 @@ Ref<Mesh> AssetManager::LoadLightModel()
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
     
     auto subMesh = CreateScope<SubMesh>(vertices, indices);
-    auto mesh = CreateRef<Mesh>(AssetManager::GenerateId());
+    auto mesh = CreateRef<Mesh>();
     mesh->AddSubMesh(std::move(subMesh));
+    RegisterMesh(mesh);
     return mesh;
 }
 
@@ -180,8 +206,9 @@ Ref<Mesh> AssetManager::LoadOBJFile(const std::filesystem::path& path)
     fclose(file);
     
     auto subMesh = CreateScope<SubMesh>(vertices, indices);
-    auto mesh = CreateRef<Mesh>(AssetManager::GenerateId());
+    auto mesh = CreateRef<Mesh>();
     mesh->AddSubMesh(std::move(subMesh));
+    RegisterMesh(mesh);
     return mesh;
 }
 
@@ -219,8 +246,9 @@ Ref<Mesh> AssetManager::LoadQuad()
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
 
     auto subMesh = CreateScope<SubMesh>(vertices, indices);
-    auto mesh = CreateRef<Mesh>(AssetManager::GenerateId());
+    auto mesh = CreateRef<Mesh>();
     mesh->AddSubMesh(std::move(subMesh));
+    RegisterMesh(mesh);
     return mesh;
 }
 
@@ -276,10 +304,10 @@ Ref<Mesh> AssetManager::LoadSkyBox()
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
 
     auto subMesh = CreateScope<SubMesh>(vertices, indices);
-    auto mesh = CreateRef<Mesh>(AssetManager::GenerateId());
+    auto mesh = CreateRef<Mesh>();
     mesh->AddSubMesh(std::move(subMesh));
+    RegisterMesh(mesh);
     return mesh;
-
 }
 
 }

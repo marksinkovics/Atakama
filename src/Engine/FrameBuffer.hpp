@@ -19,6 +19,8 @@ public:
     virtual int GetHeight() const = 0;
     virtual void Resize(int width, int height) = 0;
 
+    virtual int ReadInt(int index, int x, int y) = 0;
+
     static Ref<FrameBuffer> Create();
     static Ref<FrameBuffer> Create(uint32_t width, uint32_t height);
 };

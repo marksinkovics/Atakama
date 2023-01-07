@@ -51,12 +51,10 @@ Ref<Texture> RenderPass::GetOutputDepthTexture()
 
 void RenderPass::Resize(glm::uvec2 size)
 {
-    if (size.x <= 0.0f || size.y <= 0.0f)
-    {
+    if (size == m_Size)
         return;
-    }
 
-    if (size != m_Size)
+    if (size.x > 0.0f && size.y >0.0f)
     {
         m_FrameBuffer->Resize(size.x, size.y);
     }

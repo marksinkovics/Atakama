@@ -15,7 +15,7 @@ ViewportRenderPass::ViewportRenderPass(Ref<RenderSystem> renderSystem)
 : RenderPass(renderSystem)
 {
     m_FrameBuffer = nullptr;
-    m_Mesh = AssetManager::LoadQuad();
+    m_Mesh = AssetManager::Get()->LoadQuad();
     m_Shader = CreateRef<Shader>(FileSystem::GetShaderFile("viewport.vert"), FileSystem::GetShaderFile("viewport.frag"));
 }
 

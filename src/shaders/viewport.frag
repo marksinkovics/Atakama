@@ -2,7 +2,7 @@
 
 in vec2 UV;
 
-out vec4 color;
+layout(location = 0) out vec4 o_Color;
 
 uniform sampler2D textureSampler;
 uniform vec2 uFrameSize;
@@ -10,5 +10,5 @@ uniform float uTime;
 
 void main()
 {
-    color = texture(textureSampler, UV);
+    o_Color = texture(textureSampler, UV);
 }

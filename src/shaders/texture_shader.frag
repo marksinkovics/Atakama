@@ -2,11 +2,17 @@
 
 in vec2 UV;
 
-out vec4 color;
+layout(location = 0) out vec4 o_Color;
+layout(location = 1) out int o_MeshId;
+
+// MeshId
+uniform int u_MeshId;
+uniform int u_MeshSelected;
 
 uniform sampler2D textureSampler;
 
 void main()
 {
-  color = texture(textureSampler, UV);
+    o_Color = texture(textureSampler, UV);
+    o_MeshId = u_MeshId;
 }

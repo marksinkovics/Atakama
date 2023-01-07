@@ -10,16 +10,22 @@ namespace OGLSample
 class AssetManager
 {
 public:
-    static uint32_t GenerateId();
 
-    static Ref<Mesh> LoadTriangle();
-    static Ref<Mesh> LoadAxis();
-    static Ref<Mesh> LoadLightModel();
-    static Ref<Mesh> LoadOBJFile(const std::filesystem::path& path);
-    static Ref<Mesh> LoadQuad();
-    static Ref<Mesh> LoadSkyBox();
-    
-    static void GenerateIndices(const std::vector<SubMesh::Vertex>& input, std::vector<SubMesh::Vertex>& output, std::vector<uint32_t>& indices);
+    static Ref<AssetManager> Get();
+
+    Ref<Mesh> LoadTriangle();
+    Ref<Mesh> LoadAxis();
+    Ref<Mesh> LoadLightModel();
+    Ref<Mesh> LoadOBJFile(const std::filesystem::path& path);
+    Ref<Mesh> LoadQuad();
+    Ref<Mesh> LoadSkyBox();
+    void GenerateIndices(const std::vector<SubMesh::Vertex>& input, std::vector<SubMesh::Vertex>& output, std::vector<uint32_t>& indices);
+
+    int RegisterMesh(Ref<Mesh>& mesh);
+    void UpdateSelected(int id);
+private:
+    std::vector<Ref<Mesh>> m_AllocatedMeshes;
+    int m_SelectedId {0};
 };
 
 }

@@ -10,7 +10,7 @@ PointLight::PointLight(const glm::vec4& position, const glm::vec4& color)
 : m_Position(position), m_Color(color)
 {
 
-    m_Mesh = AssetManager::LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
+    m_Mesh = AssetManager::Get()->LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
     m_Mesh->Scale({0.2f, 0.2f, 0.2f});
     m_Mesh->Translate(glm::vec3(m_Position));
 }

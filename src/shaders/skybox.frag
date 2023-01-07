@@ -2,7 +2,9 @@
 
 in vec3 UV;
 
-out vec4 color;
+layout(location = 0) out vec4 o_Color;
+layout(location = 1) out int o_MeshId;
+
 
 // Texture sampler
 uniform int uHasTexture;
@@ -10,5 +12,6 @@ uniform samplerCube textureSampler;
 
 void main()
 {
-    color = texture(textureSampler, UV);
+    o_Color = texture(textureSampler, UV);
+    o_MeshId = 0;
 }

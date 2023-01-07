@@ -24,7 +24,7 @@ SkyBoxRenderPass::SkyBoxRenderPass(Ref<RenderSystem> renderSystem, Ref<Camera> c
     });
 
     m_Shader = CreateRef<Shader>(FileSystem::GetShaderFile("skybox.vert"), FileSystem::GetShaderFile("skybox.frag"));
-    m_Mesh = AssetManager::LoadSkyBox();
+    m_Mesh = AssetManager::Get()->LoadSkyBox();
     m_Mesh->GetSubMeshes()[0]->SetTexture(m_Texture);
 }
 

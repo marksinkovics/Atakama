@@ -5,6 +5,7 @@
 #include "Perf/PerfMonitor.hpp"
 #include "Engine/Texture.hpp"
 #include "Engine/FrameBuffer.hpp"
+#include "Engine/AssetManager.hpp"
 #include "FileSystem.hpp"
 #include "Window.hpp"
 #include "Application.hpp"
@@ -185,6 +186,7 @@ void ViewportRenderView::OnRender()
     ImGui::Begin("Viewport");
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
+    ImGui::Text("Selected mesh: %d", m_MeshId);
     ImVec2 vMin = ImGui::GetWindowContentRegionMin();
     ImVec2 vMax = ImGui::GetWindowContentRegionMax();
 
@@ -197,11 +199,26 @@ void ViewportRenderView::OnRender()
     m_ViewportHovered = ImGui::IsMouseHoveringRect(vMin, vMax);
     g_RuntimeGlobalContext.m_Application->BlockEvent(!(m_ViewportFocused && m_ViewportHovered));
 
-//    ImGui::GetForegroundDrawList()->AddRect( vMin, vMax, IM_COL32( 255, 255, 0, 255 ) );
-
     ImVec2 wSize = ImGui::GetContentRegionAvail();
     float scale = ImGui::GetMainViewport()->DpiScale;
     m_ViewportSize = { wSize.x * scale, wSize.y * scale };
+
+    m_ViewportBounds[0] = {vMin.x, vMin.y};
+    m_ViewportBounds[1] = {vMax.x, vMax.y};
+
+    auto[mx, my] = ImGui::GetMousePos();
+    mx -= m_ViewportBounds[0].x;
+    my -= m_ViewportBounds[0].y;
+    glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
+    my = viewportSize.y - my;
+    int mouseX = (int)mx;
+    int mouseY = (int)my;
+
+    if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+    {
+        m_MeshId = m_RenderPass->GetFrameBuffer()->ReadInt(1, mouseX * scale, mouseY * scale);
+        AssetManager::Get()->UpdateSelected(m_MeshId);
+    }
 
     Ref<Texture> texture = m_RenderPass->GetOutputColorTexture();
     if (texture)

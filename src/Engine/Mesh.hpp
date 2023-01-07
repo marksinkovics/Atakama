@@ -12,8 +12,8 @@ class RenderSystem;
 class Mesh
 {
 public:
-    Mesh(uint32_t id);
-    Mesh(uint32_t id, std::vector<Scope<SubMesh>>& subMeshes);
+    Mesh();
+    Mesh(std::vector<Scope<SubMesh>>& subMeshes);
     ~Mesh() = default;
 
     glm::mat4 GetModelMatrix();
@@ -29,11 +29,13 @@ public:
 
     void Draw(Ref<RenderSystem>& renderSystem, Ref<Shader>& shader);
 
-    uint32_t GetId() const;
-    void SetId(uint32_t id);
+    int GetId() const;
+    void SetId(int id);
+
+    bool Selected { false };
 
 private:
-    uint32_t m_Id;
+    int m_Id {0};
     std::vector<Scope<SubMesh>> m_SubMeshes;
     glm::mat4 m_ModelMatrix {1.0f};
 };

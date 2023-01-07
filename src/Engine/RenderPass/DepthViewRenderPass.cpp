@@ -14,7 +14,7 @@ namespace OGLSample
 DepthViewRenderPass::DepthViewRenderPass(Ref<RenderSystem> renderSystem)
 : RenderPass(renderSystem)
 {
-    m_Mesh = AssetManager::LoadQuad();
+    m_Mesh = AssetManager::Get()->LoadQuad();
     m_Shader = CreateRef<Shader>(FileSystem::GetShaderFile("screen_depth_shader.vert"), FileSystem::GetShaderFile("screen_depth_shader.frag"));
 }
 

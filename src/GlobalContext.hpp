@@ -11,6 +11,7 @@ class EventDispatcher;
 class InputSystem;
 class LogSystem;
 enum class GraphicsAPI;
+class AssetManager;
 
 class RuntimeGlobalContext
 {
@@ -27,6 +28,8 @@ public:
     Ref<Engine> m_Engine;
     
     GraphicsAPI m_GraphicsAPI;
+
+    Ref<AssetManager> m_AssetManager;
 
     bool m_Editor { true };
 };
