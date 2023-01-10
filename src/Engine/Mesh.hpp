@@ -31,9 +31,7 @@ public:
 
     int GetId() const;
     void SetId(int id);
-
-    bool Selected { false };
-
+    
 private:
     int m_Id {0};
     std::vector<Scope<SubMesh>> m_SubMeshes;

@@ -23,6 +23,8 @@ void PointLightRenderer::Draw(Ref<PointLight> light)
     m_Shader->SetUniformFloat4("uLightColor", light->GetColor());
     // Camera / View
     m_Shader->SetUniformFloat3("uViewPosition", m_Camera->GetPosition());
+    // Mesh
+    m_Shader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
 
     light->GetMesh()->Draw(m_RenderSystem, m_Shader);
 }

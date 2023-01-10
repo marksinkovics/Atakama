@@ -8,7 +8,7 @@ layout(location = 1) out int o_MeshId;
 uniform vec4 uLightColor;
 
 uniform int u_MeshId;
-uniform int u_MeshSelected;
+uniform int u_SelectedMeshId;
 
 const float M_PI = 3.1415926538;
 

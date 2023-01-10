@@ -66,7 +66,6 @@ void Mesh::Draw(Ref<RenderSystem>& renderSystem, Ref<Shader>& shader)
         shader->SetUniformMat3("uNormalMatrix", normalMatrix);
 
         shader->SetUniformInt("u_MeshId", m_Id);
-        shader->SetUniformInt("u_MeshSelected", Selected ? 1 : 0);
 
         auto texture = subMesh->GetTexture();
         if (texture == nullptr)

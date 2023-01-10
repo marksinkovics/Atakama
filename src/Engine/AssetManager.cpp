@@ -13,19 +13,14 @@ int AssetManager::RegisterMesh(Ref<Mesh>& mesh)
     return id;
 }
 
-void AssetManager::UpdateSelected(int id)
+void AssetManager::SetSelectedMeshId(int id)
 {
-    if (m_SelectedId != 0 && m_SelectedId < m_AllocatedMeshes.size())
-    {
-        m_AllocatedMeshes[m_SelectedId - 1]->Selected = false;
-    }
-
     m_SelectedId = id;
+}
 
-    if (m_SelectedId != 0 && m_SelectedId < m_AllocatedMeshes.size())
-    {
-        m_AllocatedMeshes[m_SelectedId - 1]->Selected = true;
-    }
+int AssetManager::GetSelectedMeshId() const
+{
+    return m_SelectedId;
 }
 
 Ref<AssetManager> AssetManager::Get()

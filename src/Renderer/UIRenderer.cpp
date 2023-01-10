@@ -217,7 +217,7 @@ void ViewportRenderView::OnRender()
     if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
     {
         m_MeshId = m_RenderPass->GetFrameBuffer()->ReadInt(1, mouseX * scale, mouseY * scale);
-        AssetManager::Get()->UpdateSelected(m_MeshId);
+        AssetManager::Get()->SetSelectedMeshId(m_MeshId);
     }
 
     Ref<Texture> texture = m_RenderPass->GetOutputColorTexture();

@@ -22,7 +22,8 @@ public:
     void GenerateIndices(const std::vector<SubMesh::Vertex>& input, std::vector<SubMesh::Vertex>& output, std::vector<uint32_t>& indices);
 
     int RegisterMesh(Ref<Mesh>& mesh);
-    void UpdateSelected(int id);
+    void SetSelectedMeshId(int id);
+    int GetSelectedMeshId() const;
 private:
     std::vector<Ref<Mesh>> m_AllocatedMeshes;
     int m_SelectedId {0};

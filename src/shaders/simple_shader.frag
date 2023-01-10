@@ -7,7 +7,7 @@ layout(location = 1) out int o_MeshId;
 
 // MeshId
 uniform int u_MeshId;
-uniform int u_MeshSelected;
+uniform int u_SelectedMeshId;
 
 void main()
 {

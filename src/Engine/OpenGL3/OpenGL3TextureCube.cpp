@@ -46,7 +46,6 @@ OpenGL3TextureCube::OpenGL3TextureCube(std::array<std::filesystem::path, 6> path
 OpenGL3TextureCube::OpenGL3TextureCube(uint32_t id)
 {
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &m_TotalUnits);
-
 }
 
 OpenGL3TextureCube::~OpenGL3TextureCube()
