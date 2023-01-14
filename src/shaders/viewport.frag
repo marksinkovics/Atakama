@@ -5,8 +5,6 @@ in vec2 UV;
 layout(location = 0) out vec4 o_Color;
 
 uniform sampler2D textureSampler;
-uniform vec2 uFrameSize;
-uniform float uTime;
 
 void main()
 {

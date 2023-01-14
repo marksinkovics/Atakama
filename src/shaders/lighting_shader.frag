@@ -51,7 +51,5 @@ void main()
 
     vec3 result = (ambient + diffuse + specular) * color;
     o_Color = vec4(result, 1.0);
-    if (u_SelectedMeshId == u_MeshId)
-        o_Color = o_Color * vec4(1.0, 0.0, 0.0, 1.0);
     o_MeshId = u_MeshId;
 }

@@ -24,6 +24,7 @@ public:
     virtual Ref<FrameBuffer> GetFrameBuffer();
     virtual void SetFrameBuffer(Ref<FrameBuffer> frameBuffer);
     virtual Ref<Texture> GetOutputColorTexture();
+    virtual Ref<Texture> GetOutputMeshTexture();
     virtual Ref<Texture> GetOutputDepthTexture();
 
     virtual void Resize(glm::uvec2 size);

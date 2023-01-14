@@ -10,6 +10,7 @@
 #include "RenderPass/SkyBoxRenderPass.hpp"
 #include "RenderPass/MainRenderPass.hpp"
 #include "RenderPass/DepthViewRenderPass.hpp"
+#include "RenderPass/OutlineRenderPass.hpp"
 #include "RenderPass/ViewportRenderPass.hpp"
 
 #include "Events/WindowEvent.hpp"
@@ -53,13 +54,18 @@ void Engine::Init(Ref<Window>& window)
     m_DepthViewRenderPass = CreateRef<DepthViewRenderPass>(m_RenderSystem);
     m_DepthViewRenderPass->AddDependency(m_MainRenderPass);
 
+    m_OutlineRenderPass = CreateRef<OutlineRenderPass>(m_RenderSystem);
+    m_OutlineRenderPass->AddDependency(m_MainRenderPass);
+
     m_ViewportRenderPass = CreateRef<ViewportRenderPass>(m_RenderSystem);
-    m_ViewportRenderPass->AddDependency(m_MainRenderPass);
+    m_ViewportRenderPass->AddDependency(m_OutlineRenderPass);
 
     m_MainRenderPasses.push_back(m_MainRenderPass);
     m_MainRenderPasses.push_back(m_DebugRenderPass);
     m_MainRenderPasses.push_back(m_SkyBoxRenderPass);
     m_PostRenderPasses.push_back(m_DepthViewRenderPass);
+    m_PostRenderPasses.push_back(m_OutlineRenderPass);
+
 
     if (!IsEditor())
     {
@@ -69,10 +75,12 @@ void Engine::Init(Ref<Window>& window)
     m_UIRenderer = CreateRef<UIRenderer>(m_RenderSystem, m_Window);
     m_UIRenderer->Init();
     m_UIRenderViews.emplace_back(CreateRef<DepthRenderView>(m_DepthViewRenderPass));
+
     if (IsEditor())
     {
-        m_UIRenderViews.emplace_back(CreateRef<ViewportRenderView>(m_MainRenderPass, std::bind(&Engine::UpdateRenderingViewportSize, this, std::placeholders::_1)));
+        m_UIRenderViews.emplace_back(CreateRef<ViewportRenderView>(m_OutlineRenderPass, std::bind(&Engine::UpdateRenderingViewportSize, this, std::placeholders::_1)));
     }
+
     m_UIRenderViews.emplace_back(CreateRef<StatRenderView>(m_perfMonitor, m_Scene));
 
     if (!IsEditor())
@@ -98,11 +106,11 @@ bool Engine::OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event)
     UpdateRenderingViewportSize({event.GetWidth(), event.GetHeight()});
 }
 
-
 void Engine::UpdateRenderingViewportSize(glm::uvec2 size)
 {
     m_MainRenderPass->Resize(size);
     m_DepthViewRenderPass->Resize(size);
+    m_OutlineRenderPass->Resize(size);
     m_Camera->Resize(size.x, size.y);
 }
 

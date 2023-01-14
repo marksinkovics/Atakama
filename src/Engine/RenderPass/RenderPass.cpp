@@ -44,9 +44,15 @@ Ref<Texture> RenderPass::GetOutputColorTexture()
 {
     return m_FrameBuffer->GetColorTexture();
 }
+
 Ref<Texture> RenderPass::GetOutputDepthTexture()
 {
     return m_FrameBuffer->GetDepthTexture();
+}
+
+Ref<Texture> RenderPass::GetOutputMeshTexture()
+{
+    return m_FrameBuffer->GetMeshTexture();
 }
 
 void RenderPass::Resize(glm::uvec2 size)

@@ -61,7 +61,7 @@ void OpenGL3Texture2D::Bind(int index)
 {
     ASSERT((index < m_TotalUnits) && "Texture index is higher than the limit");
 
-    glActiveTexture((GL_TEXTURE0 + index));
+    glActiveTexture(GL_TEXTURE0 + index);
     glBindTexture(GL_TEXTURE_2D, m_Id);
 }
 

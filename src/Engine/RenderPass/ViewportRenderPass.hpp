@@ -26,4 +26,4 @@ private:
 
 }
 
-#endif /* ViewportRenderPass_hpp */
+#endif

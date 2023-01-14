@@ -22,6 +22,7 @@ class MainRenderPass;
 class DebugRenderPass;
 class EditorRenderPass;
 class DepthViewRenderPass;
+class OutlineRenderPass;
 class ViewportRenderPass;
 class WindowFrameBufferResizeEvent;
 
@@ -49,6 +50,7 @@ private:
     Ref<MainRenderPass> m_MainRenderPass;
     Ref<DebugRenderPass> m_DebugRenderPass;
     Ref<DepthViewRenderPass> m_DepthViewRenderPass;
+    Ref<OutlineRenderPass> m_OutlineRenderPass;
     Ref<ViewportRenderPass> m_ViewportRenderPass;
 
     std::vector<Ref<RenderPass>> m_MainRenderPasses;
