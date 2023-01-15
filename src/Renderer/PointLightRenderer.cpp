@@ -14,7 +14,7 @@ void PointLightRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera
 
 void PointLightRenderer::Draw(Ref<PointLight> light)
 {
-    light->GetMesh()->SetModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(light->GetPosition())));
+    light->GetMesh()->GetTransform()->Translate = glm::vec3(light->GetPosition());
 
     m_Shader->SetUniformMat4("uView", m_Camera->GetViewMatrix());
     m_Shader->SetUniformMat4("uProjection", m_Camera->GetProjectionMatrix());

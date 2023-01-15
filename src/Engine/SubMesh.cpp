@@ -1,4 +1,5 @@
 #include "SubMesh.hpp"
+#include "Math/Transform.hpp"
 
 namespace OGLSample
 {
@@ -23,6 +24,7 @@ VertexBufferLayout SubMesh::Vertex::GetLayout()
 }
 
 SubMesh::SubMesh(std::vector<Vertex>& vertices)
+: m_Transform(CreateRef<Transform>())
 {
     m_VertexBuffer = VertexBuffer::Create((float*)vertices.data(), sizeof(Vertex) * vertices.size());
     m_VertexBuffer->SetLayout(SubMesh::Vertex::GetLayout());
@@ -31,6 +33,7 @@ SubMesh::SubMesh(std::vector<Vertex>& vertices)
 }
 
 SubMesh::SubMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices)
+: m_Transform(CreateRef<Transform>())
 {
     m_VertexBuffer = VertexBuffer::Create((float*)vertices.data(), sizeof(Vertex) * vertices.size());
     m_VertexBuffer->SetLayout(SubMesh::Vertex::GetLayout());
@@ -56,17 +59,17 @@ SubMesh::~SubMesh()
 
 glm::mat4 SubMesh::GetModelMatrix()
 {
-    return m_ModelMatrix;
-}
-
-void SubMesh::SetModelMatrix(glm::mat4 modelMatrix)
-{
-    m_ModelMatrix = modelMatrix;
+    return m_Transform->GetMat4();
 }
 
 glm::mat3 SubMesh::GetNormalMatrix()
 {
-    return glm::inverseTranspose(glm::mat3(m_ModelMatrix));
+    return m_Transform->GetInverseMat3();
+}
+
+Ref<Transform> SubMesh::GetTransform()
+{
+    return m_Transform;
 }
 
 void SubMesh::SetTexture(Ref<Texture> texture)

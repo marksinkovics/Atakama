@@ -35,7 +35,7 @@ bool CheckFrameBufferStatus(GLuint fbo)
     switch(status)
     {
     case GL_FRAMEBUFFER_COMPLETE:
-        LOG_DEBUG("Framebuffer complete.");
+//        LOG_DEBUG("Framebuffer complete.");
         return true;
 
     case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:

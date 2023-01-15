@@ -8,6 +8,8 @@
 #include "Engine/IndexBuffer.hpp"
 #include "Engine/VertexArray.hpp"
 
+#include "Math/Transform.hpp"
+
 namespace OGLSample
 {
 
@@ -31,11 +33,9 @@ public:
 
     ~SubMesh();
 
-    // model = T * S * R
     glm::mat4 GetModelMatrix();
-    void SetModelMatrix(glm::mat4 modelMatrix);
-
     glm::mat3 GetNormalMatrix();
+    Ref<Transform> GetTransform();
 
     void SetTexture(Ref<Texture> texture);
     Ref<Texture> GetTexture();
@@ -48,8 +48,8 @@ private:
     DrawingMode m_Mode = DrawingMode::Triangles;
 
     Ref<Texture> m_Texture;
-    
-    glm::mat4 m_ModelMatrix {1.0f};
+
+    Ref<Transform> m_Transform;
 
     Ref<VertexBuffer> m_VertexBuffer;
     Ref<IndexBuffer> m_IndexBuffer;

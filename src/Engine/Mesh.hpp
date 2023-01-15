@@ -2,12 +2,14 @@
 #define MESH_HPP
 
 #include "SubMesh.hpp"
+#include "Math/Transform.hpp"
 
 namespace OGLSample
 {
 
 class Shader;
 class RenderSystem;
+class Transform;
 
 class Mesh
 {
@@ -17,13 +19,9 @@ public:
     ~Mesh() = default;
 
     glm::mat4 GetModelMatrix();
-    void SetModelMatrix(glm::mat4 modelMatrix);
     glm::mat3 GetNormalMatrix();
+    Ref<Transform> GetTransform();
 
-    void Translate(glm::vec3 translate);
-    void Rotate(float angle, glm::vec3 rotate);
-    void Scale(glm::vec3 scale);
-    
     std::vector<Scope<SubMesh>>& GetSubMeshes();
     void AddSubMesh(Scope<SubMesh> subMesh);
 
@@ -35,7 +33,7 @@ public:
 private:
     int m_Id {0};
     std::vector<Scope<SubMesh>> m_SubMeshes;
-    glm::mat4 m_ModelMatrix {1.0f};
+    Ref<Transform> m_Transform;
 };
 
 

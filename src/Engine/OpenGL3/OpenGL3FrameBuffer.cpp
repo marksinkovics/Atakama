@@ -146,7 +146,7 @@ void OpenGL3FrameBuffer::Resize(int width, int height)
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_MeshTexture->GetId(), 0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTexture->GetId(), 0);
 
-    printFramebufferInfo(m_Id);
+//    printFramebufferInfo(m_Id);
     if(!CheckFrameBufferStatus(m_Id))
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);

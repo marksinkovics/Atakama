@@ -69,7 +69,7 @@ Ref<Mesh> AssetManager::LoadAxis()
     
     auto subMesh2 = CreateScope<SubMesh>(vertices, indices);
     subMesh2->SetMode(DrawingMode::Lines);
-    subMesh2->SetModelMatrix(glm::translate(glm::mat4(1.0f), {1.0f, 0.0f, 1.0f}));
+    subMesh2->GetTransform()->Translate = {1.0f, 0.0f, 1.0f};
 
     std::vector<Scope<SubMesh>> subMeshes;
     subMeshes.push_back(std::move(subMesh1));

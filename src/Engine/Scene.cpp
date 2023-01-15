@@ -69,14 +69,14 @@ void SandboxScene::LoadMeshes()
 {
     {
         auto mesh = AssetManager::Get()->LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
-        mesh->Translate({-1.8f, 1.0f, -1.f});
+        mesh->GetTransform()->Translate = {-1.8f, 1.0f, -1.f};
         mesh->GetSubMeshes()[0]->SetTexture(m_Textures["uvtemplate"]);
         m_Meshes.push_back(mesh);
     }
     
     {
         auto mesh = AssetManager::Get()->LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
-        mesh->Translate({ 1.8f, 1.0f, -1.f});
+        mesh->GetTransform()->Translate = { 1.8f, 1.0f, -1.f};
         mesh->GetSubMeshes()[0]->SetTexture(m_Textures["uvmap"]);
         m_Meshes.push_back(mesh);
     }
@@ -84,17 +84,15 @@ void SandboxScene::LoadMeshes()
     {
         auto mesh = AssetManager::Get()->LoadOBJFile(FileSystem::GetModelPath() / "viking_room.obj");
         mesh->GetSubMeshes()[0]->SetTexture(m_Textures["vikingRoom"]);
-        mesh->Scale({1.5f, 1.5f, 1.5f});
-        mesh->Translate({-1.0f, 0.1f, 1.f});
-        mesh->Rotate(glm::radians(90.0f), {-1.f, 0.f, 0.f});
+        mesh->GetTransform()->Scale = {1.5f, 1.5f, 1.5f};
+        mesh->GetTransform()->Translate = {-1.8f, 0.1f, 1.8f};
+        mesh->GetTransform()->Rotation = {glm::radians(90.0f), 0.0f, 0.f};
         m_Meshes.push_back(mesh);
     }
     
     {
         auto mesh = AssetManager::Get()->LoadOBJFile(FileSystem::GetModelPath() / "quad.obj");
-        mesh->Rotate(glm::radians(180.0f), {0.f, 0.f, -1.f});
-        mesh->Scale({3.f, 1.f, 3.f});
-        mesh->Translate({0.f, 0.f, 0.f});
+        mesh->GetTransform()->Scale = {3.f, 1.f, 3.f};
         m_Meshes.push_back(mesh);
     }
 }
