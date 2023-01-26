@@ -56,7 +56,6 @@ void Camera::Update(float frameTime)
     }
 
     Move(inputSystem->GetMovement(), frameTime);
-    UpdateVectors();
 }
 
 void Camera::Move(Movement movement, float frameTime)
@@ -65,41 +64,42 @@ void Camera::Move(Movement movement, float frameTime)
 
     if (movement == Movement::Forward)
     {
-        m_Position += m_Forward * value;
+        m_Transform.Translate += GetForward() * value;
     }
 
     if (movement == Movement::Backward)
     {
-        m_Position -= m_Forward * value;
+        m_Transform.Translate -= GetForward() * value;
     }
 
     if (movement == Movement::Right)
     {
-        m_Position += m_Right * value;
+        m_Transform.Translate += GetRight() * value;
     }
 
     if (movement == Movement::Left)
     {
-        m_Position -= m_Right * value;
+        m_Transform.Translate -= GetRight() * value;
     }
 
     if (movement == Movement::Up)
     {
-        m_Position += m_Up * value;
+        m_Transform.Translate += GetUp() * value;
     }
 
     if (movement == Movement::Down)
     {
-        m_Position -= m_Up * value;
+        m_Transform.Translate -= GetUp() * value;
     }
 }
 
 void Camera::Rotate(glm::vec2 delta, float frameTime, bool constrainPitch)
 {
-    float yaw   = m_Yaw + delta.x * m_MouseSpeed;
-    float pitch = m_Pitch + delta.y * m_MouseSpeed;
+    float yaw   = m_Transform.Rotation.y + delta.x * m_MouseSpeed;
+    float pitch = m_Transform.Rotation.x + delta.y * m_MouseSpeed;
 
-    if (constrainPitch) {
+    if (constrainPitch)
+    {
         if (pitch > 89.0f)
         {
             pitch = 89.0f;
@@ -110,43 +110,41 @@ void Camera::Rotate(glm::vec2 delta, float frameTime, bool constrainPitch)
             pitch = -89.0f;
         }
     }
-
-    m_Yaw = yaw;
-    m_Pitch = pitch;
-
-    UpdateVectors();
+    m_Transform.Rotation.x = pitch;
+    m_Transform.Rotation.y = yaw;
 }
 
 // Note: https://stackoverflow.com/a/33790309/5218198
 void Camera::LookAt(const glm::vec3& cameraPostion, const glm::vec3& cameraTarget)
 {
-    m_Position = cameraPostion;
+    m_Transform.Translate = cameraPostion;
     glm::vec3 direction = glm::normalize(cameraTarget - cameraPostion);
 
     float yaw = std::atan2(direction.x, -direction.z);
-    m_Yaw = yaw;
+    m_Transform.Rotation.y = yaw;
 
     float pitch = glm::asin(-direction.y);
-    m_Pitch = pitch;
-
-    UpdateVectors();
+    m_Transform.Rotation.x = pitch;
 }
 
-void Camera::UpdateVectors()
+glm::vec3 Camera::GetForward()
 {
-    m_Forward = glm::rotate(glm::inverse(m_Orientation), glm::vec3(0.0, 0.0, -1.0));
-    m_Right = glm::rotate(glm::inverse(m_Orientation), glm::vec3(1.0, 0.0, 0.0));
-    m_Up = glm::vec3(0.0, 1.0, 0.0);
+    return glm::rotate(glm::inverse(m_Transform.GetOrientation()), glm::vec3(0.0, 0.0, -1.0));
+}
+glm::vec3 Camera::GetRight()
+{
+    return glm::rotate(glm::inverse(m_Transform.GetOrientation()), glm::vec3(1.0, 0.0, 0.0));
+}
+
+glm::vec3 Camera::GetUp()
+{
+    return glm::vec3(0.0, 1.0, 0.0);
 }
 
 glm::mat4 Camera::GetViewMatrix()
 {
-    glm::quat qPitch = glm::angleAxis(m_Pitch, glm::vec3(1.f, 0.f, 0.f));
-    glm::quat qYaw = glm::angleAxis(m_Yaw, glm::vec3(0.f, 1.f, 0.f));
-    // omit roll
-    m_Orientation = glm::normalize(qPitch * qYaw);
-    glm::mat4 rotate = glm::mat4_cast(m_Orientation);
-    glm::mat4 translate = glm::translate(glm::mat4(1.0f), -m_Position);
+    glm::mat4 rotate = glm::mat4_cast(m_Transform.GetOrientation());
+    glm::mat4 translate = glm::translate(glm::mat4(1.0f), -m_Transform.Translate);
     return rotate * translate;
 }
 
@@ -157,7 +155,7 @@ glm::mat4 Camera::GetProjectionMatrix()
 
 glm::vec3 Camera::GetPosition()
 {
-    return m_Position;
+    return m_Transform.Translate;
 }
 
 Camera::Mode Camera::GetMode() const

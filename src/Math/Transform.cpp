@@ -3,17 +3,12 @@
 namespace OGLSample
 {
 
-Transform::Transform()
-{
-
-};
-
 glm::quat Transform::GetOrientation() const
 {
-    glm::quat pitch = glm::angleAxis(-Rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::quat pitch = glm::angleAxis(Rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
     glm::quat yaw = glm::angleAxis(Rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
-//    glm::quat roll = glm::angleAxis(Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
-    return glm::normalize(pitch * yaw);
+    glm::quat roll = glm::angleAxis(Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+    return glm::normalize(pitch * yaw * roll);
 }
 
 glm::mat4 Transform::GetMat4()

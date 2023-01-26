@@ -86,7 +86,7 @@ void SandboxScene::LoadMeshes()
         mesh->GetSubMeshes()[0]->SetTexture(m_Textures["vikingRoom"]);
         mesh->GetTransform()->Scale = {1.5f, 1.5f, 1.5f};
         mesh->GetTransform()->Translate = {-1.8f, 0.1f, 1.8f};
-        mesh->GetTransform()->Rotation = {glm::radians(90.0f), 0.0f, 0.f};
+        mesh->GetTransform()->Rotation = {glm::radians(-90.0f), 0.0f, 0.f};
         m_Meshes.push_back(mesh);
     }
     

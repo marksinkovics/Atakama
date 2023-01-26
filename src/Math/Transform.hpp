@@ -9,7 +9,9 @@ namespace OGLSample
 class Transform
 {
 public:
-    Transform();
+    Transform() = default;
+    Transform(const Transform&) = default;
+
 
     glm::quat GetOrientation() const;
         
