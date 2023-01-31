@@ -7,9 +7,9 @@ namespace OGLSample
 {
 
 enum class Movement;
-class MouseScrolledEvent;
 class WindowResizeEvent;
 class Transform;
+class CameraSystem;
 
 class Camera
 {
@@ -22,32 +22,19 @@ public:
 public:
     Camera(Mode mode);
     virtual ~Camera() = default;
-    
-    virtual void Update(float frameTime);
-    virtual void Move(Movement movement, float frameTime);
-    virtual void Rotate(glm::vec2 delta, float frameTime, bool constrainPitch = true);
-    virtual void LookAt(const glm::vec3& cameraPostion, const glm::vec3& cameraTarget);
 
     virtual glm::mat4 GetViewMatrix();
     virtual glm::mat4 GetProjectionMatrix();
     virtual glm::vec3 GetPosition();
 
-    virtual glm::vec3 GetForward();
-    virtual glm::vec3 GetRight();
-    virtual glm::vec3 GetUp();
-    
     virtual Mode GetMode() const;
     virtual void SetMode(Mode mode);
     
-    virtual bool OnMouseScrollEvent(MouseScrolledEvent& event);
     virtual void Resize(uint32_t width, uint32_t height);
+    virtual void Zoom(float offset);
+
+    Transform Transform;
 protected:
-
-    Transform m_Transform;
-
-    float m_Speed = 3.0f;
-    float m_MouseSpeed = 0.001f;
-
     float m_InitialFoV = 45.0f; // Perspective only
     float m_Zoom = 2.0f; // Ortho only
 
@@ -57,6 +44,8 @@ protected:
 
     float m_Ratio;
     glm::uvec2 m_Viewport;
+
+    friend CameraSystem;
 };
 
 }

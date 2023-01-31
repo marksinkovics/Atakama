@@ -13,9 +13,7 @@ namespace OGLSample
 class Renderer
 {
 public:
-    Renderer() {}
-
-    virtual void Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera, Ref<Shader> shader);
+    Renderer(Ref<RenderSystem> renderSystem, Ref<Camera>& camera, Ref<Shader> shader);
     virtual ~Renderer() = default;
 
     virtual void Begin();

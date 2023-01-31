@@ -14,8 +14,7 @@ class UIRenderer
 {
 public:
     UIRenderer(Ref<RenderSystem>& renderSystem, Ref<Window>& window);
-    void Init();
-    void Shutdown();
+    virtual ~UIRenderer();
     void Begin();
     void End();
 private:

@@ -25,11 +25,6 @@ namespace OGLSample
 UIRenderer::UIRenderer(Ref<RenderSystem>& renderSystem, Ref<Window>& window)
 : m_RenderSystem(renderSystem), m_Window(window)
 {
-
-}
-
-void UIRenderer::Init()
-{
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -47,7 +42,7 @@ void UIRenderer::Init()
     ImGui_ImplOpenGL3_Init("#version 330");
 }
 
-void UIRenderer::Shutdown()
+UIRenderer::~UIRenderer()
 {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();

@@ -3,7 +3,6 @@
 
 #include "Shader.hpp"
 #include "Mesh.hpp"
-#include "Camera.hpp"
 
 #include "Engine/RenderSystem.hpp"
 #include "Renderer/UIRenderer.hpp"
@@ -25,6 +24,10 @@ class DepthViewRenderPass;
 class OutlineRenderPass;
 class ViewportRenderPass;
 class WindowFrameBufferResizeEvent;
+class MouseScrolledEvent;
+
+class CameraSystem;
+class Camera;
 
 class Engine
 {
@@ -35,6 +38,7 @@ public:
     void CalculateDeltaTime();
 
     bool OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event);
+    bool OnMouseScrollEvent(MouseScrolledEvent& event);
     void UpdateRenderingViewportSize(glm::uvec2 size);
 
 private:
@@ -44,7 +48,9 @@ private:
     Ref<Scene> m_Scene;
     Ref<Window> m_Window;
     Ref<RenderSystem> m_RenderSystem;
-    Ref<Camera> m_Camera;
+
+    std::vector<Ref<Camera>> m_Cameras;
+    Ref<CameraSystem> m_CameraSystem;
 
     Ref<SkyBoxRenderPass> m_SkyBoxRenderPass;
     Ref<MainRenderPass> m_MainRenderPass;

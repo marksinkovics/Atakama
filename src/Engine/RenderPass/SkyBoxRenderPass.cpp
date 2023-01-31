@@ -10,7 +10,7 @@
 namespace OGLSample
 {
 
-SkyBoxRenderPass::SkyBoxRenderPass(Ref<RenderSystem> renderSystem, Ref<Camera> camera)
+SkyBoxRenderPass::SkyBoxRenderPass(Ref<RenderSystem> renderSystem, Ref<Camera>& camera)
 : RenderPass(renderSystem), m_Camera(camera)
 {
     std::filesystem::path path = FileSystem::GetTexturePath();
@@ -38,7 +38,7 @@ void SkyBoxRenderPass::Draw()
     m_Shader->SetUniformMat4("uView", glm::mat4(glm::mat3(m_Camera->GetViewMatrix())));
     m_Shader->SetUniformMat4("uProjection", m_Camera->GetProjectionMatrix());
     // Camera / View
-    m_Shader->SetUniformFloat3("uViewPosition", m_Camera->GetPosition());
+    m_Shader->SetUniformFloat3("uViewPosition", m_Camera->Transform.Translate);
 
     m_Mesh->Draw(m_RenderSystem, m_Shader);
 

@@ -15,7 +15,10 @@
 
 #include "Events/WindowEvent.hpp"
 #include "Events/EventDispatcher.hpp"
+#include "Events/MouseEvent.hpp"
 
+#include "Camera.hpp"
+#include "CameraSystem.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -32,23 +35,26 @@ void Engine::Init(Ref<Window>& window)
         g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowFrameBufferResizeEvent>(std::bind(&Engine::OnWindowFrameBufferResize, this, std::placeholders::_1));
     }
 
+    g_RuntimeGlobalContext.m_Dispatcher->subscribe<MouseScrolledEvent>(std::bind(&Engine::OnMouseScrollEvent, this, std::placeholders::_1));
+
     m_RenderSystem = RenderSystem::Create();
     m_RenderSystem->Init();
     m_RenderSystem->SetClearColor({0.0f, 0.0f, 0.4f, 0.0f});
-    
-    m_Camera = CreateRef<Camera>(Camera::Mode::Perspective);
-    m_Camera->LookAt({5.0f, 5.f, 5.f}, {0.0f, 0.0f, 0.0f});
-    m_Camera->Resize(m_Window->GetWidth(), m_Window->GetHeight());
+
+    m_CameraSystem = CreateRef<CameraSystem>();
+    m_Cameras.push_back(CreateRef<Camera>(Camera::Mode::Perspective));
+    m_CameraSystem->LookAt(m_Cameras[0], {5.0f, 5.f, 5.f}, {0.0f, 0.0f, 0.0f});
+    m_Cameras[0]->Resize(m_Window->GetWidth(), m_Window->GetHeight());
 
     m_Scene = CreateRef<SandboxScene>();
     m_Scene->Init();
 
     m_perfMonitor = CreateRef<PerfMonitor>();
 
-    m_MainRenderPass = CreateRef<MainRenderPass>(m_RenderSystem, m_Scene, m_Camera);
-    m_DebugRenderPass = CreateRef<DebugRenderPass>(m_RenderSystem, m_Scene, m_Camera);
+    m_MainRenderPass = CreateRef<MainRenderPass>(m_RenderSystem, m_Scene, m_Cameras[0]);
+    m_DebugRenderPass = CreateRef<DebugRenderPass>(m_RenderSystem, m_Scene, m_Cameras[0]);
     m_DebugRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
-    m_SkyBoxRenderPass = CreateRef<SkyBoxRenderPass>(m_RenderSystem, m_Camera);
+    m_SkyBoxRenderPass = CreateRef<SkyBoxRenderPass>(m_RenderSystem, m_Cameras[0]);
     m_SkyBoxRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
 
     m_DepthViewRenderPass = CreateRef<DepthViewRenderPass>(m_RenderSystem);
@@ -73,7 +79,6 @@ void Engine::Init(Ref<Window>& window)
     }
 
     m_UIRenderer = CreateRef<UIRenderer>(m_RenderSystem, m_Window);
-    m_UIRenderer->Init();
     m_UIRenderViews.emplace_back(CreateRef<DepthRenderView>(m_DepthViewRenderPass));
 
     if (IsEditor())
@@ -106,19 +111,24 @@ bool Engine::OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event)
     UpdateRenderingViewportSize({event.GetWidth(), event.GetHeight()});
 }
 
+bool Engine::OnMouseScrollEvent(MouseScrolledEvent &event)
+{
+    m_Cameras[0]->Zoom(event.GetYOffset() * 0.1f);
+}
+
 void Engine::UpdateRenderingViewportSize(glm::uvec2 size)
 {
     m_MainRenderPass->Resize(size);
     m_DepthViewRenderPass->Resize(size);
     m_OutlineRenderPass->Resize(size);
-    m_Camera->Resize(size.x, size.y);
+    m_Cameras[0]->Resize(size.x, size.y);
 }
 
 void Engine::Run()
 {
     CalculateDeltaTime();
-    
-    m_Camera->Update(m_FrameTime);
+
+    m_CameraSystem->Update(m_Cameras[0], m_FrameTime);
 
     m_perfMonitor->StartCPUTimer();
     m_perfMonitor->StartGPUTimer();

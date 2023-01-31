@@ -6,10 +6,9 @@
 namespace OGLSample
 {
 
-void PointLightRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera)
+PointLightRenderer::PointLightRenderer(Ref<RenderSystem> renderSystem, Ref<Camera>& camera)
+: Renderer(renderSystem, camera, CreateRef<Shader>(FileSystem::GetShaderFile("point_light.vert"), FileSystem::GetShaderFile("point_light.frag")))
 {
-    Ref<Shader> shader = CreateRef<Shader>(FileSystem::GetShaderFile("point_light.vert"), FileSystem::GetShaderFile("point_light.frag"));
-    Renderer::Init(renderSystem, camera, shader);
 }
 
 void PointLightRenderer::Draw(Ref<PointLight> light)
@@ -22,7 +21,7 @@ void PointLightRenderer::Draw(Ref<PointLight> light)
     m_Shader->SetUniformFloat4("uLightPosition", light->GetPosition());
     m_Shader->SetUniformFloat4("uLightColor", light->GetColor());
     // Camera / View
-    m_Shader->SetUniformFloat3("uViewPosition", m_Camera->GetPosition());
+    m_Shader->SetUniformFloat3("uViewPosition", m_Camera->Transform.Translate);
     // Mesh
     m_Shader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
 

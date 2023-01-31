@@ -13,7 +13,7 @@ class LightingRenderer;
 class MainRenderPass: public SceneRenderPass
 {
 public:
-    MainRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera> camera);
+    MainRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera>& camera);
     virtual ~MainRenderPass() = default;
 protected:
     virtual void Draw() override;
@@ -30,7 +30,7 @@ class Mesh;
 class DebugRenderPass: public SceneRenderPass
 {
 public:
-    DebugRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera> camera);
+    DebugRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera>& camera);
     virtual ~DebugRenderPass() = default;
 protected:
     virtual void Draw() override;

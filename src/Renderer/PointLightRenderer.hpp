@@ -10,7 +10,7 @@ namespace OGLSample
 class PointLightRenderer: public Renderer
 {
 public:
-    void Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera);
+    PointLightRenderer(Ref<RenderSystem> renderSystem, Ref<Camera>& camera);
     virtual void Draw(Ref<PointLight> light);
 };
 

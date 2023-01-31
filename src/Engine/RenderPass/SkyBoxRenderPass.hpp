@@ -15,7 +15,7 @@ class Camera;
 class SkyBoxRenderPass: public RenderPass
 {
 public:
-    SkyBoxRenderPass(Ref<RenderSystem> renderSystem, Ref<Camera> camera);
+    SkyBoxRenderPass(Ref<RenderSystem> renderSystem, Ref<Camera>& camera);
     virtual ~SkyBoxRenderPass() = default;
 protected:
     virtual void Draw() override;

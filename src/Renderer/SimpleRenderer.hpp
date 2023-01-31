@@ -10,7 +10,7 @@ namespace OGLSample
 class SimpleRenderer: public Renderer
 {
 public:
-    void Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera);
+    SimpleRenderer(Ref<RenderSystem> renderSystem, Ref<Camera>& camera);
     void Draw(Ref<Mesh> mesh);
 };
 

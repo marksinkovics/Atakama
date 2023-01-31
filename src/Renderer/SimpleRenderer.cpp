@@ -5,10 +5,9 @@
 namespace OGLSample
 {
 
-void SimpleRenderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera)
+SimpleRenderer::SimpleRenderer(Ref<RenderSystem> renderSystem, Ref<Camera>& camera)
+: Renderer(renderSystem, camera, CreateRef<Shader>(FileSystem::GetShaderFile("simple_shader.vert"), FileSystem::GetShaderFile("simple_shader.frag")))
 {
-    Ref<Shader> shader = CreateRef<Shader>(FileSystem::GetShaderFile("simple_shader.vert"), FileSystem::GetShaderFile("simple_shader.frag"));
-    Renderer::Init(renderSystem, camera, shader);
 }
 
 void SimpleRenderer::Draw(Ref<Mesh> mesh)

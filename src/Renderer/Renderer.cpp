@@ -3,11 +3,9 @@
 namespace OGLSample
 {
 
-void Renderer::Init(Ref<RenderSystem> renderSystem, Ref<Camera> camera, Ref<Shader> shader)
+Renderer::Renderer(Ref<RenderSystem> renderSystem, Ref<Camera>& camera, Ref<Shader> shader)
+: m_RenderSystem(renderSystem), m_Camera(camera), m_Shader(shader)
 {
-    m_RenderSystem = renderSystem;
-    m_Camera = camera;
-    m_Shader = shader;
 }
 
 void Renderer::Begin()
