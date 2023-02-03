@@ -8,7 +8,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-namespace OGLSample
+namespace Atakama
 {
 
 Window::Window(uint32_t width, uint32_t height, const std::string& name)

@@ -1,6 +1,6 @@
 #include "Args.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 static Arguments __arguments;

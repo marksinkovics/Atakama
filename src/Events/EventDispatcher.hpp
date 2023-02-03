@@ -1,5 +1,5 @@
-#ifndef EVENT_DISPATCHER_HPP
-#define EVENT_DISPATCHER_HPP
+#ifndef ATAKAMA_EVENT_DISPATCHER_HPP
+#define ATAKAMA_EVENT_DISPATCHER_HPP
 
 #include "Events/Event.hpp"
 
@@ -10,7 +10,7 @@
 
 #define EVENT_SUBSCRIBE()
 
-namespace OGLSample
+namespace Atakama
 {
 
 class EventDispatcher

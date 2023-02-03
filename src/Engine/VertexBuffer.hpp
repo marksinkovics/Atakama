@@ -1,9 +1,9 @@
-#ifndef VERTEX_BUFFER_HPP
-#define VERTEX_BUFFER_HPP
+#ifndef ATAKAMA_VERTEX_BUFFER_HPP
+#define ATAKAMA_VERTEX_BUFFER_HPP
 
 #include "VertexBufferLayout.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 

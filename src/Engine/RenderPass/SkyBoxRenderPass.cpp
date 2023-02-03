@@ -7,7 +7,7 @@
 #include "FileSystem.hpp"
 #include "Engine/Camera.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 SkyBoxRenderPass::SkyBoxRenderPass(Ref<RenderSystem> renderSystem, Ref<Camera>& camera)

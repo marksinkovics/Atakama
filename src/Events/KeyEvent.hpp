@@ -1,9 +1,9 @@
-#ifndef KEYEVENT_HPP
-#define KEYEVENT_HPP
+#ifndef ATAKAMA_KEYEVENT_HPP
+#define ATAKAMA_KEYEVENT_HPP
 
 #include "Events/Event.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class KeyEvent: public Event

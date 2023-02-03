@@ -1,5 +1,5 @@
-#ifndef ENGINE_HPP
-#define ENGINE_HPP
+#ifndef ATAKAMA_ENGINE_HPP
+#define ATAKAMA_ENGINE_HPP
 
 #include "Shader.hpp"
 #include "Mesh.hpp"
@@ -12,7 +12,7 @@
 
 #include <chrono>
 
-namespace OGLSample
+namespace Atakama
 {
 
 class RenderPass;

@@ -1,7 +1,7 @@
-#ifndef FILESYSTEM_H
-#define FILESYSTEM_H
+#ifndef ATAKAMA_FILESYSTEM_HPP
+#define ATAKAMA_FILESYSTEM_HPP
 
-namespace OGLSample
+namespace Atakama
 {
 
 class FileSystem

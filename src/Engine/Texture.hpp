@@ -1,10 +1,10 @@
-#ifndef TEXTURE_HPP
-#define TEXTURE_HPP
+#ifndef ATAKAMA_TEXTURE_HPP
+#define ATAKAMA_TEXTURE_HPP
 
 #include <filesystem>
 #include <array>
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Texture

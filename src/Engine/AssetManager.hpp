@@ -1,10 +1,10 @@
-#ifndef ASSET_MANAGER_HPP
-#define ASSET_MANAGER_HPP
+#ifndef ATAKAMA_ASSET_MANAGER_HPP
+#define ATAKAMA_ASSET_MANAGER_HPP
 
 #include "Mesh.hpp"
 #include "SubMesh.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class AssetManager

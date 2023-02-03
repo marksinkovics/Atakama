@@ -1,9 +1,9 @@
-#ifndef SKYBOX_RENDER_PASS
-#define SKYBOX_RENDER_PASS
+#ifndef ATAKAMA_SKYBOX_RENDER_PASS_HPP
+#define ATAKAMA_SKYBOX_RENDER_PASS_HPP
 
 #include "RenderPass.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Texture;

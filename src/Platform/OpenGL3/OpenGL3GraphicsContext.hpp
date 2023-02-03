@@ -1,11 +1,11 @@
-#ifndef OPENGL3_GRAPHICS_CONTEXT_HPP
-#define OPENGL3_GRAPHICS_CONTEXT_HPP
+#ifndef ATAKAMA_OPENGL3_GRAPHICS_CONTEXT_HPP
+#define ATAKAMA_OPENGL3_GRAPHICS_CONTEXT_HPP
 
 #include "Platform/GraphicsContext.hpp"
 
 class GLFWwindow;
 
-namespace OGLSample
+namespace Atakama
 {
 
 class OpenGL3GraphicsContext: public GraphicsContext

@@ -1,10 +1,10 @@
-#ifndef OPENGL3_DEBUG_HPP
-#define OPENGL3_DEBUG_HPP
+#ifndef ATAKAMA_OPENGL3_DEBUG_HPP
+#define ATAKAMA_OPENGL3_DEBUG_HPP
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-namespace OGLSample
+namespace Atakama
 {
 
 GLenum glCheckError(const char *file, int line);
@@ -16,7 +16,7 @@ void printFramebufferInfo(GLuint fbo);
 
 }
 
-#define GL_ERROR_CHECK() OGLSample::glCheckError(__FILE__, __LINE__)
+#define GL_ERROR_CHECK() Atakama::glCheckError(__FILE__, __LINE__)
 //#define GL_ERROR_CHECK()
 
 #endif

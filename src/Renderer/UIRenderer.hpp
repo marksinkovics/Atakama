@@ -1,7 +1,7 @@
-#ifndef UIRENDERER_HPP
-#define UIRENDERER_HPP
+#ifndef ATAKAMA_UIRENDERER_HPP
+#define ATAKAMA_UIRENDERER_HPP
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Scene;

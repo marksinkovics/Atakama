@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-namespace OGLSample
+namespace Atakama
 {
 
 void InputSystem::Init()

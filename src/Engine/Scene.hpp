@@ -1,5 +1,5 @@
-#ifndef SCENE_HPP
-#define SCENE_HPP
+#ifndef ATAKAMA_SCENE_HPP
+#define ATAKAMA_SCENE_HPP
 
 #include "Shader.hpp"
 #include "Texture.hpp"
@@ -8,7 +8,7 @@
 
 #include <map>
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Scene

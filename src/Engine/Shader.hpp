@@ -1,7 +1,7 @@
-#ifndef SHADER_HPP
-#define SHADER_HPP
+#ifndef ATAKAMA_SHADER_HPP
+#define ATAKAMA_SHADER_HPP
 
-namespace OGLSample {
+namespace Atakama {
 
 class ShaderBackend
 {

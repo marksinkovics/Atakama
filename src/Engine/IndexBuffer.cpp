@@ -2,7 +2,7 @@
 #include "OpenGL3/OpenGL3IndexBuffer.hpp"
 #include "RenderTypes.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, size_t count)

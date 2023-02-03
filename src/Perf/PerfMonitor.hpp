@@ -1,7 +1,7 @@
-#ifndef PERF_MONITOR_HPP
-#define PERF_MONITOR_HPP
+#ifndef ATAKAMA_PERF_MONITOR_HPP
+#define ATAKAMA_PERF_MONITOR_HPP
 
-namespace OGLSample
+namespace Atakama
 {
 
 class PerfMonitor

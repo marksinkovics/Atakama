@@ -1,9 +1,9 @@
-#ifndef VIEWPORT_RENDER_PASS
-#define VIEWPORT_RENDER_PASS
+#ifndef ATAKAMA_VIEWPORT_RENDER_PASS_HPP
+#define ATAKAMA_VIEWPORT_RENDER_PASS_HPP
 
 #include "RenderPass.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Shader;

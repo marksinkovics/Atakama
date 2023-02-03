@@ -1,9 +1,9 @@
-#ifndef INPUT_SYSTEM_HPP
-#define INPUT_SYSTEM_HPP
+#ifndef ATAKAMA_INPUT_SYSTEM_HPP
+#define ATAKAMA_INPUT_SYSTEM_HPP
 
 #include <map>
 
-namespace OGLSample
+namespace Atakama
 {
 
 class MouseMovedEvent;

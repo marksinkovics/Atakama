@@ -1,6 +1,6 @@
 #include "Event.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 bool IsKeyboardEvent(Event& event)

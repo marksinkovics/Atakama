@@ -2,7 +2,7 @@
 #include "OpenGL3/OpenGL3FrameBuffer.hpp"
 #include "RenderTypes.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 Ref<FrameBuffer> FrameBuffer::Create()

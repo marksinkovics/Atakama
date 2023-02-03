@@ -4,7 +4,7 @@
 #include "RenderTypes.hpp"
 
 
-namespace OGLSample
+namespace Atakama
 {
 
 Ref<Texture> Texture2D::Create()

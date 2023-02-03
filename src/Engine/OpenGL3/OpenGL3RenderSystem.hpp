@@ -1,9 +1,9 @@
-#ifndef OPENGL3_RENDER_SYSTEM_HPP
-#define OPENGL3_RENDER_SYSTEM_HPP
+#ifndef ATAKAMA_OPENGL3_RENDER_SYSTEM_HPP
+#define ATAKAMA_OPENGL3_RENDER_SYSTEM_HPP
 
 #include "Engine/RenderSystem.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class VertexArray;

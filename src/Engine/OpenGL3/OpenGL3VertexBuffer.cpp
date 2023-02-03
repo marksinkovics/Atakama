@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-namespace OGLSample
+namespace Atakama
 {
 
 OpenGL3VertexBuffer::OpenGL3VertexBuffer(size_t size)

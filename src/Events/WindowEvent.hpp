@@ -1,9 +1,9 @@
-#ifndef WINDOW_EVENT_HPP
-#define WINDOW_EVENT_HPP
+#ifndef ATAKAMA_WINDOW_EVENT_HPP
+#define ATAKAMA_WINDOW_EVENT_HPP
 
 #include "Event.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class WindowResizeEvent: public Event

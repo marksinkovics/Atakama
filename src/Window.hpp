@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef ATAKAMA_WINDOW_HPP
+#define ATAKAMA_WINDOW_HPP
 
 #include "Events/Event.hpp"
 #include "Platform/GraphicsContext.hpp"
@@ -8,7 +8,7 @@
 
 class GLFWwindow;
 
-namespace OGLSample {
+namespace Atakama {
 
 class Window
 {

@@ -3,7 +3,7 @@
 #include "Engine/AssetManager.hpp"
 #include "FileSystem.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 PointLight::PointLight(const glm::vec4& position, const glm::vec4& color)

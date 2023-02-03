@@ -1,10 +1,10 @@
-#ifndef MESH_HPP
-#define MESH_HPP
+#ifndef ATAKAMA_MESH_HPP
+#define ATAKAMA_MESH_HPP
 
 #include "SubMesh.hpp"
 #include "Math/Transform.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Shader;

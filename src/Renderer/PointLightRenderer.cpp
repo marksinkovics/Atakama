@@ -3,7 +3,7 @@
 #include "Engine/SubMesh.hpp"
 #include "Engine/AssetManager.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 PointLightRenderer::PointLightRenderer(Ref<RenderSystem> renderSystem, Ref<Camera>& camera)

@@ -1,5 +1,5 @@
-#ifndef LOG_SYSTEM_HPP
-#define LOG_SYSTEM_HPP
+#ifndef ATAKAMA_LOG_SYSTEM_HPP
+#define ATAKAMA_LOG_SYSTEM_HPP
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/string_cast.hpp"
@@ -7,7 +7,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
 
-namespace OGLSample
+namespace Atakama
 {
 
 class LogSystem final

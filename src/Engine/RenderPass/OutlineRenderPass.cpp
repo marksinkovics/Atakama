@@ -8,7 +8,7 @@
 #include "Engine/RenderSystem.hpp"
 #include "Engine/FrameBuffer.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 

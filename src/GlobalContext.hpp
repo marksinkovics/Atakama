@@ -1,7 +1,7 @@
-#ifndef RUNTIME_GLOBAL_CONTEXT_HPP
-#define RUNTIME_GLOBAL_CONTEXT_HPP
+#ifndef ATAKAMA_RUNTIME_GLOBAL_CONTEXT_HPP
+#define ATAKAMA_RUNTIME_GLOBAL_CONTEXT_HPP
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Application;

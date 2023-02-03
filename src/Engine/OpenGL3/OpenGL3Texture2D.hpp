@@ -1,9 +1,9 @@
-#ifndef OPENGL3_TEXTURE_2D_HPP
-#define OPENGL3_TEXTURE_2D_HPP
+#ifndef ATAKAMA_OPENGL3_TEXTURE_2D_HPP
+#define ATAKAMA_OPENGL3_TEXTURE_2D_HPP
 
 #include "Engine/Texture.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class OpenGL3Texture2D: public Texture2D

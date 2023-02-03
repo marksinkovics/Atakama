@@ -1,11 +1,11 @@
-#ifndef VERTEX_ARRAY_HPP
-#define VERTEX_ARRAY_HPP
+#ifndef ATAKAMA_VERTEX_ARRAY_HPP
+#define ATAKAMA_VERTEX_ARRAY_HPP
 
 #include "VertexBufferLayout.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class VertexArray

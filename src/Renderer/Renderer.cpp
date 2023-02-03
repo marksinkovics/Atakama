@@ -1,6 +1,6 @@
 #include "Renderer.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 Renderer::Renderer(Ref<RenderSystem> renderSystem, Ref<Camera>& camera, Ref<Shader> shader)

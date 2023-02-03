@@ -5,7 +5,7 @@
 
 #include "stb_image.h"
 
-namespace OGLSample
+namespace Atakama
 {
 
 OpenGL3TextureCube::OpenGL3TextureCube()

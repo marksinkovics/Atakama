@@ -1,6 +1,6 @@
 #include "SimpleShader.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 void SimpleShader::Bind(Ref<SubMesh>& subMesh)

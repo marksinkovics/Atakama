@@ -1,7 +1,7 @@
-#ifndef RENDER_PASS_HPP
-#define RENDER_PASS_HPP
+#ifndef ATAKAMA_RENDER_PASS_HPP
+#define ATAKAMA_RENDER_PASS_HPP
 
-namespace OGLSample
+namespace Atakama
 {
 
 class FrameBuffer;

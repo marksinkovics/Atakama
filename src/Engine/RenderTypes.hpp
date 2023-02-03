@@ -1,7 +1,7 @@
-#ifndef RENDER_TYPE_HPP
-#define RENDER_TYPE_HPP
+#ifndef ATAKAMA_RENDER_TYPE_HPP
+#define ATAKAMA_RENDER_TYPE_HPP
 
-namespace OGLSample
+namespace Atakama
 {
 
 enum class DrawingMode {

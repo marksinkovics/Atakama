@@ -1,11 +1,11 @@
-#ifndef LIGHTING_RENDERER_HPP
-#define LIGHTING_RENDERER_HPP
+#ifndef ATAKAMA_LIGHTING_RENDERER_HPP
+#define ATAKAMA_LIGHTING_RENDERER_HPP
 
 #include "Renderer/Renderer.hpp"
 #include "Engine/Mesh.hpp"
 #include "Engine/Lights/PointLight.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class LightingRenderer: public Renderer

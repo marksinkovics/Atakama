@@ -1,9 +1,9 @@
-#ifndef EVENT_HPP
-#define EVENT_HPP
+#ifndef ATAKAMA_EVENT_HPP
+#define ATAKAMA_EVENT_HPP
 
 #include <array>
 
-namespace OGLSample
+namespace Atakama
 {
 
 enum class EventType

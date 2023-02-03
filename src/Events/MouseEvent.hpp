@@ -1,9 +1,9 @@
-#ifndef MOUSE_EVENT_HPP
-#define MOUSE_EVENT_HPP
+#ifndef ATAKAMA_MOUSE_EVENT_HPP
+#define ATAKAMA_MOUSE_EVENT_HPP
 
 #include "Events/Event.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class MouseButtonEvent: public Event

@@ -6,7 +6,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-namespace OGLSample
+namespace Atakama
 {
 
 OpenGL3Texture2D::OpenGL3Texture2D()

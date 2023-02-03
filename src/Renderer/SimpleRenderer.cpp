@@ -2,7 +2,7 @@
 #include "FileSystem.hpp"
 #include "Engine/AssetManager.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 SimpleRenderer::SimpleRenderer(Ref<RenderSystem> renderSystem, Ref<Camera>& camera)

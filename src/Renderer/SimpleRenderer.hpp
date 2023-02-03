@@ -1,10 +1,10 @@
-#ifndef SIMPLE_RENDERER_HPP
-#define SIMPLE_RENDERER_HPP
+#ifndef ATAKAMA_SIMPLE_RENDERER_HPP
+#define ATAKAMA_SIMPLE_RENDERER_HPP
 
 #include "Renderer/Renderer.hpp"
 #include "Engine/Mesh.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class SimpleRenderer: public Renderer

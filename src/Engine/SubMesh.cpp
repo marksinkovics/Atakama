@@ -1,7 +1,7 @@
 #include "SubMesh.hpp"
 #include "Math/Transform.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 bool SubMesh::Vertex::operator==(const Vertex &other) const

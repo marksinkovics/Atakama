@@ -1,9 +1,9 @@
-#ifndef OPENGL3_TEXTURE_CUBE_HPP
-#define OPENGL3_TEXTURE_CUBE_HPP
+#ifndef ATAKAMA_OPENGL3_TEXTURE_CUBE_HPP
+#define ATAKAMA_OPENGL3_TEXTURE_CUBE_HPP
 
 #include "Engine/Texture.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class OpenGL3TextureCube: public TextureCube

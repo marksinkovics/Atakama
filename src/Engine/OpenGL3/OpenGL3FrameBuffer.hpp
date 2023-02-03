@@ -1,10 +1,10 @@
-#ifndef OPENGL3_FRAME_BUFFER
-#define OPENGL3_FRAME_BUFFER
+#ifndef ATAKAMA_OPENGL3_FRAME_BUFFER_HPP
+#define ATAKAMA_OPENGL3_FRAME_BUFFER_HPP
 
 #include "Engine/FrameBuffer.hpp"
 #include "Engine/Texture.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class OpenGL3FrameBuffer: public FrameBuffer

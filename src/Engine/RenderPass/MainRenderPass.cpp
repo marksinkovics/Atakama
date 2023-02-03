@@ -11,7 +11,7 @@
 
 #include "Engine/AssetManager.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 

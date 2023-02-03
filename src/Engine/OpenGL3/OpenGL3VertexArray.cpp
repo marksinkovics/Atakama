@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-namespace OGLSample
+namespace Atakama
 {
 
 GLenum GetOpenGLBaseType(enum VertexBufferElement::Type type)

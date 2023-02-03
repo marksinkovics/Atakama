@@ -10,7 +10,7 @@
 #include <sstream>
 #include <vector>
 
-namespace OGLSample
+namespace Atakama
 {
 
 OpenGL3ShaderBackend::OpenGL3ShaderBackend(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)

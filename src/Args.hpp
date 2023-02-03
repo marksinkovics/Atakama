@@ -1,7 +1,7 @@
-#ifndef ARGS_H
-#define ARGS_H
+#ifndef ATAKAMA_ARGS_HPP
+#define ATAKAMA_ARGS_HPP
 
-namespace OGLSample 
+namespace Atakama 
 {
 
 struct Arguments {

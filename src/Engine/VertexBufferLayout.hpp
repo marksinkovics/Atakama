@@ -1,7 +1,7 @@
-#ifndef VERTEX_BUFFER_LAYOUT_HPP
-#define VERTEX_BUFFER_LAYOUT_HPP
+#ifndef ATAKAMA_VERTEX_BUFFER_LAYOUT_HPP
+#define ATAKAMA_VERTEX_BUFFER_LAYOUT_HPP
 
-namespace OGLSample
+namespace Atakama
 {
 
 struct VertexBufferElement

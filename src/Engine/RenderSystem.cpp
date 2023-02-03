@@ -3,7 +3,7 @@
 
 #include "OpenGL3/OpenGL3RenderSystem.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 Ref<RenderSystem> RenderSystem::Create()

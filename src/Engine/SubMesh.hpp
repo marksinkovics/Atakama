@@ -1,5 +1,5 @@
-#ifndef SUBMESH_HPP
-#define SUBMESH_HPP
+#ifndef ATAKAMA_SUBMESH_HPP
+#define ATAKAMA_SUBMESH_HPP
 
 #include "Engine/RenderTypes.hpp"
 #include "Engine/Texture.hpp"
@@ -10,7 +10,7 @@
 
 #include "Math/Transform.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class SubMesh
@@ -63,12 +63,12 @@ private:
 namespace std
 {
     template<>
-    struct hash<OGLSample::SubMesh::Vertex>
+    struct hash<Atakama::SubMesh::Vertex>
     {
-        size_t operator()(const OGLSample::SubMesh::Vertex &vertex) const
+        size_t operator()(const Atakama::SubMesh::Vertex &vertex) const
         {
             size_t seed = 0;
-            OGLSample::hashCombine(seed, vertex.position, vertex.color, vertex.normal, vertex.uv);
+            Atakama::hashCombine(seed, vertex.position, vertex.color, vertex.normal, vertex.uv);
             return seed;
         }
     };

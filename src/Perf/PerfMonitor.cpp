@@ -5,7 +5,7 @@
 
 #include "Engine/RenderTypes.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 PerfMonitor::PerfMonitor()

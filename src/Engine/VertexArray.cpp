@@ -2,7 +2,7 @@
 #include "OpenGL3/OpenGL3VertexArray.hpp"
 #include "RenderTypes.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 Ref<VertexArray> VertexArray::Create()

@@ -1,7 +1,7 @@
 #include "FileSystem.hpp"
 #include "Args.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 const std::filesystem::path FileSystem::GetBinaryPath()

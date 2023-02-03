@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-namespace OGLSample
+namespace Atakama
 {
 
 OpenGL3IndexBuffer::OpenGL3IndexBuffer(uint32_t* indices, size_t count)

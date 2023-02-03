@@ -1,12 +1,12 @@
-#ifndef OPENGL3_VERTEX_ARRAY_HPP
-#define OPENGL3_VERTEX_ARRAY_HPP
+#ifndef ATAKAMA_OPENGL3_VERTEX_ARRAY_HPP
+#define ATAKAMA_OPENGL3_VERTEX_ARRAY_HPP
 
 #include "Engine/VertexBufferLayout.hpp"
 #include "Engine/VertexBuffer.hpp"
 #include "Engine/IndexBuffer.hpp"
 #include "Engine/VertexArray.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class OpenGL3VertexArray: public VertexArray

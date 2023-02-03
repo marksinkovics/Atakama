@@ -1,7 +1,7 @@
-#ifndef POINT_LIGHT_HPP
-#define POINT_LIGHT_HPP
+#ifndef ATAKAMA_POINT_LIGHT_HPP
+#define ATAKAMA_POINT_LIGHT_HPP
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Mesh;

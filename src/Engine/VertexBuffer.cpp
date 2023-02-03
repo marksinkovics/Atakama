@@ -2,7 +2,7 @@
 #include "OpenGL3/OpenGL3VertexBuffer.hpp"
 #include "RenderTypes.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 Ref<VertexBuffer> VertexBuffer::Create(size_t size)

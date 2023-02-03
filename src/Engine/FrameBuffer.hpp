@@ -1,9 +1,9 @@
-#ifndef FRAME_BUFFER_HPP
-#define FRAME_BUFFER_HPP
+#ifndef ATAKAMA_FRAME_BUFFER_HPP
+#define ATAKAMA_FRAME_BUFFER_HPP
 
 #include "Texture.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class FrameBuffer

@@ -2,7 +2,7 @@
 #include "Shader.hpp"
 #include "RenderSystem.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 Mesh::Mesh()

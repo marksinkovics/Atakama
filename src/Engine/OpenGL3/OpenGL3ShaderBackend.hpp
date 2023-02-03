@@ -1,9 +1,9 @@
-#ifndef OPENGL3_SHADER_BACKEND_HPP
-#define OPENGL3_SHADER_BACKEND_HPP
+#ifndef ATAKAMA_OPENGL3_SHADER_BACKEND_HPP
+#define ATAKAMA_OPENGL3_SHADER_BACKEND_HPP
  
 #include "Engine/Shader.hpp"
 
-namespace OGLSample {
+namespace Atakama {
 
 class OpenGL3ShaderBackend: public ShaderBackend
 {

@@ -1,9 +1,9 @@
-#ifndef OPENGL3_INDEX_BUFFER_HPP
-#define OPENGL3_INDEX_BUFFER_HPP
+#ifndef ATAKAMA_OPENGL3_INDEX_BUFFER_HPP
+#define ATAKAMA_OPENGL3_INDEX_BUFFER_HPP
 
 #include "Engine/IndexBuffer.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class OpenGL3IndexBuffer: public IndexBuffer

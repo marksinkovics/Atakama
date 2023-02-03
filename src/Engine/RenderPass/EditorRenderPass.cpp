@@ -2,7 +2,7 @@
 
 #include "Perf/PerfMonitor.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 EditorRenderPass::EditorRenderPass(Ref<RenderSystem> renderSystem, Ref<PerfMonitor>& perfMonitor)

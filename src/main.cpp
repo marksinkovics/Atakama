@@ -4,20 +4,20 @@
 
 int main(int argc, char **argv)
 {
-    OGLSample::g_RuntimeGlobalContext.Init();
+    Atakama::g_RuntimeGlobalContext.Init();
 
-    OGLSample::SetArguments({argc, argv});
+    Atakama::SetArguments({argc, argv});
 
     {
-        OGLSample::Ref<OGLSample::Application> app = OGLSample::CreateRef<OGLSample::Application>();
-        OGLSample::g_RuntimeGlobalContext.m_Application = app;
+        Atakama::Ref<Atakama::Application> app = Atakama::CreateRef<Atakama::Application>();
+        Atakama::g_RuntimeGlobalContext.m_Application = app;
 
         app->run();
 
-        OGLSample::g_RuntimeGlobalContext.m_Application.reset();
+        Atakama::g_RuntimeGlobalContext.m_Application.reset();
     }
 
-    OGLSample::g_RuntimeGlobalContext.Shutdown();
+    Atakama::g_RuntimeGlobalContext.Shutdown();
     
     return 0;
 }

@@ -9,7 +9,7 @@
 #include <cmath>
 #include <iostream>
 
-namespace OGLSample
+namespace Atakama
 {
 
 Camera::Camera(Mode mode)

@@ -3,7 +3,7 @@
 #include "Engine/FrameBuffer.hpp"
 #include "Engine/Shader.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 RenderPass::RenderPass(Ref<RenderSystem> renderSystem)

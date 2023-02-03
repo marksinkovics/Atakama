@@ -4,7 +4,7 @@
 
 #include <GLFW/glfw3.h>
 
-namespace OGLSample
+namespace Atakama
 {
 
 void CameraSystem::Update(Ref<Camera>& camera, float ts)

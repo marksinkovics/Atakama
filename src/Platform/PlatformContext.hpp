@@ -1,7 +1,7 @@
-#ifndef PLATFORM_CONTEXT_HPP
-#define PLATFORM_CONTEXT_HPP
+#ifndef ATAKAMA_PLATFORM_CONTEXT_HPP
+#define ATAKAMA_PLATFORM_CONTEXT_HPP
 
-namespace OGLSample
+namespace Atakama
 {
 
 class PlatformContext

@@ -1,5 +1,5 @@
-#ifndef APPLICATION_HPP
-#define APPLICATION_HPP
+#ifndef ATAKAMA_APPLICATION_HPP
+#define ATAKAMA_APPLICATION_HPP
 
 #include "Window.hpp"
 #include "Events/Event.hpp"
@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Application

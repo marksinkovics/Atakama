@@ -7,7 +7,7 @@
 #include <spdlog/async.h>
 
 
-namespace OGLSample
+namespace Atakama
 {
 
 LogSystem::LogSystem()

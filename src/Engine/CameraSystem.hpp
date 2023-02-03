@@ -1,7 +1,7 @@
-#ifndef CAMERA_SYSTEM_HPP
-#define CAMERA_SYSTEM_HPP
+#ifndef ATAKAMA_CAMERA_SYSTEM_HPP
+#define ATAKAMA_CAMERA_SYSTEM_HPP
 
-namespace OGLSample
+namespace Atakama
 {
 
 enum class Movement;

@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-namespace OGLSample
+namespace Atakama
 {
 
 GLenum glCheckError(const char *file, int line)

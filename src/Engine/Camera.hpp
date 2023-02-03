@@ -1,9 +1,9 @@
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
+#ifndef ATAKAMA_CAMERA_HPP
+#define ATAKAMA_CAMERA_HPP
 
 #include "Math/Transform.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 enum class Movement;

@@ -3,7 +3,7 @@
 #include "Window.hpp"
 #include "Debug/OpenGL3/OpenGL3Debug.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 static const uint32_t s_MaxFramebufferSize = 8192;

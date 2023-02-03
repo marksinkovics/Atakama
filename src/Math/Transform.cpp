@@ -1,6 +1,6 @@
 #include "Transform.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 glm::quat Transform::GetOrientation() const

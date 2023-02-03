@@ -1,10 +1,10 @@
-#ifndef POINTLIGHT_RENDERER_HPP
-#define POINTLIGHT_RENDERER_HPP
+#ifndef ATAKAMA_POINTLIGHT_RENDERER_HPP
+#define ATAKAMA_POINTLIGHT_RENDERER_HPP
 
 #include "Renderer/Renderer.hpp"
 #include "Engine/Lights/PointLight.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class PointLightRenderer: public Renderer

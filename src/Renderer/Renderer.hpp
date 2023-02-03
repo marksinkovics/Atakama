@@ -1,5 +1,5 @@
-#ifndef RENDERER_HPP
-#define RENDERER_HPP
+#ifndef ATAKAMA_RENDERER_HPP
+#define ATAKAMA_RENDERER_HPP
 
 #include "Engine/Camera.hpp"
 #include "Engine/Shader.hpp"
@@ -7,7 +7,7 @@
 
 #include "Engine/RenderSystem.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Renderer

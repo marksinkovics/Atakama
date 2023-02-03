@@ -1,7 +1,7 @@
-#ifndef INDEX_BUFFER_HPP
-#define INDEX_BUFFER_HPP
+#ifndef ATAKAMA_INDEX_BUFFER_HPP
+#define ATAKAMA_INDEX_BUFFER_HPP
 
-namespace OGLSample
+namespace Atakama
 {
 
 class IndexBuffer

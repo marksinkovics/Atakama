@@ -3,7 +3,7 @@
 #include "Engine/OpenGL3/OpenGL3ShaderBackend.hpp"
 #include "SubMesh.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 Ref<ShaderBackend> ShaderBackend::Create(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)

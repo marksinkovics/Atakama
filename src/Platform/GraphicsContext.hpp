@@ -1,9 +1,9 @@
-#ifndef GRAPHICS_CONTEXT_HPP
-#define GRAPHICS_CONTEXT_HPP
+#ifndef ATAKAMA_GRAPHICS_CONTEXT_HPP
+#define ATAKAMA_GRAPHICS_CONTEXT_HPP
 
 #include "Engine/RenderTypes.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class GraphicsContext

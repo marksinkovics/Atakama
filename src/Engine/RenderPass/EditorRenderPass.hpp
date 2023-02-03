@@ -1,9 +1,9 @@
-#ifndef EDITOR_RENDER_PASS
-#define EDITOR_RENDER_PASS
+#ifndef ATAKAMA_EDITOR_RENDER_PASS_HPP
+#define ATAKAMA_EDITOR_RENDER_PASS_HPP
 
 #include "RenderPass.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class PerfMonitor;

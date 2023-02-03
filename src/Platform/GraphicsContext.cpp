@@ -1,7 +1,7 @@
 #include "GraphicsContext.hpp"
 #include "OpenGL3/OpenGL3GraphicsContext.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 Ref<GraphicsContext> GraphicsContext::Create()

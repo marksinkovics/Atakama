@@ -1,7 +1,7 @@
 
 #include <memory>
 
-namespace OGLSample
+namespace Atakama
 {
 	template<typename T>
 	using Scope = std::unique_ptr<T>;

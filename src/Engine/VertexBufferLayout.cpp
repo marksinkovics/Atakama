@@ -1,6 +1,6 @@
 #include "VertexBufferLayout.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 uint32_t VertexBufferElement::GetSize(enum Type type)

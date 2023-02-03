@@ -1,9 +1,9 @@
-#ifndef TRANSFORM_HPP
-#define TRANSFORM_HPP
+#ifndef ATAKAMA_TRANSFORM_HPP
+#define ATAKAMA_TRANSFORM_HPP
 
 #include <glm/gtx/quaternion.hpp>
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Transform

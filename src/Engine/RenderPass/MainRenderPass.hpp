@@ -1,9 +1,9 @@
-#ifndef MAIN_RENDER_PASS_HPP
-#define MAIN_RENDER_PASS_HPP
+#ifndef ATAKAMA_MAIN_RENDER_PASS_HPP
+#define ATAKAMA_MAIN_RENDER_PASS_HPP
 
 #include "RenderPass.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Camera;

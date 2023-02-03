@@ -1,9 +1,9 @@
-#ifndef DEPTH_VIEW_RENDER_PASS
-#define DEPTH_VIEW_RENDER_PASS
+#ifndef ATAKAMA_DEPTH_VIEW_RENDER_PASS_HPP
+#define ATAKAMA_DEPTH_VIEW_RENDER_PASS_HPP
 
 #include "RenderPass.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class Shader;

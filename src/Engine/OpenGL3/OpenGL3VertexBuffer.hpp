@@ -1,10 +1,10 @@
-#ifndef OPENGL3_VERTEX_BUFFER_HPP
-#define OPENGL3_VERTEX_BUFFER_HPP
+#ifndef ATAKAMA_OPENGL3_VERTEX_BUFFER_HPP
+#define ATAKAMA_OPENGL3_VERTEX_BUFFER_HPP
 
 #include "Engine/VertexBufferLayout.hpp"
 #include "Engine/VertexBuffer.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 class OpenGL3VertexBuffer: public VertexBuffer

@@ -3,7 +3,7 @@
 #include "FileSystem.hpp"
 #include "AssetManager.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 void Scene::Init()

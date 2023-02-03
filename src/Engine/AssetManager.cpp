@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-namespace OGLSample
+namespace Atakama
 {
 
 int AssetManager::RegisterMesh(Ref<Mesh>& mesh)

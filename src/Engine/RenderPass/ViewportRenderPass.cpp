@@ -7,7 +7,7 @@
 #include "Engine/Mesh.hpp"
 #include "Engine/RenderSystem.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 

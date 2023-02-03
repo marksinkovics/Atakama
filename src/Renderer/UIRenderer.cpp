@@ -19,7 +19,7 @@
 
 #include <GLFW/glfw3.h>
 
-namespace OGLSample
+namespace Atakama
 {
 
 UIRenderer::UIRenderer(Ref<RenderSystem>& renderSystem, Ref<Window>& window)

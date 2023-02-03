@@ -3,7 +3,7 @@
 
 #include <GL/glew.h>
 
-namespace OGLSample
+namespace Atakama
 {
 
 GLuint GetOpenGLDrawingMode(DrawingMode mode)

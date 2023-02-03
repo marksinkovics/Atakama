@@ -9,7 +9,7 @@
 #include "Engine/AssetManager.hpp"
 #include "Log/LogSystem.hpp"
 
-namespace OGLSample
+namespace Atakama
 {
 
 RuntimeGlobalContext g_RuntimeGlobalContext;
