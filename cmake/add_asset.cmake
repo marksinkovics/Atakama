@@ -3,9 +3,9 @@ function(target_add_asset TARGET FOLDER ASSET_PATH)
     get_filename_component(ASSET_NAME ${ASSET_PATH} NAME)
 
     if(CMAKE_GENERATOR STREQUAL Xcode)
-        set(ASSET_OUTPUT_PATH "${CMAKE_BINARY_DIR}/$<CONFIG>/${FOLDER}/${ASSET_NAME}")
+        set(ASSET_OUTPUT_PATH "${CMAKE_BINARY_DIR}/${TARGET}/$<CONFIG>/${FOLDER}/${ASSET_NAME}")
     else()
-        set(ASSET_OUTPUT_PATH ${CMAKE_BINARY_DIR}/${FOLDER}/${ASSET_NAME})
+        set(ASSET_OUTPUT_PATH ${CMAKE_BINARY_DIR}/${TARGET}/${FOLDER}/${ASSET_NAME})
     endif()
 
     get_filename_component(ASSET_OUTPUT_DIR ${ASSET_OUTPUT_PATH} DIRECTORY)

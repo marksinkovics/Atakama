@@ -3,6 +3,7 @@
 *.swp
 .idea
 .cache
+*.log
 
 # Neovim
 
