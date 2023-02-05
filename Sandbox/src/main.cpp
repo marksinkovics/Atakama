@@ -1,5 +1,5 @@
-#include <Atakama/Core/Application.hpp>
-#include <Atakama/Core/GlobalContext.hpp>
+#include "SandboxApplication.hpp"
+
 #include <Atakama/Core/Args.hpp>
 
 int main(int argc, char **argv)
@@ -9,12 +9,8 @@ int main(int argc, char **argv)
     Atakama::SetArguments({argc, argv});
 
     {
-        Atakama::Ref<Atakama::Application> app = Atakama::CreateRef<Atakama::Application>();
-        Atakama::g_RuntimeGlobalContext.m_Application = app;
-
-        app->run();
-
-        Atakama::g_RuntimeGlobalContext.m_Application.reset();
+        Atakama::Sandbox::SandboxApplication app;
+        app.Run();
     }
 
     Atakama::g_RuntimeGlobalContext.Shutdown();

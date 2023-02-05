@@ -1,4 +1,4 @@
-#include "PerfMonitor.hpp"
+#include "Profiler.hpp"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -8,7 +8,7 @@
 namespace Atakama
 {
 
-PerfMonitor::PerfMonitor()
+Profiler::Profiler()
  : m_GPUTimerActivated(false), m_CPUTime(0.0f), m_GPUTime(0)
 {
     if (g_RuntimeGlobalContext.m_GraphicsAPI != GraphicsAPI::OpenGL3)
@@ -17,18 +17,30 @@ PerfMonitor::PerfMonitor()
     glGenQueries(1, &m_TimeQuery);
 }
 
-void PerfMonitor::StartCPUTimer()
+void Profiler::Start()
+{
+    StartCPUTimer();
+    StartGPUTimer();
+}
+
+void Profiler::Stop()
+{
+    StopGPUTimer();
+    StopCPUTimer();
+}
+
+void Profiler::StartCPUTimer()
 {
     m_CPUStartTime = std::chrono::high_resolution_clock::now();
 }
 
-void PerfMonitor::StopCPUTimer()
+void Profiler::StopCPUTimer()
 {
     m_CPUStopTime = std::chrono::high_resolution_clock::now();
     m_CPUTime = std::chrono::duration<float, std::chrono::milliseconds::period>(m_CPUStopTime - m_CPUStartTime).count();
 }
 
-void PerfMonitor::StartGPUTimer()
+void Profiler::StartGPUTimer()
 {
     if (g_RuntimeGlobalContext.m_GraphicsAPI != GraphicsAPI::OpenGL3)
         return;
@@ -45,7 +57,7 @@ void PerfMonitor::StartGPUTimer()
     }
 }
 
-void PerfMonitor::StopGPUTimer()
+void Profiler::StopGPUTimer()
 {
     if (g_RuntimeGlobalContext.m_GraphicsAPI != GraphicsAPI::OpenGL3)
         return;
@@ -61,17 +73,17 @@ void PerfMonitor::StopGPUTimer()
     }
 }
 
-float PerfMonitor::GetCPUTime()
+float Profiler::GetCPUTime()
 {
     return m_CPUTime;
 }
 
-float PerfMonitor::GetGPUTime()
+float Profiler::GetGPUTime()
 {
     return m_GPUTime / 1000000.f;
 }
 
-bool PerfMonitor::GetGPUAvailable()
+bool Profiler::GetGPUAvailable()
 {
     return m_GPUTimerAvailable;
 }

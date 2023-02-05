@@ -19,7 +19,8 @@ public:
     void Init();
     void Shutdown();
 
-    Ref<Application> m_Application;
+    Application* m_Application;
+    
     Ref<LogSystem> m_LogSystem;
     Ref<EventDispatcher> m_Dispatcher;
     Ref<InputSystem> m_InputSystem;

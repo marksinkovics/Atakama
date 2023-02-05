@@ -1,18 +1,20 @@
-#ifndef ATAKAMA_PERF_MONITOR_HPP
-#define ATAKAMA_PERF_MONITOR_HPP
+#ifndef ATAKAMA_PROFILER_HPP
+#define ATAKAMA_PROFILER_HPP
 
 namespace Atakama
 {
 
-class PerfMonitor
+class Profiler
 {
 public:
-    PerfMonitor();
-    ~PerfMonitor() = default;
+    Profiler();
+    ~Profiler() = default;
 
+    void Start();
     void StartCPUTimer();
     void StopCPUTimer();
 
+    void Stop();
     void StartGPUTimer();
     void StopGPUTimer();
 

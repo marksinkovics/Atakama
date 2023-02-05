@@ -6,18 +6,18 @@
 namespace Atakama
 {
 
-class PerfMonitor;
+class Profiler;
 
 class EditorRenderPass: public RenderPass
 {
 public:
-    EditorRenderPass(Ref<RenderSystem> renderSystem, Ref<PerfMonitor>& perfMonitor);
+    EditorRenderPass(Ref<RenderSystem> renderSystem, Ref<Profiler>& profiler);
     virtual std::string GetName() override { return "Editor RenderPass"; }
 private:
     bool m_ViewportFocused = false;
     bool m_ViewportHovered = false;
 
-    Ref<PerfMonitor>& m_perfMonitor;
+    Ref<Profiler>& m_Profiler;
 };
 
 }

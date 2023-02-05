@@ -139,7 +139,7 @@ Window::~Window()
 
 bool Window::ShouldClose()
 {
-    return glfwGetKey(m_Window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(m_Window) == 0;
+    return glfwWindowShouldClose(m_Window) == 0;
 }
 
 GLFWwindow* Window::GetWindow() const

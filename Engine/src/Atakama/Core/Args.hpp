@@ -5,8 +5,8 @@ namespace Atakama
 {
 
 struct Arguments {
-   int argc;
-   const char* const *argv;
+    int argc;
+    const char* const *argv;
 };
 
 Arguments GetArguments();

@@ -5,8 +5,7 @@
 #include "Mesh.hpp"
 
 #include "Atakama/Engine/RenderSystem.hpp"
-#include "Atakama/Engine/Renderer/UIRenderer.hpp"
-#include "Atakama/Engine/Perf/PerfMonitor.hpp"
+#include "Atakama/Core/Profiler.hpp"
 
 #include "Scene.hpp"
 
@@ -32,14 +31,28 @@ class Camera;
 class Engine
 {
 public:
-    void Init(Ref<Window>& window);
+    void Init(Ref<Window>& window, Ref<Profiler>& profiler);
     void Shutdown();
     void Run();
-    void CalculateDeltaTime();
+    float CalculateDeltaTime();
 
-    bool OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event);
+    void StartProfile();
+    void StopProfile();
+
     bool OnMouseScrollEvent(MouseScrolledEvent& event);
     void UpdateRenderingViewportSize(glm::uvec2 size);
+
+    void AddMainRenderPasses(Ref<RenderPass>& renderPass);
+    void AddPostRenderPass(Ref<RenderPass>& renderPass);
+
+    Ref<SkyBoxRenderPass> GetSkyBoxRenderPass() { return m_SkyBoxRenderPass; }
+    Ref<MainRenderPass> GetMainRenderPass() { return m_MainRenderPass; }
+    Ref<DebugRenderPass> GetDebugRenderPass() { return m_DebugRenderPass; }
+    Ref<DepthViewRenderPass> GetDepthViewRenderPass() { return m_DepthViewRenderPass; }
+    Ref<OutlineRenderPass> GetOutlineRenderPass() { return m_OutlineRenderPass; }
+    Ref<ViewportRenderPass> GetViewportRenderPass() { return m_ViewportRenderPass; }
+
+    Ref<Scene> GetScene() { return m_Scene; };
 
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> m_LastTime {std::chrono::high_resolution_clock::now()};
@@ -61,11 +74,10 @@ private:
 
     std::vector<Ref<RenderPass>> m_MainRenderPasses;
     std::vector<Ref<RenderPass>> m_PostRenderPasses;
-    
-    Ref<UIRenderer> m_UIRenderer;
-    std::vector<Ref<UIRenderView>> m_UIRenderViews;
 
-    Ref<PerfMonitor> m_perfMonitor;
+    Ref<Profiler> m_Profiler;
+
+    friend Application;
 };
 
 }

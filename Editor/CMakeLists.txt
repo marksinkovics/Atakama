@@ -82,7 +82,7 @@ target_link_libraries(${PROJECT_NAME}
         glm::glm
         # stb
         # Vulkan::Vulkan
-        # imgui
+        imgui
         spdlog
         # # tinyobjloader
         Engine
