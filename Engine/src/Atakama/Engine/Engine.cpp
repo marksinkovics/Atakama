@@ -47,58 +47,23 @@ void Engine::Init(Ref<Window>& window, Ref<Profiler>& profiler)
     m_Scene->Init();
 
     m_MainRenderPass = CreateRef<MainRenderPass>(m_RenderSystem, m_Scene, m_Cameras[0]);
-
-    if (IsEditor())
-    {
-        m_DebugRenderPass = CreateRef<DebugRenderPass>(m_RenderSystem, m_Scene, m_Cameras[0]);
-        m_DebugRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
-    }
-
+    m_DebugRenderPass = CreateRef<DebugRenderPass>(m_RenderSystem, m_Scene, m_Cameras[0]);
+    m_DebugRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
     m_SkyBoxRenderPass = CreateRef<SkyBoxRenderPass>(m_RenderSystem, m_Cameras[0]);
     m_SkyBoxRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
-
-    if (IsEditor())
-    {
-        m_DepthViewRenderPass = CreateRef<DepthViewRenderPass>(m_RenderSystem);
-        m_DepthViewRenderPass->AddDependency(m_MainRenderPass);
-        m_OutlineRenderPass = CreateRef<OutlineRenderPass>(m_RenderSystem);
-        m_OutlineRenderPass->AddDependency(m_MainRenderPass);
-    }
-
+    m_DepthViewRenderPass = CreateRef<DepthViewRenderPass>(m_RenderSystem);
+    m_DepthViewRenderPass->AddDependency(m_MainRenderPass);
+    m_OutlineRenderPass = CreateRef<OutlineRenderPass>(m_RenderSystem);
+    m_OutlineRenderPass->AddDependency(m_MainRenderPass);
     m_ViewportRenderPass = CreateRef<ViewportRenderPass>(m_RenderSystem);
-    if (IsEditor())
-    {
-        m_ViewportRenderPass->AddDependency(m_OutlineRenderPass);
-    }
-    else
-    {
-        m_ViewportRenderPass->AddDependency(m_MainRenderPass);
-    }
+    m_ViewportRenderPass->AddDependency(m_MainRenderPass);
 
     m_MainRenderPasses.push_back(m_MainRenderPass);
-
-    if (IsEditor())
-    {
-        m_MainRenderPasses.push_back(m_DebugRenderPass);
-    }
-
+    m_MainRenderPasses.push_back(m_DebugRenderPass);
     m_MainRenderPasses.push_back(m_SkyBoxRenderPass);
-
-    if (IsEditor())
-    {
-        m_PostRenderPasses.push_back(m_DepthViewRenderPass);
-        m_PostRenderPasses.push_back(m_OutlineRenderPass);
-    }
-
-    if (!IsEditor())
-    {
-        m_PostRenderPasses.push_back(m_ViewportRenderPass);
-    }
-
-    if (!IsEditor())
-    {
-        UpdateRenderingViewportSize(m_Window->GetFrameBufferSize());
-    }
+    m_PostRenderPasses.push_back(m_DepthViewRenderPass);
+    m_PostRenderPasses.push_back(m_OutlineRenderPass);
+    m_PostRenderPasses.push_back(m_ViewportRenderPass);
 }
 
 void Engine::Shutdown()
@@ -123,9 +88,13 @@ void Engine::UpdateRenderingViewportSize(glm::uvec2 size)
 {
     m_MainRenderPass->Resize(size);
 
-    if (IsEditor())
+    if (m_DepthViewRenderPass->IsEnabled())
     {
         m_DepthViewRenderPass->Resize(size);
+    }
+
+    if (m_OutlineRenderPass->IsEnabled())
+    {
         m_OutlineRenderPass->Resize(size);
     }
 
@@ -141,11 +110,15 @@ void Engine::Run()
     {
         for (const Ref<RenderPass>& renderPass : m_MainRenderPasses)
         {
+            if (!renderPass->IsEnabled())
+                continue;
             renderPass->Render();
         }
 
         for (const Ref<RenderPass>& renderPass : m_PostRenderPasses)
         {
+            if (!renderPass->IsEnabled())
+                continue;
             renderPass->Render();
         }
     }

@@ -84,6 +84,16 @@ void RenderPass::RemoveDependency(Ref<RenderPass> renderPass)
     }));
 }
 
+void RenderPass::SetEnable(bool enable)
+{
+    m_Enabled = enable;
+}
+
+bool RenderPass::IsEnabled()
+{
+    return m_Enabled;
+}
+
 //
 // SceneRenderPass
 //

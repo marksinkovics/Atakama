@@ -28,8 +28,8 @@ Application::Application()
     m_Profiler = CreateRef<Profiler>();
     m_Engine = CreateRef<Engine>();
     g_RuntimeGlobalContext.m_Engine = m_Engine;
-
     m_Engine->Init(m_Window, m_Profiler);
+
     m_ImGuiLayer = new ImGuiLayer(m_Engine->m_RenderSystem, m_Window);
     AddLayer(m_ImGuiLayer);
 

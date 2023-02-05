@@ -35,6 +35,9 @@ public:
 
     virtual std::string GetName() = 0;
 
+    virtual bool IsEnabled();
+    virtual void SetEnable(bool enable);
+
 protected:
     Ref<RenderSystem> m_RenderSystem;
     Ref<FrameBuffer> m_FrameBuffer;
@@ -42,6 +45,8 @@ protected:
     std::vector<Ref<RenderPass>> m_Dependencies;
 
     glm::uvec2 m_Size;
+
+    bool m_Enabled {true};
 };
 
 class SceneRenderPass: public RenderPass
