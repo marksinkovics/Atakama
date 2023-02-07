@@ -1,9 +1,9 @@
-#include "Transform.hpp"
+#include "TransformComponent.hpp"
 
 namespace Atakama
 {
 
-glm::quat Transform::GetOrientation() const
+glm::quat TransformComponent::GetOrientation() const
 {
     glm::quat pitch = glm::angleAxis(Rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
     glm::quat yaw = glm::angleAxis(Rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -11,7 +11,7 @@ glm::quat Transform::GetOrientation() const
     return glm::normalize(pitch * yaw * roll);
 }
 
-glm::mat4 Transform::GetMat4()
+glm::mat4 TransformComponent::GetMat4()
 {
     glm::mat4 translate = glm::translate(glm::mat4(1.0), Translate);
     glm::mat4 rotation = glm::toMat4(glm::quat(Rotation));
@@ -19,12 +19,12 @@ glm::mat4 Transform::GetMat4()
     return translate * glm::mat4_cast(GetOrientation()) * scale;
 }
 
-glm::mat3 Transform::GetInverseMat3()
+glm::mat3 TransformComponent::GetInverseMat3()
 {
     return glm::inverseTranspose(glm::mat3(GetMat4()));;
 }
 
-glm::mat4 Transform::GetInverseMat4()
+glm::mat4 TransformComponent::GetInverseMat4()
 {
     return glm::inverseTranspose(GetMat4());
 }

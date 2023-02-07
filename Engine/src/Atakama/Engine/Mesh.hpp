@@ -2,14 +2,13 @@
 #define ATAKAMA_MESH_HPP
 
 #include "SubMesh.hpp"
-#include "Atakama/Engine/Math/Transform.hpp"
+#include "Atakama/Scene/Components/TransformComponent.hpp"
 
 namespace Atakama
 {
 
 class Shader;
 class RenderSystem;
-class Transform;
 
 class Mesh
 {
@@ -20,7 +19,7 @@ public:
 
     glm::mat4 GetModelMatrix();
     glm::mat3 GetNormalMatrix();
-    Ref<Transform> GetTransform();
+    Ref<TransformComponent> GetTransform();
 
     std::vector<Scope<SubMesh>>& GetSubMeshes();
     void AddSubMesh(Scope<SubMesh> subMesh);
@@ -33,7 +32,7 @@ public:
 private:
     int m_Id {0};
     std::vector<Scope<SubMesh>> m_SubMeshes;
-    Ref<Transform> m_Transform;
+    Ref<TransformComponent> m_Transform;
 };
 
 

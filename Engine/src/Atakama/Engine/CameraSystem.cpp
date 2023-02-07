@@ -7,7 +7,7 @@
 namespace Atakama
 {
 
-void CameraSystem::Update(Ref<Camera>& camera, float ts)
+void CameraSystem::Update(Camera& camera, float ts)
 {
     Ref<InputSystem> inputSystem = g_RuntimeGlobalContext.m_InputSystem;
     if (inputSystem->IsKeyPressed(GLFW_KEY_X))
@@ -45,45 +45,45 @@ void CameraSystem::Update(Ref<Camera>& camera, float ts)
     Move(camera, inputSystem->GetMovement(), ts);
 }
 
-void CameraSystem::Move(Ref<Camera>& camera, Movement movement, float ts)
+void CameraSystem::Move(Camera& camera, Movement movement, float ts)
 {
     float value = m_Speed * ts;
 
     if (movement == Movement::Forward)
     {
-        camera->Transform.Translate += GetForward(camera) * value;
+        camera.Transform.Translate += GetForward(camera) * value;
     }
 
     if (movement == Movement::Backward)
     {
-        camera->Transform.Translate -= GetForward(camera) * value;
+        camera.Transform.Translate -= GetForward(camera) * value;
     }
 
     if (movement == Movement::Right)
     {
-        camera->Transform.Translate += GetRight(camera) * value;
+        camera.Transform.Translate += GetRight(camera) * value;
     }
 
     if (movement == Movement::Left)
     {
-        camera->Transform.Translate -= GetRight(camera) * value;
+        camera.Transform.Translate -= GetRight(camera) * value;
     }
 
     if (movement == Movement::Up)
     {
-        camera->Transform.Translate += GetUp(camera) * value;
+        camera.Transform.Translate += GetUp(camera) * value;
     }
 
     if (movement == Movement::Down)
     {
-        camera->Transform.Translate -= GetUp(camera) * value;
+        camera.Transform.Translate -= GetUp(camera) * value;
     }
 }
 
-void CameraSystem::Rotate(Ref<Camera>& camera, glm::vec2 delta, float ts, bool constrainPitch)
+void CameraSystem::Rotate(Camera& camera, glm::vec2 delta, float ts, bool constrainPitch)
 {
-    float yaw   = camera->Transform.Rotation.y + delta.x * m_MouseSpeed;
-    float pitch = camera->Transform.Rotation.x + delta.y * m_MouseSpeed;
+    float yaw   = camera.Transform.Rotation.y + delta.x * m_MouseSpeed;
+    float pitch = camera.Transform.Rotation.x + delta.y * m_MouseSpeed;
 
     if (constrainPitch)
     {
@@ -97,32 +97,32 @@ void CameraSystem::Rotate(Ref<Camera>& camera, glm::vec2 delta, float ts, bool c
             pitch = -89.0f;
         }
     }
-    camera->Transform.Rotation.x = pitch;
-    camera->Transform.Rotation.y = yaw;
+    camera.Transform.Rotation.x = pitch;
+    camera.Transform.Rotation.y = yaw;
 }
 
-void CameraSystem::LookAt(Ref<Camera>& camera, const glm::vec3& cameraPostion, const glm::vec3& cameraTarget)
+void CameraSystem::LookAt(Camera& camera, const glm::vec3& cameraPostion, const glm::vec3& cameraTarget)
 {
-    camera->Transform.Translate = cameraPostion;
+    camera.Transform.Translate = cameraPostion;
     glm::vec3 direction = glm::normalize(cameraTarget - cameraPostion);
 
     float yaw = std::atan2(direction.x, -direction.z);
-    camera->Transform.Rotation.y = yaw;
+    camera.Transform.Rotation.y = yaw;
 
     float pitch = glm::asin(-direction.y);
-    camera->Transform.Rotation.x = pitch;
+    camera.Transform.Rotation.x = pitch;
 }
 
-glm::vec3 CameraSystem::GetForward(Ref<Camera>& camera)
+glm::vec3 CameraSystem::GetForward(Camera& camera)
 {
-    return glm::rotate(glm::inverse(camera->Transform.GetOrientation()), glm::vec3(0.0, 0.0, -1.0));
+    return glm::rotate(glm::inverse(camera.Transform.GetOrientation()), glm::vec3(0.0, 0.0, -1.0));
 }
-glm::vec3 CameraSystem::GetRight(Ref<Camera>& camera)
+glm::vec3 CameraSystem::GetRight(Camera& camera)
 {
-    return glm::rotate(glm::inverse(camera->Transform.GetOrientation()), glm::vec3(1.0, 0.0, 0.0));
+    return glm::rotate(glm::inverse(camera.Transform.GetOrientation()), glm::vec3(1.0, 0.0, 0.0));
 }
 
-glm::vec3 CameraSystem::GetUp(Ref<Camera>& camera)
+glm::vec3 CameraSystem::GetUp(Camera& camera)
 {
     return glm::vec3(0.0, 1.0, 0.0);
 }

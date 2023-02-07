@@ -1,22 +1,30 @@
 #ifndef ATAKAMA_SCENE_HPP
 #define ATAKAMA_SCENE_HPP
 
-#include "Shader.hpp"
-#include "Texture.hpp"
-#include "Mesh.hpp"
+#include "Atakama/Engine/Shader.hpp"
+#include "Atakama/Engine/Texture.hpp"
+#include "Atakama/Engine/Mesh.hpp"
 #include "Atakama/Engine/Lights/PointLight.hpp"
 
 #include <map>
+#include <entt/entt.hpp>
 
 namespace Atakama
 {
 
+class Entity;
+
 class Scene
 {
 public:
-    Scene() = default;
+    Scene();
     virtual ~Scene() = default;
-    
+
+    Entity CreateEntity(const std::string& name = "");
+    void DestroyEntity(Entity entity);
+
+    Entity GetPrimaryCameraEntity();
+
     virtual void Init();
     virtual void LoadLight();
     virtual void LoadTextures();
@@ -35,17 +43,19 @@ protected:
     std::map<std::string, Ref<Texture>> m_Textures;
     std::vector<Ref<Mesh>> m_Meshes;
     Ref<PointLight> m_PointLight;
+
+    entt::registry m_Registry;
+    friend class Entity;
 };
 
 class SandboxScene: public Scene
 {
 public:
-    SandboxScene() = default;
+    SandboxScene();
     virtual ~SandboxScene() = default;
     virtual void LoadLight() override;
     virtual void LoadTextures() override;
     virtual void LoadMeshes() override;
-
 };
 
 }

@@ -12,6 +12,11 @@
 namespace Atakama
 {
 
+Camera::Camera()
+{
+    SetMode(Mode::Perspective);
+}
+
 Camera::Camera(Mode mode)
 {
     SetMode(mode);

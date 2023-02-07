@@ -6,25 +6,23 @@
 namespace Atakama
 {
 
-class SimpleRenderer;
-class PointLightRenderer;
 class Mesh;
-class Camera;
 class Scene;
+class Shader;
 
 class DebugRenderPass: public SceneRenderPass
 {
 public:
-    DebugRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera>& camera);
+    DebugRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene);
     virtual ~DebugRenderPass() = default;
 protected:
     virtual void Draw() override;
     virtual std::string GetName() override;
 private:
     Ref<Mesh> m_AxisMesh;
-    Ref<Camera> m_Camera;
-    Ref<SimpleRenderer> m_SimpleRenderer;
-    Ref<PointLightRenderer> m_BillboardRenderer;
+
+    Ref<Shader> m_SimpleShader;
+    Ref<Shader> m_PointLightShader;
 };
 
 }

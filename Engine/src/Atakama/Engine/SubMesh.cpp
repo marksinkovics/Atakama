@@ -1,5 +1,5 @@
 #include "SubMesh.hpp"
-#include "Atakama/Engine/Math/Transform.hpp"
+#include "Atakama/Scene/Components/TransformComponent.hpp"
 
 namespace Atakama
 {
@@ -24,7 +24,7 @@ VertexBufferLayout SubMesh::Vertex::GetLayout()
 }
 
 SubMesh::SubMesh(std::vector<Vertex>& vertices)
-: m_Transform(CreateRef<Transform>())
+: m_Transform(CreateRef<TransformComponent>())
 {
     m_VertexBuffer = VertexBuffer::Create((float*)vertices.data(), sizeof(Vertex) * vertices.size());
     m_VertexBuffer->SetLayout(SubMesh::Vertex::GetLayout());
@@ -33,7 +33,7 @@ SubMesh::SubMesh(std::vector<Vertex>& vertices)
 }
 
 SubMesh::SubMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices)
-: m_Transform(CreateRef<Transform>())
+: m_Transform(CreateRef<TransformComponent>())
 {
     m_VertexBuffer = VertexBuffer::Create((float*)vertices.data(), sizeof(Vertex) * vertices.size());
     m_VertexBuffer->SetLayout(SubMesh::Vertex::GetLayout());
@@ -67,7 +67,7 @@ glm::mat3 SubMesh::GetNormalMatrix()
     return m_Transform->GetInverseMat3();
 }
 
-Ref<Transform> SubMesh::GetTransform()
+Ref<TransformComponent> SubMesh::GetTransform()
 {
     return m_Transform;
 }

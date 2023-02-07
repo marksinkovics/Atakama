@@ -1,10 +1,46 @@
 #include "Scene.hpp"
 
-#include <Atakama/Core/FileSystem.hpp>
-#include "AssetManager.hpp"
+#include "Atakama/Core/FileSystem.hpp"
+#include "Atakama/Engine/AssetManager.hpp"
+
+#include "Atakama/Scene/Entity.hpp"
+
+#include "Components/Components.hpp"
 
 namespace Atakama
 {
+
+Scene::Scene()
+{
+    Entity cameraEntity = CreateEntity();
+    CameraComponent& cameraComponent = cameraEntity.AddComponent<CameraComponent>(Camera::Mode::Perspective);
+    cameraComponent.Primary = true;
+}
+
+Entity Scene::CreateEntity(const std::string& name)
+{
+    Entity entity(m_Registry.create(), this);
+    return entity;
+}
+
+void Scene::DestroyEntity(Entity entity)
+{
+    m_Registry.destroy(entity.m_Handle);
+}
+
+Entity Scene::GetPrimaryCameraEntity()
+{
+    auto view = m_Registry.view<CameraComponent>();
+    for (auto entity : view)
+    {
+        const auto& cameraComponent = view.get<CameraComponent>(entity);
+        if (cameraComponent.Primary)
+        {
+            return Entity(entity, this);
+        }
+    }
+    return Entity();
+}
 
 void Scene::Init()
 {
@@ -52,6 +88,10 @@ std::vector<Ref<Mesh>> Scene::GetMeshes() const
 //
 // Sandbox scene
 //
+
+SandboxScene::SandboxScene()
+{
+}
 
 void SandboxScene::LoadLight()
 {

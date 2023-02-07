@@ -34,11 +34,13 @@ target_link_libraries(${PROJECT_NAME}
         imgui
         spdlog
         # tinyobjloader
+        EnTT
 )
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${SOURCE_ROOT}
+        EnTT
     PRIVATE
         ${SOURCE_ROOT}
 )

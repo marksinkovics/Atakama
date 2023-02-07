@@ -30,3 +30,9 @@ if (NOT TARGET spdlog)
     add_subdirectory(spdlog)
     set_target_properties(spdlog PROPERTIES FOLDER ${vendor_folder}/spdlog)
 endif()
+
+if (NOT TARGET entt)
+    add_subdirectory(entt)
+    set_target_properties(EnTT PROPERTIES FOLDER ${vendor_folder}/entt)
+endif()
+

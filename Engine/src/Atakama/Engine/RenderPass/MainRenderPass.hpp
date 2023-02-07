@@ -6,21 +6,19 @@
 namespace Atakama
 {
 
-class Camera;
 class Scene;
-class LightingRenderer;
+class Shader;
 
 class MainRenderPass: public SceneRenderPass
 {
 public:
-    MainRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene, Ref<Camera>& camera);
+    MainRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene);
     virtual ~MainRenderPass() = default;
 protected:
     virtual void Draw() override;
     virtual std::string GetName() override;
 private:
-    Ref<Camera> m_Camera;
-    Ref<LightingRenderer> m_Renderer;
+    Ref<Shader> m_Shader;
 };
 
 }

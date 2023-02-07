@@ -6,12 +6,12 @@ namespace Atakama
 {
 
 Mesh::Mesh()
-: m_Transform(CreateRef<Transform>())
+: m_Transform(CreateRef<TransformComponent>())
 {
 }
 
 Mesh::Mesh(std::vector<Scope<SubMesh>>& subMeshes)
-: m_SubMeshes(std::move(subMeshes)), m_Transform(CreateRef<Transform>())
+: m_SubMeshes(std::move(subMeshes)), m_Transform(CreateRef<TransformComponent>())
 {
 
 }
@@ -27,7 +27,7 @@ glm::mat3 Mesh::GetNormalMatrix()
     return m_Transform->GetInverseMat3();
 }
 
-Ref<Transform> Mesh::GetTransform()
+Ref<TransformComponent> Mesh::GetTransform()
 {
     return m_Transform;
 }

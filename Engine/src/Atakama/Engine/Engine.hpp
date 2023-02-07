@@ -7,7 +7,7 @@
 #include "Atakama/Engine/RenderSystem.hpp"
 #include "Atakama/Core/Profiler.hpp"
 
-#include "Scene.hpp"
+#include "Atakama/Scene/Scene.hpp"
 
 #include <chrono>
 
@@ -62,7 +62,6 @@ private:
     Ref<Window> m_Window;
     Ref<RenderSystem> m_RenderSystem;
 
-    std::vector<Ref<Camera>> m_Cameras;
     Ref<CameraSystem> m_CameraSystem;
 
     Ref<SkyBoxRenderPass> m_SkyBoxRenderPass;

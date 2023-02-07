@@ -8,7 +8,7 @@
 #include "Atakama/Engine/IndexBuffer.hpp"
 #include "Atakama/Engine/VertexArray.hpp"
 
-#include "Atakama/Engine/Math/Transform.hpp"
+#include "Atakama/Scene/Components/TransformComponent.hpp"
 
 namespace Atakama
 {
@@ -35,7 +35,7 @@ public:
 
     glm::mat4 GetModelMatrix();
     glm::mat3 GetNormalMatrix();
-    Ref<Transform> GetTransform();
+    Ref<TransformComponent> GetTransform();
 
     void SetTexture(Ref<Texture> texture);
     Ref<Texture> GetTexture();
@@ -49,7 +49,7 @@ private:
 
     Ref<Texture> m_Texture;
 
-    Ref<Transform> m_Transform;
+    Ref<TransformComponent> m_Transform;
 
     Ref<VertexBuffer> m_VertexBuffer;
     Ref<IndexBuffer> m_IndexBuffer;

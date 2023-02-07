@@ -1,7 +1,7 @@
 #ifndef ATAKAMA_CAMERA_HPP
 #define ATAKAMA_CAMERA_HPP
 
-#include "Atakama/Engine/Math/Transform.hpp"
+#include "Atakama/Scene/Components/TransformComponent.hpp"
 
 namespace Atakama
 {
@@ -20,7 +20,9 @@ public:
         Perspective, Ortho
     };
 public:
+    Camera();
     Camera(Mode mode);
+    Camera(Camera&) = default;
     virtual ~Camera() = default;
 
     virtual glm::mat4 GetViewMatrix();
@@ -33,7 +35,7 @@ public:
     virtual void Resize(uint32_t width, uint32_t height);
     virtual void Zoom(float offset);
 
-    Transform Transform;
+    TransformComponent Transform;
 protected:
     float m_InitialFoV = 45.0f; // Perspective only
     float m_Zoom = 2.0f; // Ortho only

@@ -1,16 +1,16 @@
-#ifndef ATAKAMA_TRANSFORM_HPP
-#define ATAKAMA_TRANSFORM_HPP
+#ifndef ATAKAMA_ENGINE_TRANSFORM_HPP
+#define ATAKAMA_ENGINE_TRANSFORM_HPP
 
 #include <glm/gtx/quaternion.hpp>
 
 namespace Atakama
 {
 
-class Transform
+class TransformComponent
 {
 public:
-    Transform() = default;
-    Transform(const Transform&) = default;
+    TransformComponent() = default;
+    TransformComponent(const TransformComponent&) = default;
 
 
     glm::quat GetOrientation() const;

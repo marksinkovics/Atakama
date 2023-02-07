@@ -23,6 +23,9 @@
 
 #include <GLFW/glfw3.h>
 
+#include "Atakama/Scene/Entity.hpp"
+#include "Atakama/Scene/Scene.hpp"
+#include "Atakama/Scene/Components/Components.hpp"
 
 namespace Atakama
 {
@@ -38,18 +41,18 @@ void Engine::Init(Ref<Window>& window, Ref<Profiler>& profiler)
     m_RenderSystem->Init();
     m_RenderSystem->SetClearColor({0.0f, 0.0f, 0.4f, 0.0f});
 
-    m_CameraSystem = CreateRef<CameraSystem>();
-    m_Cameras.push_back(CreateRef<Camera>(Camera::Mode::Perspective));
-    m_CameraSystem->LookAt(m_Cameras[0], {5.0f, 5.f, 5.f}, {0.0f, 0.0f, 0.0f});
-    m_Cameras[0]->Resize(m_Window->GetWidth(), m_Window->GetHeight());
-
     m_Scene = CreateRef<SandboxScene>();
     m_Scene->Init();
 
-    m_MainRenderPass = CreateRef<MainRenderPass>(m_RenderSystem, m_Scene, m_Cameras[0]);
-    m_DebugRenderPass = CreateRef<DebugRenderPass>(m_RenderSystem, m_Scene, m_Cameras[0]);
+    m_CameraSystem = CreateRef<CameraSystem>();
+    Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
+    Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+    m_CameraSystem->LookAt(camera, {5.0f, 5.f, 5.f}, {0.0f, 0.0f, 0.0f});
+
+    m_MainRenderPass = CreateRef<MainRenderPass>(m_RenderSystem, m_Scene);
+    m_DebugRenderPass = CreateRef<DebugRenderPass>(m_RenderSystem, m_Scene);
     m_DebugRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
-    m_SkyBoxRenderPass = CreateRef<SkyBoxRenderPass>(m_RenderSystem, m_Cameras[0]);
+    m_SkyBoxRenderPass = CreateRef<SkyBoxRenderPass>(m_RenderSystem, m_Scene);
     m_SkyBoxRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
     m_DepthViewRenderPass = CreateRef<DepthViewRenderPass>(m_RenderSystem);
     m_DepthViewRenderPass->AddDependency(m_MainRenderPass);
@@ -81,7 +84,9 @@ float Engine::CalculateDeltaTime()
 
 bool Engine::OnMouseScrollEvent(MouseScrolledEvent &event)
 {
-    m_Cameras[0]->Zoom(event.GetYOffset() * 0.1f);
+    Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
+    Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+    camera.Zoom(event.GetYOffset() * 0.1f);
 }
 
 void Engine::UpdateRenderingViewportSize(glm::uvec2 size)
@@ -98,12 +103,16 @@ void Engine::UpdateRenderingViewportSize(glm::uvec2 size)
         m_OutlineRenderPass->Resize(size);
     }
 
-    m_Cameras[0]->Resize(size.x, size.y);
+    Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
+    Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+    camera.Resize(size.x, size.y);
 }
 
 void Engine::Run()
 {
-    m_CameraSystem->Update(m_Cameras[0], m_FrameTime);
+    Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
+    Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+    m_CameraSystem->Update(camera, m_FrameTime);
 
     m_Profiler->Start();
 

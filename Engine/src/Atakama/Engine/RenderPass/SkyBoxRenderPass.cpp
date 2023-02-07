@@ -4,14 +4,18 @@
 #include "Atakama/Engine/Texture.hpp"
 #include "Atakama/Engine/Shader.hpp"
 #include "Atakama/Engine/AssetManager.hpp"
-#include <Atakama/Core/FileSystem.hpp>
+#include "Atakama/Core/FileSystem.hpp"
+
+#include "Atakama/Scene/Scene.hpp"
 #include "Atakama/Engine/Camera.hpp"
+#include "Atakama/Scene/Entity.hpp"
+#include "Atakama/Scene/Components/Components.hpp"
 
 namespace Atakama
 {
 
-SkyBoxRenderPass::SkyBoxRenderPass(Ref<RenderSystem> renderSystem, Ref<Camera>& camera)
-: RenderPass(renderSystem), m_Camera(camera)
+SkyBoxRenderPass::SkyBoxRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene>& scene)
+: RenderPass(renderSystem), m_Scene(scene)
 {
     std::filesystem::path path = FileSystem::GetTexturePath();
     m_Texture = TextureCube::Create({
@@ -30,15 +34,18 @@ SkyBoxRenderPass::SkyBoxRenderPass(Ref<RenderSystem> renderSystem, Ref<Camera>& 
 
 void SkyBoxRenderPass::Draw()
 {
+    Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
+    Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+
     m_RenderSystem->SetDepthCompare(DepthCompare::LessOrEqual);
 
     m_Shader->Bind();
 
     // remove translation from the view matrix
-    m_Shader->SetUniformMat4("uView", glm::mat4(glm::mat3(m_Camera->GetViewMatrix())));
-    m_Shader->SetUniformMat4("uProjection", m_Camera->GetProjectionMatrix());
+    m_Shader->SetUniformMat4("uView", glm::mat4(glm::mat3(camera.GetViewMatrix())));
+    m_Shader->SetUniformMat4("uProjection", camera.GetProjectionMatrix());
     // Camera / View
-    m_Shader->SetUniformFloat3("uViewPosition", m_Camera->Transform.Translate);
+    m_Shader->SetUniformFloat3("uViewPosition", camera.Transform.Translate);
 
     m_Mesh->Draw(m_RenderSystem, m_Shader);
 
