@@ -34,7 +34,6 @@ public:
         return m_Scene->m_Registry.get<T>(m_Handle);
     }
 
-
     operator bool() const { return m_Handle != entt::null; }
     operator entt::entity() const { return m_Handle; }
 private:

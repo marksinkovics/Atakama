@@ -6,6 +6,7 @@
 #include "Atakama/Scene/Entity.hpp"
 
 #include "Components/Components.hpp"
+#include "Components/TransformComponent.hpp"
 
 namespace Atakama
 {
@@ -14,6 +15,7 @@ Scene::Scene()
 {
     Entity cameraEntity = CreateEntity();
     CameraComponent& cameraComponent = cameraEntity.AddComponent<CameraComponent>(Camera::Mode::Perspective);
+    TransformComponent& transformComponent = cameraEntity.AddComponent<TransformComponent>();
     cameraComponent.Primary = true;
 }
 

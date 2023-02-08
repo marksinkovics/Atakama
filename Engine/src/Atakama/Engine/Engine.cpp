@@ -46,8 +46,7 @@ void Engine::Init(Ref<Window>& window, Ref<Profiler>& profiler)
 
     m_CameraSystem = CreateRef<CameraSystem>();
     Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
-    Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-    m_CameraSystem->LookAt(camera, {5.0f, 5.f, 5.f}, {0.0f, 0.0f, 0.0f});
+    m_CameraSystem->LookAt(cameraEntity, {5.0f, 5.f, 5.f}, {0.0f, 0.0f, 0.0f});
 
     m_MainRenderPass = CreateRef<MainRenderPass>(m_RenderSystem, m_Scene);
     m_DebugRenderPass = CreateRef<DebugRenderPass>(m_RenderSystem, m_Scene);
@@ -111,8 +110,7 @@ void Engine::UpdateRenderingViewportSize(glm::uvec2 size)
 void Engine::Run()
 {
     Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
-    Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-    m_CameraSystem->Update(camera, m_FrameTime);
+    m_CameraSystem->Update(cameraEntity, m_FrameTime);
 
     m_Profiler->Start();
 

@@ -22,21 +22,16 @@ Camera::Camera(Mode mode)
     SetMode(mode);
 }
 
-glm::mat4 Camera::GetViewMatrix()
+glm::mat4 Camera::GetViewMatrix(TransformComponent& transform)
 {
-    glm::mat4 rotate = glm::mat4_cast(Transform.GetOrientation());
-    glm::mat4 translate = glm::translate(glm::mat4(1.0f), -Transform.Translate);
+    glm::mat4 rotate = glm::mat4_cast(transform.GetOrientation());
+    glm::mat4 translate = glm::translate(glm::mat4(1.0f), -transform.Translate);
     return rotate * translate;
 }
 
 glm::mat4 Camera::GetProjectionMatrix()
 {
     return m_ProjectionMatrix;
-}
-
-glm::vec3 Camera::GetPosition()
-{
-    return Transform.Translate;
 }
 
 Camera::Mode Camera::GetMode() const
@@ -50,7 +45,7 @@ void Camera::SetMode(Mode mode)
 
     if (m_Mode == Mode::Perspective)
     {
-        m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), m_Ratio, 0.1f, 100.0f);
+        m_ProjectionMatrix = glm::perspective(m_FOV, m_Ratio, 0.1f, 100.0f);
         return;
     }
 
@@ -67,8 +62,8 @@ void Camera::Zoom(float offset)
 {
     if (m_Mode == Mode::Perspective)
     {
-        m_InitialFoV += offset;
-        m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), m_Ratio, 0.1f, 100.0f);
+        m_FOV += offset;
+        m_ProjectionMatrix = glm::perspective(m_FOV, m_Ratio, 0.1f, 100.0f);
         return;
     }
 
@@ -89,7 +84,7 @@ void Camera::Resize(uint32_t width, uint32_t height)
 
     if (m_Mode == Mode::Perspective)
     {
-        m_ProjectionMatrix = glm::perspective(glm::radians(m_InitialFoV), m_Ratio, 0.1f, 100.0f);
+        m_ProjectionMatrix = glm::perspective(m_FOV, m_Ratio, 0.1f, 100.0f);
         return;
     }
 

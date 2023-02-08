@@ -11,7 +11,8 @@ struct CameraComponent
 {
     Camera Camera;
     bool Primary = false;
-    CameraComponent(Camera::Mode mode) { Camera.SetMode(mode); };
+    CameraComponent(Camera::Mode mode): Mode(mode) { Camera.SetMode(mode); };
+    Camera::Mode Mode { Camera::Mode::Perspective };
 };
 
 }

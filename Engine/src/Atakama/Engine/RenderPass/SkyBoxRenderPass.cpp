@@ -36,16 +36,17 @@ void SkyBoxRenderPass::Draw()
 {
     Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
     Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+    auto& transform = cameraEntity.GetComponent<TransformComponent>();
 
     m_RenderSystem->SetDepthCompare(DepthCompare::LessOrEqual);
 
     m_Shader->Bind();
 
     // remove translation from the view matrix
-    m_Shader->SetUniformMat4("uView", glm::mat4(glm::mat3(camera.GetViewMatrix())));
+    m_Shader->SetUniformMat4("uView", glm::mat4(glm::mat3(camera.GetViewMatrix(transform))));
     m_Shader->SetUniformMat4("uProjection", camera.GetProjectionMatrix());
     // Camera / View
-    m_Shader->SetUniformFloat3("uViewPosition", camera.Transform.Translate);
+    m_Shader->SetUniformFloat3("uViewPosition", transform.Translate);
 
     m_Mesh->Draw(m_RenderSystem, m_Shader);
 
