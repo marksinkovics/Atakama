@@ -31,6 +31,9 @@ void StatsLayer::OnDetach()
 
 void StatsLayer::OnUpdateUI(float ts)
 {
+    if (!g_RuntimeEditorContext.StatshWindowOpen)
+        return;
+
     ImGui::Begin("Stats");
     ImGui::Text("CPU time: %f ms", m_Application->GetProfiler()->GetCPUTime());
     ImGui::Text("GPU time: %f ms", m_Application->GetProfiler()->GetGPUTime());

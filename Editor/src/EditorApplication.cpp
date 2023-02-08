@@ -1,5 +1,6 @@
 #include "EditorApplication.hpp"
 
+#include "Layer/MenuBarLayer.hpp"
 #include "Layer/StatsLayer.hpp"
 #include "Layer/ViewportLayer.hpp"
 #include "Layer/DepthViewLayer.hpp"
@@ -15,6 +16,7 @@ namespace Atakama::Editor
 EditorApplication::EditorApplication()
 : Application()
 {
+    AddLayer(new MenuBarLayer());
     AddLayer(new StatsLayer());
     AddLayer(new ViewportLayer());
     AddLayer(new DepthViewLayer());

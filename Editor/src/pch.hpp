@@ -22,3 +22,4 @@
 #include <Atakama/Core/Utils.hpp>
 #include <Atakama/Log/LogSystem.hpp>
 #include <Atakama/Core/GlobalContext.hpp>
+#include "Core/EditorContext.hpp"

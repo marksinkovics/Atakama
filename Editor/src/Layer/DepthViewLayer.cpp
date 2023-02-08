@@ -19,6 +19,9 @@ DepthViewLayer::DepthViewLayer()
 
 void DepthViewLayer::OnUpdateUI(float ts)
 {
+    if (!g_RuntimeEditorContext.DepthWindowOpen)
+        return;
+
     ImGui::Begin("Depth");
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
     ImVec2 wSize = ImGui::GetContentRegionAvail();
