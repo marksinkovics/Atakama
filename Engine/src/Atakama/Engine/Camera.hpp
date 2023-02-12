@@ -3,6 +3,8 @@
 
 #include "Atakama/Scene/Components/TransformComponent.hpp"
 
+#include <array>
+
 namespace Atakama
 {
 
@@ -15,10 +17,11 @@ class Camera
 {
 
 public:
-    enum class Mode
+    enum class Mode: uint8_t
     {
-        Perspective, Ortho
+        Perspective = 0, Ortho
     };
+    constexpr static const std::array<Mode, 2> AllModes { Mode::Perspective, Mode::Ortho };
 public:
     Camera();
     Camera(Mode mode);
@@ -33,6 +36,12 @@ public:
     
     virtual void Resize(uint32_t width, uint32_t height);
     virtual void Zoom(float offset);
+
+    float GetFOV() { return m_FOV; }
+    void SetFOV(float value) { m_FOV = value; }
+
+    float GetZoom() { return m_Zoom; }
+    void SetZoom(float value) { m_Zoom = value; }
 
 protected:
     float m_FOV = glm::radians(45.0f); // Perspective only

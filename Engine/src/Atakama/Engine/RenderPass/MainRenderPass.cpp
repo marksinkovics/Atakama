@@ -24,7 +24,12 @@ void MainRenderPass::Draw()
 {
     Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
     Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-    auto& transform = cameraEntity.GetComponent<TransformComponent>();
+    auto& cameraTransform = cameraEntity.GetComponent<TransformComponent>();
+
+    Entity lightEntity = m_Scene->GetLight();
+    PointLightComponent& lightLightComponent = lightEntity.GetComponent<PointLightComponent>();
+    TransformComponent& lightTransformComponent = lightEntity.GetComponent<TransformComponent>();
+    MeshComponent& lightMeshComponent = lightEntity.GetComponent<MeshComponent>();
 
     m_RenderSystem->SetDepthTest(true);
     m_RenderSystem->SetClearColor({0.0f, 0.0f, 0.4f, 0.0f});
@@ -33,14 +38,14 @@ void MainRenderPass::Draw()
     m_Shader->Bind();
     for(const auto& mesh : *m_Scene)
     {
-        m_Shader->SetUniformMat4("uView", camera.GetViewMatrix(transform));
+        m_Shader->SetUniformMat4("uView", camera.GetViewMatrix(cameraTransform));
         m_Shader->SetUniformMat4("uProjection", camera.GetProjectionMatrix());
 
         // Lights
-        m_Shader->SetUniformFloat4("uLightPosition", m_Scene->GetLight()->GetPosition());
-        m_Shader->SetUniformFloat4("uLightColor", m_Scene->GetLight()->GetColor());
+        m_Shader->SetUniformFloat4("uLightPosition", glm::vec4(lightTransformComponent.Translate, 1.0f));
+        m_Shader->SetUniformFloat4("uLightColor", lightLightComponent.Color);
         // Camera / View
-        m_Shader->SetUniformFloat3("uViewPosition", transform.Translate);
+        m_Shader->SetUniformFloat3("uViewPosition", cameraTransform.Translate);
         // Mesh
         m_Shader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
 

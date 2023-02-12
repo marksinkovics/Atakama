@@ -84,8 +84,11 @@ float Engine::CalculateDeltaTime()
 bool Engine::OnMouseScrollEvent(MouseScrolledEvent &event)
 {
     Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
-    Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-    camera.Zoom(event.GetYOffset() * 0.1f);
+    if (cameraEntity)
+    {
+        Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+        camera.Zoom(event.GetYOffset() * 0.1f);
+    }
 }
 
 void Engine::UpdateRenderingViewportSize(glm::uvec2 size)
@@ -103,13 +106,21 @@ void Engine::UpdateRenderingViewportSize(glm::uvec2 size)
     }
 
     Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
-    Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-    camera.Resize(size.x, size.y);
+    if (cameraEntity)
+    {
+        Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+        camera.Resize(size.x, size.y);
+    }
 }
 
 void Engine::Run()
 {
     Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
+    if (!cameraEntity)
+    {
+        return;
+    }
+
     m_CameraSystem->Update(cameraEntity, m_FrameTime);
 
     m_Profiler->Start();

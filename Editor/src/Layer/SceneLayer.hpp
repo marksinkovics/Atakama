@@ -2,6 +2,7 @@
 #define ATAKAMA_EDITOR_SCENE_LAYER_HPP
 
 #include <Atakama/Core/Layer.hpp>
+#include <Atakama/Scene/Entity.hpp>
 
 namespace Atakama
 {
@@ -19,8 +20,13 @@ public:
     virtual ~SceneLayer() = default;
     virtual void OnUpdateUI(float ts) override;
 private:
+
+    void UpdateEntityList();
+    void UpdateComponentList();
+
     Ref<Engine> m_Engine;
     Ref<Scene> m_Scene;
+    Entity m_SelectedEntity = Entity();
 };
 
 }

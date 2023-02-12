@@ -13,7 +13,7 @@ namespace Atakama
 
 Scene::Scene()
 {
-    Entity cameraEntity = CreateEntity();
+    Entity cameraEntity = CreateEntity("Camera #1");
     CameraComponent& cameraComponent = cameraEntity.AddComponent<CameraComponent>(Camera::Mode::Perspective);
     TransformComponent& transformComponent = cameraEntity.AddComponent<TransformComponent>();
     cameraComponent.Primary = true;
@@ -22,6 +22,7 @@ Scene::Scene()
 Entity Scene::CreateEntity(const std::string& name)
 {
     Entity entity(m_Registry.create(), this);
+    entity.AddComponent<NameComponent>(name);
     return entity;
 }
 
@@ -66,10 +67,16 @@ void Scene::LoadMeshes()
     
 }
 
-Ref<PointLight> Scene::GetLight() const
+Entity Scene::GetLight()
 {
-    return m_PointLight;
+    auto view = m_Registry.view<PointLightComponent>();
+    for (auto entity : view)
+    {
+        return Entity(entity, this);
+    }
+    return Entity();
 }
+
 
 Ref<Texture> Scene::GetTextureById(const std::string& id) const
 {
@@ -97,7 +104,14 @@ SandboxScene::SandboxScene()
 
 void SandboxScene::LoadLight()
 {
-    m_PointLight = CreateRef<PointLight>(glm::vec4(4.f, 4.f, 4.f, 1.f), glm::vec4(1.f, 1.f, 1.f, 1.f));
+    Entity pointLightEntity = CreateEntity("Point Light #1");
+    TransformComponent& transformComponent = pointLightEntity.AddComponent<TransformComponent>();
+    transformComponent.Translate = glm::vec3(4.f, 4.f, 4.f);
+    transformComponent.Scale = glm::vec3(0.2f, 0.2f, 0.2f);
+    PointLightComponent& pointLightComponent = pointLightEntity.AddComponent<PointLightComponent>();
+    pointLightComponent.Color = glm::vec4(1.f, 1.f, 1.f, 1.f);
+    MeshComponent& meshComponent = pointLightEntity.AddComponent<MeshComponent>();
+    meshComponent.Mesh = AssetManager::Get()->LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
 }
 
 void SandboxScene::LoadTextures()

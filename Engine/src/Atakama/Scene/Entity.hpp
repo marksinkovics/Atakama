@@ -34,11 +34,21 @@ public:
         return m_Scene->m_Registry.get<T>(m_Handle);
     }
 
+    template<typename T>
+    bool HasComponent()
+    {
+        return m_Scene->m_Registry.try_get<T>(m_Handle) != nullptr;
+    }
+
     operator bool() const { return m_Handle != entt::null; }
     operator entt::entity() const { return m_Handle; }
+    operator uint32_t() const { return (uint32_t)m_Handle; }
+
+    bool operator==(const Entity& other) const;
+    bool operator!=(const Entity& other) const;
 private:
-    entt::entity m_Handle {entt::null };
-    Scene* m_Scene {nullptr};
+    entt::entity m_Handle { entt::null };
+    Scene* m_Scene { nullptr };
 
     friend class Scene;
 };
