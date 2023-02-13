@@ -17,6 +17,16 @@ Scene::Scene()
     CameraComponent& cameraComponent = cameraEntity.AddComponent<CameraComponent>(Camera::Mode::Perspective);
     TransformComponent& transformComponent = cameraEntity.AddComponent<TransformComponent>();
     cameraComponent.Primary = true;
+
+    Entity parent = CreateEntity("Parent");
+    Entity child1 = CreateEntity("Child #1");
+    Entity child2 = CreateEntity("Child #2");
+    Entity child3 = CreateEntity("Child #3");
+    Entity child4 = CreateEntity("Child #4");
+    parent.AddChildren({ child1, child2, child3, child4 });
+
+    Entity child5 = CreateEntity("Child #4 - Grand Child #1");
+    child4.AddChildren({ child5 });
 }
 
 Entity Scene::CreateEntity(const std::string& name)

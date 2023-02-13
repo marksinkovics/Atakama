@@ -51,7 +51,7 @@ protected:
     
     Mode m_Mode;
 
-    float m_Ratio;
+    float m_Ratio { 1.f };
     glm::uvec2 m_Viewport;
 
     friend CameraSystem;

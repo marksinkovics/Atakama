@@ -18,8 +18,7 @@ public:
 
     template<typename T, typename... Args>
     T& AddComponent(Args&&... args) {
-        T& component = m_Scene->m_Registry.emplace<T>(m_Handle, std::forward<Args>(args)...);
-        return component;
+        return m_Scene->m_Registry.emplace<T>(m_Handle, std::forward<Args>(args)...);
     }
 
     template<typename T>
@@ -34,11 +33,26 @@ public:
         return m_Scene->m_Registry.get<T>(m_Handle);
     }
 
+    template<typename T, typename... Args>
+    T& AddOrReplace(Args&&... args)
+    {
+        return m_Scene->m_Registry.emplace_or_replace<T>(m_Handle, std::forward<Args>(args)...);
+    }
+
+    template<typename T>
+    T* TryGetComponent()
+    {
+        return m_Scene->m_Registry.try_get<T>(m_Handle);
+    }
+
     template<typename T>
     bool HasComponent()
     {
         return m_Scene->m_Registry.try_get<T>(m_Handle) != nullptr;
     }
+
+    void SetParent(entt::entity parent);
+    void AddChildren(std::set<entt::entity> children);
 
     operator bool() const { return m_Handle != entt::null; }
     operator entt::entity() const { return m_Handle; }

@@ -45,23 +45,106 @@ void SceneLayer::OnUpdateUI(float ts)
 
 void SceneLayer::UpdateEntityList()
 {
-    static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_DefaultOpen;
-    m_Scene->GetRegistry().each([&](auto entityId) {
+    static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth;
+    std::function<void(const entt::entity, const entt::entity)> EntityOnUpdate = [&](const entt::entity entityId, const entt::entity parentId)
+    {
         Entity entity(entityId, m_Scene.get());
+
+        if (parentId == entt::null && entity.HasComponent<Parent>())
+            return;
+
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
 
         const std::string& name = entity.GetComponent<NameComponent>().Name;
         ImGuiTreeNodeFlags flags = base_flags | ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
         bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, "%s", name.c_str());
+
         if (ImGui::IsItemClicked())
         {
             m_SelectedEntity = entity;
         }
 
+        ImGui::TableSetColumnIndex(1);
+
+        std::string popupId = "EntityContext_" + std::to_string((uint32_t)entity);
+
+        float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+
+        if (ImGui::SmallButton("?"))
+        {
+            ImGui::OpenPopup(popupId.c_str());
+        }
+
+        if (ImGui::BeginPopup(popupId.c_str()))
+        {
+            if (ImGui::MenuItem("Remove Entity"))
+            {
+                LOG_DEBUG("Remove Entity {}", name);
+            }
+
+            if (ImGui::MenuItem("Add child"))
+            {
+                Entity child = m_Scene->CreateEntity("New Entity");
+                entity.AddChildren({child});
+            }
+
+            ImGui::EndPopup();
+        }
+
         if (opened)
         {
+            if (entity.HasComponent<Children>())
+            {
+                Children& children = entity.GetComponent<Children>();
+                for (const auto& child : children.Children)
+                {
+                    EntityOnUpdate(child, child);
+                }
+            }
+
             ImGui::TreePop();
         }
-    });
+    };
+
+    float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+
+    if (ImGui::BeginTable("##TableName", 2))
+    {
+        ImGui::TableSetupColumn("Hierarchy Path", ImGuiTableColumnFlags_WidthStretch);
+        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, lineHeight);
+
+        ImGui::TableNextRow(ImGuiTableRowFlags_Headers);
+        ImGui::TableSetColumnIndex(0);
+        ImGui::PushID(0);
+        ImGui::TableHeader(ImGui::TableGetColumnName(0));
+        ImGui::PopID();
+
+        ImGui::TableSetColumnIndex(1);
+        ImGui::PushID(1);
+        if (ImGui::SmallButton("?"))
+        {
+            ImGui::OpenPopup("##EntityeTablePopup");
+        }
+        if (ImGui::BeginPopup("##EntityeTablePopup"))
+        {
+            if (ImGui::MenuItem("Add entity"))
+            {
+                m_Scene->CreateEntity("New Entity");
+            }
+
+            ImGui::EndPopup();
+        }
+        ImGui::PopID();
+
+        m_Scene->GetRegistry().each([&](auto entityId) {
+            EntityOnUpdate(entityId, entt::null);
+        });
+
+        ImGui::EndTable();
+    }
+
+
 }
 
 template<typename T>
@@ -222,9 +305,32 @@ std::vector<PropertyField<MeshComponent>> UpdatePropertyPanel<MeshComponent>(Ent
     return {};
 }
 
+template<typename T>
+static void UpdatePropertyTable(Entity entity, T& component)
+{
+    const auto& fields = UpdatePropertyPanel<T>(entity, component);
+
+    if (ImGui::BeginTable("##TableName", 2))
+    {
+        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 100.0f);
+        ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
+
+        for (const auto& field : fields)
+        {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("%s", field.Name.c_str());
+
+            ImGui::TableSetColumnIndex(1);
+            ImGui::PushItemWidth(-FLT_MIN);
+            field.OnUpdate(entity, entity.GetComponent<T>());
+        }
+        ImGui::EndTable();
+    }
+}
 
 template<typename T>
-static void UpdatePropertyPanelBase(const std::string& name, Entity& entity)
+static void UpdatePropertyTree(const std::string& name, Entity& entity)
 {
     ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
@@ -240,63 +346,44 @@ static void UpdatePropertyPanelBase(const std::string& name, Entity& entity)
         ImGui::OpenPopup("ComponentSettings");
     }
 
-    bool removeComponent = false;
     if (ImGui::BeginPopup("ComponentSettings"))
     {
         if (ImGui::MenuItem("Remove component"))
-            removeComponent = true;
-
+        {
+            LOG_DEBUG("Remove component");
+        }
         ImGui::EndPopup();
     }
 
     if (opened)
     {
-        const auto& fields = UpdatePropertyPanel<T>(entity, entity.GetComponent<T>());
-
-        if (ImGui::BeginTable("##TableName", 2))
-        {
-            ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 100.0f);
-            ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
-
-            for (const auto& field : fields)
-            {
-                ImGui::TableNextRow();
-                ImGui::TableSetColumnIndex(0);
-                ImGui::Text("%s", field.Name.c_str());
-
-                ImGui::TableSetColumnIndex(1);
-                ImGui::PushItemWidth(-FLT_MIN);
-                field.OnUpdate(entity, entity.GetComponent<T>());
-            }
-            ImGui::EndTable();
-        }
-
+        UpdatePropertyTable<T>(entity, entity.GetComponent<T>());
         ImGui::TreePop();
     }
 }
 
 void SceneLayer::UpdateComponentList()
 {
-    UpdatePropertyPanel<NameComponent>(m_SelectedEntity, m_SelectedEntity.GetComponent<NameComponent>());
+    UpdatePropertyTable<NameComponent>(m_SelectedEntity, m_SelectedEntity.GetComponent<NameComponent>());
 
     if (m_SelectedEntity.HasComponent<CameraComponent>())
     {
-        UpdatePropertyPanelBase<CameraComponent>("Camera", m_SelectedEntity);
+        UpdatePropertyTree<CameraComponent>("Camera", m_SelectedEntity);
     }
 
     if (m_SelectedEntity.HasComponent<TransformComponent>())
     {
-        UpdatePropertyPanelBase<TransformComponent>("Transform", m_SelectedEntity);
+        UpdatePropertyTree<TransformComponent>("Transform", m_SelectedEntity);
     }
 
     if (m_SelectedEntity.HasComponent<PointLightComponent>())
     {
-        UpdatePropertyPanelBase<PointLightComponent>("Point light", m_SelectedEntity);
+        UpdatePropertyTree<PointLightComponent>("Point light", m_SelectedEntity);
     }
 
     if (m_SelectedEntity.HasComponent<MeshComponent>())
     {
-        UpdatePropertyPanelBase<MeshComponent>("Mesh", m_SelectedEntity);
+        UpdatePropertyTree<MeshComponent>("Mesh", m_SelectedEntity);
     }
 
 

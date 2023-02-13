@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <chrono>
 #include <vector>
+#include <set>
 
 #define  GLM_FORCE_RADIANS
 #define  GLM_FORCE_DEPTH_ZERO_TO_ONE

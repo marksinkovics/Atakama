@@ -5,8 +5,21 @@
 #include "Atakama/Engine/Camera.hpp"
 #include "Atakama/Engine/Mesh.hpp"
 
+#include <entt/entt.hpp>
+
 namespace Atakama
 {
+
+struct Parent
+{
+    entt::entity Parent { entt::null };
+};
+
+struct Children
+{
+    std::set<entt::entity> Children;
+};
+
 
 struct NameComponent
 {
