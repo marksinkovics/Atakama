@@ -24,6 +24,8 @@ private:
     void UpdateEntityList();
     void UpdateComponentList();
 
+    void RemoveEntity(Entity entity);
+
     Ref<Engine> m_Engine;
     Ref<Scene> m_Scene;
     Entity m_SelectedEntity = Entity();

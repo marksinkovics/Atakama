@@ -46,9 +46,13 @@ void SceneLayer::OnUpdateUI(float ts)
 void SceneLayer::UpdateEntityList()
 {
     static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth;
+
+    Entity entityToRemove;
+
     std::function<void(const entt::entity, const entt::entity)> EntityOnUpdate = [&](const entt::entity entityId, const entt::entity parentId)
     {
         Entity entity(entityId, m_Scene.get());
+        bool markedForDeletion = false;
 
         if (parentId == entt::null && entity.HasComponent<Parent>())
             return;
@@ -80,17 +84,19 @@ void SceneLayer::UpdateEntityList()
         {
             if (ImGui::MenuItem("Remove Entity"))
             {
-                LOG_DEBUG("Remove Entity {}", name);
+                entityToRemove = entity;
             }
 
             if (ImGui::MenuItem("Add child"))
             {
                 Entity child = m_Scene->CreateEntity("New Entity");
                 entity.AddChildren({child});
+                m_SelectedEntity = child;
             }
 
             ImGui::EndPopup();
         }
+
 
         if (opened)
         {
@@ -143,8 +149,32 @@ void SceneLayer::UpdateEntityList()
 
         ImGui::EndTable();
     }
+    RemoveEntity(entityToRemove);
+}
 
+void SceneLayer::RemoveEntity(Entity entity)
+{
+    if (!entity)
+        return;
 
+    for (const Entity &e : entity.GetDescendents())
+    {
+        if (e == m_SelectedEntity)
+        {
+            m_SelectedEntity = {};
+            break;
+        }
+    }
+
+    if (entity.HasComponent<Parent>())
+    {
+        Entity parentEntity { entity.GetComponent<Parent>().Parent, m_Scene.get() };
+        std::set<entt::entity>& currentIds = parentEntity.GetComponent<Children>().Children;
+        currentIds.erase((entt::entity)entity);
+        entity.RemoveComponent<Parent>();
+    }
+
+    m_Scene->RemoveEntity(entity);
 }
 
 template<typename T>

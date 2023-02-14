@@ -28,7 +28,7 @@ public:
     }
 
     template<typename T>
-    T& GetComponent()
+    T& GetComponent() const
     {
         return m_Scene->m_Registry.get<T>(m_Handle);
     }
@@ -46,13 +46,18 @@ public:
     }
 
     template<typename T>
-    bool HasComponent()
+    bool HasComponent() const
     {
         return m_Scene->m_Registry.try_get<T>(m_Handle) != nullptr;
     }
 
-    void SetParent(entt::entity parent);
-    void AddChildren(std::set<entt::entity> children);
+    void SetParent(const Entity& parent);
+    Entity GetParent() const;
+
+    void AddChildren(std::set<Entity> children);
+    std::set<Entity> GetChildren() const;
+
+    std::set<Entity> GetDescendents() const;
 
     operator bool() const { return m_Handle != entt::null; }
     operator entt::entity() const { return m_Handle; }
@@ -60,6 +65,7 @@ public:
 
     bool operator==(const Entity& other) const;
     bool operator!=(const Entity& other) const;
+    bool operator<(const Entity &other) const;
 private:
     entt::entity m_Handle { entt::null };
     Scene* m_Scene { nullptr };

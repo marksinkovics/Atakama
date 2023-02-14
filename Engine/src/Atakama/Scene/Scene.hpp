@@ -20,7 +20,7 @@ public:
     virtual ~Scene() = default;
 
     Entity CreateEntity(const std::string& name = "");
-    void DestroyEntity(Entity entity);
+    void RemoveEntity(Entity entity);
 
     Entity GetPrimaryCameraEntity();
 

@@ -10,20 +10,64 @@ Entity::Entity(entt::entity handle, Scene* scene)
 
 }
 
-void Entity::SetParent(entt::entity parent)
+void Entity::SetParent(const Entity& parent)
 {
-    AddOrReplace<Parent>(parent);
+    AddOrReplace<Parent>(parent.m_Handle);
 }
 
-void Entity::AddChildren(std::set<entt::entity> children)
+Entity Entity::GetParent() const
 {
-    AddOrReplace<Children>(children);
+    if (HasComponent<Parent>())
+        return {GetComponent<Parent>().Parent, m_Scene};
+    return {};
+}
 
-    for (entt::entity childId : children)
+void Entity::AddChildren(std::set<Entity> children)
+{
+    std::set<entt::entity> result;
+    for (const Entity& child : children)
     {
-        Entity child { childId, m_Scene };
-        child.SetParent(m_Handle);
+        result.insert(child.m_Handle);
     }
+
+    for (const Entity& child : GetChildren())
+    {
+        result.insert(child.m_Handle);
+    }
+
+    AddOrReplace<Children>(result);
+
+    for (Entity child : children)
+    {
+        child.SetParent(*this);
+    }
+}
+
+std::set<Entity> Entity::GetChildren() const
+{
+    if (HasComponent<Children>())
+    {
+        std::set<Entity> result;
+        for (const entt::entity& childId : GetComponent<Children>().Children)
+        {
+            result.insert({childId, m_Scene});
+        }
+        return result;
+    }
+    return {};
+}
+
+std::set<Entity> Entity::GetDescendents() const
+{
+    std::set<Entity> result { {m_Handle, m_Scene} };
+    for (const auto& childId : GetChildren())
+    {
+        Entity child { childId, this->m_Scene };
+        std::set<Entity> fetched = child.GetDescendents();
+        result.insert(fetched.begin(), fetched.end());
+    }
+
+    return result;
 }
 
 bool Entity::operator==(const Entity& other) const
@@ -34,6 +78,11 @@ bool Entity::operator==(const Entity& other) const
 bool Entity::operator!=(const Entity& other) const
 {
     return !(*this == other);
+}
+
+bool Entity::operator<(const Entity &other) const
+{
+    return m_Handle < other.m_Handle;
 }
 
 }

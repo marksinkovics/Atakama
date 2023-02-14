@@ -36,9 +36,24 @@ Entity Scene::CreateEntity(const std::string& name)
     return entity;
 }
 
-void Scene::DestroyEntity(Entity entity)
+void Scene::RemoveEntity(Entity entity)
 {
+    std::string& name = entity.GetComponent<NameComponent>().Name;
+    LOG_INFO("Remove entity (id: {}, name: {})", (uint32_t)entity.m_Handle, name);
+
+    if (entity.HasComponent<Children>())
+    {
+        Children& children = entity.GetComponent<Children>();
+        for (auto& childId : children.Children)
+        {
+            Entity child { childId, this };
+            RemoveEntity(child);
+        }
+        entity.RemoveComponent<Children>();
+    }
+
     m_Registry.destroy(entity.m_Handle);
+
 }
 
 Entity Scene::GetPrimaryCameraEntity()
