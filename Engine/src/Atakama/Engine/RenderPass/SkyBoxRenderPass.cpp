@@ -1,7 +1,6 @@
 #include "SkyBoxRenderPass.hpp"
 
 #include "Atakama/Engine/RenderSystem.hpp"
-#include "Atakama/Engine/Texture.hpp"
 #include "Atakama/Engine/Shader.hpp"
 #include "Atakama/Engine/AssetManager.hpp"
 #include "Atakama/Core/FileSystem.hpp"
@@ -17,19 +16,7 @@ namespace Atakama
 SkyBoxRenderPass::SkyBoxRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene>& scene)
 : RenderPass(renderSystem), m_Scene(scene)
 {
-    std::filesystem::path path = FileSystem::GetTexturePath();
-    m_Texture = TextureCube::Create({
-        FileSystem::GetTexturePath() / "right.jpg",
-        FileSystem::GetTexturePath() / "left.jpg",
-        FileSystem::GetTexturePath() / "top.jpg",
-        FileSystem::GetTexturePath() / "bottom.jpg",
-        FileSystem::GetTexturePath() / "front.jpg",
-        FileSystem::GetTexturePath() / "back.jpg"
-    });
-
     m_Shader = CreateRef<Shader>(FileSystem::GetShaderFile("skybox.vert"), FileSystem::GetShaderFile("skybox.frag"));
-    m_Mesh = AssetManager::Get()->LoadSkyBox();
-    m_Mesh->GetSubMeshes()[0]->SetTexture(m_Texture);
 }
 
 void SkyBoxRenderPass::Draw()
@@ -37,6 +24,8 @@ void SkyBoxRenderPass::Draw()
     Entity cameraEntity = m_Scene->GetPrimaryCameraEntity();
     Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
     auto& transform = cameraEntity.GetComponent<TransformComponent>();
+
+    Entity skyBoxEntity = m_Scene->GetSkyBox();
 
     m_RenderSystem->SetDepthCompare(DepthCompare::LessOrEqual);
 
@@ -48,7 +37,7 @@ void SkyBoxRenderPass::Draw()
     // Camera / View
     m_Shader->SetUniformFloat3("uViewPosition", transform.Translate);
 
-    m_Mesh->Draw(m_RenderSystem, m_Shader);
+    m_RenderSystem->Draw(skyBoxEntity, m_Shader);
 
     m_Shader->Unbind();
     m_RenderSystem->SetDepthCompare(DepthCompare::Less);

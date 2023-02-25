@@ -29,28 +29,31 @@ void MainRenderPass::Draw()
     Entity lightEntity = m_Scene->GetLight();
     PointLightComponent& lightLightComponent = lightEntity.GetComponent<PointLightComponent>();
     TransformComponent& lightTransformComponent = lightEntity.GetComponent<TransformComponent>();
-    MeshComponent& lightMeshComponent = lightEntity.GetComponent<MeshComponent>();
 
     m_RenderSystem->SetDepthTest(true);
     m_RenderSystem->SetClearColor({0.0f, 0.0f, 0.4f, 0.0f});
     m_RenderSystem->Clear();
 
     m_Shader->Bind();
-    for(const auto& mesh : *m_Scene)
+
+    m_Shader->SetUniformMat4("uView", camera.GetViewMatrix(cameraTransform));
+    m_Shader->SetUniformMat4("uProjection", camera.GetProjectionMatrix());
+
+    // Lights
+    m_Shader->SetUniformFloat4("uLightPosition", glm::vec4(lightTransformComponent.Translate, 1.0f));
+    m_Shader->SetUniformFloat4("uLightColor", lightLightComponent.Color);
+    // Camera / View
+    m_Shader->SetUniformFloat3("uViewPosition", cameraTransform.Translate);
+    // Mesh
+    m_Shader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
+
+    auto view = m_Scene->GetRegistry().view<MeshObjectComponent>(entt::exclude<DebugComponent, SkyBoxComponent>);
+    for (auto entityId : view)
     {
-        m_Shader->SetUniformMat4("uView", camera.GetViewMatrix(cameraTransform));
-        m_Shader->SetUniformMat4("uProjection", camera.GetProjectionMatrix());
-
-        // Lights
-        m_Shader->SetUniformFloat4("uLightPosition", glm::vec4(lightTransformComponent.Translate, 1.0f));
-        m_Shader->SetUniformFloat4("uLightColor", lightLightComponent.Color);
-        // Camera / View
-        m_Shader->SetUniformFloat3("uViewPosition", cameraTransform.Translate);
-        // Mesh
-        m_Shader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
-
-        mesh->Draw(m_RenderSystem, m_Shader);
+        Entity entity { entityId, m_Scene.get() };
+        m_RenderSystem->Draw(entity, m_Shader);
     }
+
     m_Shader->Unbind();
 }
 

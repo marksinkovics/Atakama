@@ -222,6 +222,13 @@ std::vector<PropertyField<NameComponent>> UpdatePropertyPanel<NameComponent>(Ent
     return
     {
         {
+            "Id",
+            [](Entity& entity, auto& component) {
+                ImGui::PushItemWidth(-FLT_MIN);
+                ImGui::Text("%d", (uint32_t)entity);
+            }
+        },
+        {
             "Name",
             [](Entity& entity, auto& component) {
                 static char buffer[64];

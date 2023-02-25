@@ -19,8 +19,6 @@ protected:
     virtual void Draw() override;
     virtual std::string GetName() override;
 private:
-    Ref<Mesh> m_AxisMesh;
-
     Ref<Shader> m_SimpleShader;
     Ref<Shader> m_PointLightShader;
 };

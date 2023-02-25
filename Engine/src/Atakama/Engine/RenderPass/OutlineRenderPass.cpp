@@ -15,7 +15,10 @@ namespace Atakama
 OutlineRenderPass::OutlineRenderPass(Ref<RenderSystem> renderSystem)
 : RenderPass(renderSystem)
 {
-    m_Mesh = AssetManager::Get()->LoadQuad();
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+    AssetManager::Get()->LoadQuad(vertices, indices);
+    m_Mesh = CreateRef<MeshObject>(vertices, indices);
     m_Shader = CreateRef<Shader>(FileSystem::GetShaderFile("outline.vert"), FileSystem::GetShaderFile("outline.frag"));
 }
 
@@ -62,7 +65,7 @@ void OutlineRenderPass::Draw()
     meshTexture->Bind(1);
     m_Shader->SetUniformInt("u_MeshIdSampler", 1);
 
-    m_Mesh->Draw(m_RenderSystem, m_Shader);
+    m_RenderSystem->Draw(m_Mesh->GetMode(), m_Mesh->GetVertexArray());
     m_Shader->Unbind();
 }
 

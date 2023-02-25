@@ -6,10 +6,8 @@
 namespace Atakama
 {
 
-class Texture;
 class RenderSystem;
 class Shader;
-class Mesh;
 
 class SkyBoxRenderPass: public RenderPass
 {
@@ -21,9 +19,7 @@ protected:
     virtual std::string GetName() override;
 private:
     Ref<Scene> m_Scene;
-    Ref<Texture> m_Texture;
     Ref<Shader> m_Shader;
-    Ref<Mesh> m_Mesh;
 };
 
 }

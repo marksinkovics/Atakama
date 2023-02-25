@@ -12,6 +12,8 @@ namespace Atakama
 {
 
 class Entity;
+class RenderSystem;
+class Shader;
 
 class Scene
 {
@@ -26,10 +28,12 @@ public:
 
     virtual void Init();
     virtual void LoadLight();
+    virtual void LoadSkyBox();
     virtual void LoadTextures();
     virtual void LoadMeshes();
     
     Entity GetLight();
+    Entity GetSkyBox();
 
     Ref<Texture> GetTextureById(const std::string& id) const;
     
@@ -40,7 +44,6 @@ public:
     std::vector<Ref<Mesh>>::const_iterator end() const { return m_Meshes.end(); }
 
     const entt::registry& GetRegistry() const { return m_Registry; }
-
 protected:
     std::map<std::string, Ref<Texture>> m_Textures;
     std::vector<Ref<Mesh>> m_Meshes;
@@ -55,6 +58,7 @@ public:
     SandboxScene();
     virtual ~SandboxScene() = default;
     virtual void LoadLight() override;
+    virtual void LoadSkyBox() override;
     virtual void LoadTextures() override;
     virtual void LoadMeshes() override;
 };

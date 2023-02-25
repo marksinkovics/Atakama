@@ -20,6 +20,9 @@ enum class DepthCompare
     Always,
 };
 
+class Shader;
+class Entity;
+
 class RenderSystem
 {
 public:
@@ -30,6 +33,8 @@ public:
     virtual void SetDepthCompare(DepthCompare depthCompare) = 0;
     virtual void Draw(DrawingMode mode, Ref<VertexArray>& vertexArray) = 0;
     virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
+
+    virtual void Draw(Entity& entity, Ref<Shader>& shader);
     
     static Ref<RenderSystem> Create();
 };

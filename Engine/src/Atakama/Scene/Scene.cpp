@@ -2,6 +2,8 @@
 
 #include "Atakama/Core/FileSystem.hpp"
 #include "Atakama/Engine/AssetManager.hpp"
+#include "Atakama/Engine/RenderSystem.hpp"
+#include "Atakama/Engine/Shader.hpp"
 
 #include "Atakama/Scene/Entity.hpp"
 
@@ -75,12 +77,19 @@ void Scene::Init()
     LoadLight();
     LoadTextures();
     LoadMeshes();
+    LoadSkyBox();
 }
 
 void Scene::LoadLight()
 {
     
 }
+
+void Scene::LoadSkyBox()
+{
+
+}
+
 
 void Scene::LoadTextures()
 {
@@ -95,6 +104,16 @@ void Scene::LoadMeshes()
 Entity Scene::GetLight()
 {
     auto view = m_Registry.view<PointLightComponent>();
+    for (auto entity : view)
+    {
+        return Entity(entity, this);
+    }
+    return Entity();
+}
+
+Entity Scene::GetSkyBox()
+{
+    auto view = m_Registry.view<SkyBoxComponent>();
     for (auto entity : view)
     {
         return Entity(entity, this);
@@ -130,13 +149,28 @@ SandboxScene::SandboxScene()
 void SandboxScene::LoadLight()
 {
     Entity pointLightEntity = CreateEntity("Point Light #1");
+    pointLightEntity.AddComponent<DebugComponent>();
     TransformComponent& transformComponent = pointLightEntity.AddComponent<TransformComponent>();
     transformComponent.Translate = glm::vec3(4.f, 4.f, 4.f);
     transformComponent.Scale = glm::vec3(0.2f, 0.2f, 0.2f);
     PointLightComponent& pointLightComponent = pointLightEntity.AddComponent<PointLightComponent>();
     pointLightComponent.Color = glm::vec4(1.f, 1.f, 1.f, 1.f);
-    MeshComponent& meshComponent = pointLightEntity.AddComponent<MeshComponent>();
-    meshComponent.Mesh = AssetManager::Get()->LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
+    auto& meshComponent = pointLightEntity.AddComponent<MeshObjectComponent>();
+    meshComponent.Mesh = AssetManager::Get()->LoadMeshObject(FileSystem::GetModelPath() / "cube.obj");
+}
+
+void SandboxScene::LoadSkyBox()
+{
+    Entity skyBoxEntity = CreateEntity("Skybox");
+    skyBoxEntity.AddComponent<SkyBoxComponent>();
+    skyBoxEntity.AddComponent<TransformComponent>();
+    skyBoxEntity.AddComponent<TextureComponent>(m_Textures["skybox"]);
+
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+    AssetManager::Get()->LoadSkyBox(vertices, indices);
+    Ref<MeshObject> meshObject = CreateRef<MeshObject>(vertices, indices);
+    skyBoxEntity.AddComponent<MeshObjectComponent>(meshObject);
 }
 
 void SandboxScene::LoadTextures()
@@ -144,37 +178,81 @@ void SandboxScene::LoadTextures()
     m_Textures["uvtemplate"] = Texture2D::Create(FileSystem::GetTexturePath() / "uvtemplate.bmp");
     m_Textures["uvmap"] = Texture2D::Create(FileSystem::GetTexturePath() / "uvmap.png");
     m_Textures["vikingRoom"] = Texture2D::Create(FileSystem::GetTexturePath() / "viking_room.png");
+    m_Textures["skybox"] = TextureCube::Create({
+        FileSystem::GetTexturePath() / "right.jpg",
+        FileSystem::GetTexturePath() / "left.jpg",
+        FileSystem::GetTexturePath() / "top.jpg",
+        FileSystem::GetTexturePath() / "bottom.jpg",
+        FileSystem::GetTexturePath() / "front.jpg",
+        FileSystem::GetTexturePath() / "back.jpg"
+    });
+
 }
 
 void SandboxScene::LoadMeshes()
 {
+
     {
-        auto mesh = AssetManager::Get()->LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
-        mesh->GetTransform()->Translate = {-1.8f, 1.0f, -1.f};
-        mesh->GetSubMeshes()[0]->SetTexture(m_Textures["uvtemplate"]);
-        m_Meshes.push_back(mesh);
+        Entity meshEntity = CreateEntity("UVTemplate Mesh");
+        Ref<MeshObject> meshObject = AssetManager::Get()->LoadMeshObject(FileSystem::GetModelPath() / "cube.obj");
+        meshEntity.AddComponent<MeshObjectComponent>(meshObject);
+        meshEntity.AddComponent<TextureComponent>(m_Textures["uvtemplate"]);
+        TransformComponent& transform = meshEntity.AddComponent<TransformComponent>();
+        transform.Translate = {-1.8f, 1.0f, -1.f};
     }
-    
+
     {
-        auto mesh = AssetManager::Get()->LoadOBJFile(FileSystem::GetModelPath() / "cube.obj");
-        mesh->GetTransform()->Translate = { 1.8f, 1.0f, -1.f};
-        mesh->GetSubMeshes()[0]->SetTexture(m_Textures["uvmap"]);
-        m_Meshes.push_back(mesh);
+        Entity meshEntity = CreateEntity("UVMap Mesh");
+        Ref<MeshObject> meshObject = AssetManager::Get()->LoadMeshObject(FileSystem::GetModelPath() / "cube.obj");
+        meshEntity.AddComponent<MeshObjectComponent>(meshObject);
+        meshEntity.AddComponent<TextureComponent>(m_Textures["uvmap"]);
+        TransformComponent& transform = meshEntity.AddComponent<TransformComponent>();
+        transform.Translate = {1.8f, 1.0f, -1.f};
     }
-    
+
     {
-        auto mesh = AssetManager::Get()->LoadOBJFile(FileSystem::GetModelPath() / "viking_room.obj");
-        mesh->GetSubMeshes()[0]->SetTexture(m_Textures["vikingRoom"]);
-        mesh->GetTransform()->Scale = {1.5f, 1.5f, 1.5f};
-        mesh->GetTransform()->Translate = {-1.8f, 0.1f, 1.8f};
-        mesh->GetTransform()->Rotation = {glm::radians(-90.0f), 0.0f, 0.f};
-        m_Meshes.push_back(mesh);
+        Entity meshEntity = CreateEntity("Viking room");
+        Ref<MeshObject> meshObject = AssetManager::Get()->LoadMeshObject(FileSystem::GetModelPath() / "viking_room.obj");
+        meshEntity.AddComponent<MeshObjectComponent>(meshObject);
+        meshEntity.AddComponent<TextureComponent>(m_Textures["vikingRoom"]);
+        TransformComponent& transform = meshEntity.AddComponent<TransformComponent>();
+        transform.Scale = {1.5f, 1.5f, 1.5f};
+        transform.Translate = {-1.8f, 0.1f, 1.8f};
+        transform.Rotation = {glm::radians(-90.0f), 0.0f, 0.f};
     }
-    
+
     {
-        auto mesh = AssetManager::Get()->LoadOBJFile(FileSystem::GetModelPath() / "quad.obj");
-        mesh->GetTransform()->Scale = {3.f, 1.f, 3.f};
-        m_Meshes.push_back(mesh);
+        Entity meshEntity = CreateEntity("Floor");
+        Ref<MeshObject> meshObject = AssetManager::Get()->LoadMeshObject(FileSystem::GetModelPath() / "quad.obj");
+        meshEntity.AddComponent<MeshObjectComponent>(meshObject);
+        TransformComponent& transform = meshEntity.AddComponent<TransformComponent>();
+        transform.Scale = {3.f, 1.f, 3.f};
+    }
+
+    {
+
+        std::vector<Vertex> vertices;
+        std::vector<uint32_t> indices;
+        AssetManager::Get()->LoadAxis(vertices, indices);
+
+        Ref<MeshObject> parent = CreateRef<MeshObject>(vertices, indices);
+        parent->SetMode(DrawingMode::Lines);
+        Ref<MeshObject> child = CreateRef<MeshObject>(vertices, indices);
+        child->SetMode(DrawingMode::Lines);
+
+        Entity parentEntity = CreateEntity("Axis Parent");
+        parentEntity.AddComponent<DebugComponent>();
+        parentEntity.AddComponent<MeshObjectComponent>(parent);
+        TransformComponent& parentTransform = parentEntity.AddComponent<TransformComponent>();
+
+        Entity childEntity = CreateEntity("Axis Child");
+        childEntity.AddComponent<DebugComponent>();
+        childEntity.AddComponent<MeshObjectComponent>(child);
+        TransformComponent& childTransform = childEntity.AddComponent<TransformComponent>();
+        childTransform.Translate = {1.0f, 0.0f, 1.0f};
+
+        parentEntity.AddChildren({childEntity});
+
     }
 }
 

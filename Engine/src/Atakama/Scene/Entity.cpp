@@ -70,6 +70,18 @@ std::set<Entity> Entity::GetDescendents() const
     return result;
 }
 
+std::set<Entity> Entity::GetAncestors() const
+{
+    std::set<Entity> result;
+    if (HasComponent<Parent>())
+    {
+        std::set<Entity> fetched = GetParent().GetAncestors();
+        result.insert(fetched.begin(), fetched.end());
+    }
+    result.insert({{m_Handle, m_Scene}});
+    return result;
+}
+
 bool Entity::operator==(const Entity& other) const
 {
     return m_Handle == other.m_Handle && m_Scene == other.m_Scene;

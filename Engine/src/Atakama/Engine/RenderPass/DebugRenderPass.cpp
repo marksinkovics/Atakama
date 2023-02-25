@@ -2,6 +2,7 @@
 
 #include "Atakama/Engine/AssetManager.hpp"
 #include "Atakama/Core/FileSystem.hpp"
+#include "Atakama/Engine/RenderSystem.hpp"
 
 #include "Atakama/Scene/Scene.hpp"
 #include "Atakama/Engine/Camera.hpp"
@@ -12,7 +13,7 @@ namespace Atakama
 {
 
 DebugRenderPass::DebugRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene)
-: SceneRenderPass(renderSystem, scene), m_AxisMesh(AssetManager::Get()->LoadAxis())
+: SceneRenderPass(renderSystem, scene)
 {
     m_SimpleShader = CreateRef<Shader>(FileSystem::GetShaderFile("simple_shader.vert"), FileSystem::GetShaderFile("simple_shader.frag"));
     m_PointLightShader = CreateRef<Shader>(FileSystem::GetShaderFile("point_light.vert"), FileSystem::GetShaderFile("point_light.frag"));
@@ -27,19 +28,27 @@ void DebugRenderPass::Draw()
     Entity lightEntity = m_Scene->GetLight();
     PointLightComponent& lightLightComponent = lightEntity.GetComponent<PointLightComponent>();
     TransformComponent& lightTransformComponent = lightEntity.GetComponent<TransformComponent>();
-    MeshComponent& lightMeshComponent = lightEntity.GetComponent<MeshComponent>();
+    MeshObjectComponent& lightMeshComponent = lightEntity.GetComponent<MeshObjectComponent>();
 
 
     m_SimpleShader->Bind();
     m_SimpleShader->SetUniformMat4("uView", camera.GetViewMatrix(cameraTransform));
     m_SimpleShader->SetUniformMat4("uProjection", camera.GetProjectionMatrix());
     m_SimpleShader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
-    m_AxisMesh->Draw(m_RenderSystem, m_SimpleShader);
+
+
+    auto view = m_Scene->GetRegistry().view<MeshObjectComponent, DebugComponent>(entt::exclude<PointLightComponent, SkyBoxComponent>);
+    for (auto entityId : view)
+    {
+        const MeshObjectComponent& meshComponent = view.get<MeshObjectComponent>(entityId);
+        Entity entity { entityId, m_Scene.get() };
+        m_RenderSystem->Draw(entity, m_SimpleShader);
+    }
+
     m_SimpleShader->Unbind();
 
 
     m_PointLightShader->Bind();
-    lightMeshComponent.Mesh->GetTransform()->Translate = lightTransformComponent.Translate;
     m_PointLightShader->SetUniformMat4("uView", camera.GetViewMatrix(cameraTransform));
     m_PointLightShader->SetUniformMat4("uProjection", camera.GetProjectionMatrix());
     // Lights
@@ -49,7 +58,9 @@ void DebugRenderPass::Draw()
     m_PointLightShader->SetUniformFloat3("uViewPosition", cameraTransform.Translate);
     // Mesh
     m_PointLightShader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
-    lightMeshComponent.Mesh->Draw(m_RenderSystem, m_PointLightShader);
+
+    m_RenderSystem->Draw(lightEntity, m_PointLightShader);
+
     m_PointLightShader->Unbind();
 }
 

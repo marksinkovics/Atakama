@@ -4,7 +4,7 @@
 
 #include "Atakama/Engine/AssetManager.hpp"
 #include "Atakama/Engine/Shader.hpp"
-#include "Atakama/Engine/Mesh.hpp"
+#include "Atakama/Engine/MeshObject.hpp"
 #include "Atakama/Engine/RenderSystem.hpp"
 
 namespace Atakama
@@ -15,7 +15,12 @@ ViewportRenderPass::ViewportRenderPass(Ref<RenderSystem> renderSystem)
 : RenderPass(renderSystem)
 {
     m_FrameBuffer = nullptr;
-    m_Mesh = AssetManager::Get()->LoadQuad();
+
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+    AssetManager::Get()->LoadQuad(vertices, indices);
+    m_Mesh = CreateRef<MeshObject>(vertices, indices);
+
     m_Shader = CreateRef<Shader>(FileSystem::GetShaderFile("viewport.vert"), FileSystem::GetShaderFile("viewport.frag"));
 }
 
@@ -46,8 +51,13 @@ void ViewportRenderPass::Draw()
     m_RenderSystem->Clear();
 
     m_Shader->Bind();
-    m_Mesh->GetSubMeshes()[0]->SetTexture(inputTexture);
-    m_Mesh->Draw(m_RenderSystem, m_Shader);
+
+    inputTexture->Bind(0);
+    m_Shader->SetUniformInt("u_TextureSampler", 0);
+
+    m_RenderSystem->Draw(m_Mesh->GetMode(), m_Mesh->GetVertexArray());
+
+    inputTexture->Unbind();
     m_Shader->Unbind();
 }
 

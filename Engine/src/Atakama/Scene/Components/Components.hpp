@@ -4,6 +4,8 @@
 
 #include "Atakama/Engine/Camera.hpp"
 #include "Atakama/Engine/Mesh.hpp"
+#include "Atakama/Engine/MeshObject.hpp"
+#include "Atakama/Engine/Texture.hpp"
 
 #include <entt/entt.hpp>
 
@@ -45,6 +47,26 @@ struct PointLightComponent
 struct MeshComponent
 {
     Ref<Mesh> Mesh;
+};
+
+struct MeshObjectComponent
+{
+    Ref<MeshObject> Mesh;
+};
+
+struct DebugComponent
+{
+    int i;
+};
+
+struct TextureComponent
+{
+    Ref<Texture> Texture;
+};
+
+struct SkyBoxComponent
+{
+    int i;
 };
 
 }

@@ -30,13 +30,13 @@ Ref<AssetManager> AssetManager::Get()
 
 Ref<Mesh> AssetManager::LoadTriangle()
 {
-    std::vector<SubMesh::Vertex> rawVertices {
+    std::vector<Vertex> rawVertices {
         {{-0.5f, -0.5f, 0.0f}, {0.f, 0.f}, {0.f, 0.f, 1.f}, { 1.0f, 0.0f, 0.0f}},
         {{ 0.5f, -0.5f, 0.0f}, {0.f, 0.f}, {0.f, 0.f, 1.f}, { 0.0f, 1.0f, 0.0f}},
         {{ 0.0f,  0.5f, 0.0f}, {0.f, 0.f}, {0.f, 0.f, 1.f}, { 0.0f, 0.0f, 1.0f}},
     };
     
-    std::vector<SubMesh::Vertex> vertices;
+    std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
     
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
@@ -48,9 +48,9 @@ Ref<Mesh> AssetManager::LoadTriangle()
     return mesh;
 }
 
-Ref<Mesh> AssetManager::LoadAxis()
+void AssetManager::LoadAxis(std::vector<Vertex>& vertices,  std::vector<uint32_t>& indices)
 {
-    std::vector<SubMesh::Vertex> rawVertices {
+    std::vector<Vertex> rawVertices {
         {{0.0f, 0.0f, 0.0f}, {0.f, 0.f}, {0.f, 0.f, 0.f}, {1.0f, 0.0f, 0.0f}},
         {{3.0f, 0.0f, 0.0f}, {0.f, 0.f}, {0.f, 0.f, 0.f}, {1.0f, 0.0f, 0.0f}},
         {{0.0f, 0.0f, 0.0f}, {0.f, 0.f}, {0.f, 0.f, 0.f}, {0.0f, 1.0f, 0.0f}},
@@ -59,14 +59,20 @@ Ref<Mesh> AssetManager::LoadAxis()
         {{0.0f, 0.0f, 3.0f}, {0.f, 0.f}, {0.f, 0.f, 0.f}, {0.0f, 0.0f, 1.0f}},
     };
     
-    std::vector<SubMesh::Vertex> vertices;
-    std::vector<uint32_t> indices;
-        
+
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
-    
+}
+
+Ref<Mesh> AssetManager::LoadAxis()
+{
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+
+    LoadAxis(vertices, indices);
+
     auto subMesh1 = CreateScope<SubMesh>(vertices, indices);
     subMesh1->SetMode(DrawingMode::Lines);
-    
+
     auto subMesh2 = CreateScope<SubMesh>(vertices, indices);
     subMesh2->SetMode(DrawingMode::Lines);
     subMesh2->GetTransform()->Translate = {1.0f, 0.0f, 1.0f};
@@ -81,7 +87,7 @@ Ref<Mesh> AssetManager::LoadAxis()
 
 Ref<Mesh> AssetManager::LoadLightModel()
 {
-    std::vector<SubMesh::Vertex> rawVertices {
+    std::vector<Vertex> rawVertices {
         {{-1.0f, -1.0f, 0.0f}, {0.f, 0.f}, {0.0f, 0.0f, 1.0f} },
         {{ 1.0f,  1.0f, 0.0f}, {0.f, 0.f}, {0.0f, 0.0f, 1.0f} },
         {{-1.0f,  1.0f, 0.0f}, {0.f, 0.f}, {0.0f, 0.0f, 1.0f} },
@@ -90,7 +96,7 @@ Ref<Mesh> AssetManager::LoadLightModel()
         {{ 1.0f, -1.0f, 0.0f}, {0.f, 0.f}, {0.0f, 0.0f, 1.0f} }
     };
     
-    std::vector<SubMesh::Vertex> vertices;
+    std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
     
@@ -101,16 +107,13 @@ Ref<Mesh> AssetManager::LoadLightModel()
     return mesh;
 }
 
-Ref<Mesh> AssetManager::LoadOBJFile(const std::filesystem::path& path)
+void AssetManager::LoadOBJFile(const std::filesystem::path& path, std::vector<Vertex>& vertices,  std::vector<uint32_t>& indices)
 {
     std::vector<uint32_t> vertexIndices, uvIndices, normalIndices;
     std::vector<glm::vec3> temp_positions;
     std::vector<glm::vec2> temp_uvs;
     std::vector<glm::vec3> temp_normals;
-    
-    std::vector<SubMesh::Vertex> vertices{};
-    std::vector<uint32_t> indices {};
-    
+
     LOG_DEBUG("Loading OBJ from path: {}", path);
 
     FILE* file = fopen(path.c_str(), "r");
@@ -173,11 +176,11 @@ Ref<Mesh> AssetManager::LoadOBJFile(const std::filesystem::path& path)
         }
     }
     
-    std::unordered_map<SubMesh::Vertex, uint32_t> uniqueVertices{};
+    std::unordered_map<Vertex, uint32_t> uniqueVertices{};
     
     for( unsigned int i=0; i<vertexIndices.size(); i++ )
     {
-        SubMesh::Vertex vertex{};
+        Vertex vertex{};
         
         // Get the indices of its attributes
         unsigned int vertexIndex = vertexIndices[i];
@@ -207,11 +210,33 @@ Ref<Mesh> AssetManager::LoadOBJFile(const std::filesystem::path& path)
     return mesh;
 }
 
-void AssetManager::GenerateIndices(const std::vector<SubMesh::Vertex>& input, std::vector<SubMesh::Vertex>& output, std::vector<uint32_t>& indices)
+Ref<Mesh> AssetManager::LoadMesh(const std::filesystem::path& path)
 {
-    std::unordered_map<SubMesh::Vertex, uint32_t> uniqueVertices {};
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+    LoadOBJFile(path, vertices, indices);
+
+    auto subMesh = CreateScope<SubMesh>(vertices, indices);
+    auto mesh = CreateRef<Mesh>();
+    mesh->AddSubMesh(std::move(subMesh));
+    RegisterMesh(mesh);
+    return mesh;
+}
+
+Ref<MeshObject> AssetManager::LoadMeshObject(const std::filesystem::path& path)
+{
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+    LoadOBJFile(path, vertices, indices);
+
+    return CreateScope<MeshObject>(vertices, indices);
+}
+
+void AssetManager::GenerateIndices(const std::vector<Vertex>& input, std::vector<Vertex>& output, std::vector<uint32_t>& indices)
+{
+    std::unordered_map<Vertex, uint32_t> uniqueVertices {};
     
-    for (const SubMesh::Vertex& vertex : input)
+    for (const Vertex& vertex : input)
     {
         if (uniqueVertices.count(vertex) == 0)
         {
@@ -223,22 +248,28 @@ void AssetManager::GenerateIndices(const std::vector<SubMesh::Vertex>& input, st
     }
 }
 
-Ref<Mesh> AssetManager::LoadQuad()
+void AssetManager::LoadQuad(std::vector<Vertex>& vertices,  std::vector<uint32_t>& indices)
 {
-    std::vector<SubMesh::Vertex> rawVertices {
+    std::vector<Vertex> rawVertices {
         {{-1.0f,  1.0f, 0.0f}, {0.0f, 1.0f}, {0.f, 0.f, 1.f}, { 1.0f, 0.0f, 1.0f}},
         {{-1.0f, -1.0f, 0.0f}, {0.0f, 0.0f}, {0.f, 0.f, 1.f}, { 1.0f, 0.0f, 1.0f}},
         {{ 1.0f, -1.0f, 0.0f}, {1.0f, 0.0f}, {0.f, 0.f, 1.f}, { 1.0f, 0.0f, 1.0f}},
-        
+
         {{-1.0f,  1.0f, 0.0f}, {0.0f, 1.0f}, {0.f, 0.f, 1.f}, { 0.0f, 1.0f, 1.0f}},
         {{ 1.0f, -1.0f, 0.0f}, {1.0f, 0.0f}, {0.f, 0.f, 1.f}, { 0.0f, 1.0f, 1.0f}},
         {{ 1.0f,  1.0f, 0.0f}, {1.0f, 1.0f}, {0.f, 0.f, 1.f}, { 0.0f, 1.0f, 1.0f}}
     };
-    
-    std::vector<SubMesh::Vertex> vertices;
+
+    AssetManager::GenerateIndices(rawVertices, vertices, indices);
+}
+
+
+Ref<Mesh> AssetManager::LoadQuad()
+{
+    std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
     
-    AssetManager::GenerateIndices(rawVertices, vertices, indices);
+    AssetManager::LoadQuad(vertices, indices);
 
     auto subMesh = CreateScope<SubMesh>(vertices, indices);
     auto mesh = CreateRef<Mesh>();
@@ -247,9 +278,9 @@ Ref<Mesh> AssetManager::LoadQuad()
     return mesh;
 }
 
-Ref<Mesh> AssetManager::LoadSkyBox()
+void AssetManager::LoadSkyBox(std::vector<Vertex>& vertices,  std::vector<uint32_t>& indices)
 {
-    std::vector<SubMesh::Vertex> rawVertices {
+    std::vector<Vertex> rawVertices {
         {{-1.0f,  1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
         {{-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
         {{ 1.0f, -1.0f, -1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}},
@@ -293,10 +324,15 @@ Ref<Mesh> AssetManager::LoadSkyBox()
         {{ 1.0f, -1.0f,  1.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}}
     };
 
-    std::vector<SubMesh::Vertex> vertices;
+    AssetManager::GenerateIndices(rawVertices, vertices, indices);
+}
+
+Ref<Mesh> AssetManager::LoadSkyBox()
+{
+    std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
 
-    AssetManager::GenerateIndices(rawVertices, vertices, indices);
+    LoadSkyBox(vertices, indices);
 
     auto subMesh = CreateScope<SubMesh>(vertices, indices);
     auto mesh = CreateRef<Mesh>();

@@ -8,6 +8,8 @@
 namespace Atakama
 {
 
+struct Parent;
+
 class Entity
 {
 public:
@@ -31,6 +33,12 @@ public:
     T& GetComponent() const
     {
         return m_Scene->m_Registry.get<T>(m_Handle);
+    }
+
+    template<typename Ret, typename... Args>
+    entt::any& GetComponents() const
+    {
+        return m_Scene->m_Registry.get<Ret(Args...)>(m_Handle);
     }
 
     template<typename T, typename... Args>
@@ -58,6 +66,25 @@ public:
     std::set<Entity> GetChildren() const;
 
     std::set<Entity> GetDescendents() const;
+    std::set<Entity> GetAncestors() const;
+
+    template<typename T>
+    std::vector<T> GetAncestorComponents() const
+    {
+        std::vector<T> result;
+        if (HasComponent<Parent>())
+        {
+            std::vector<T> fetched = GetParent().GetAncestorComponents<T>();
+            std::copy(fetched.begin(), fetched.end(), std::back_inserter(result));
+        }
+
+        if (HasComponent<T>())
+        {
+            result.push_back(GetComponent<T>());
+        }
+
+        return result;
+    }
 
     operator bool() const { return m_Handle != entt::null; }
     operator entt::entity() const { return m_Handle; }
