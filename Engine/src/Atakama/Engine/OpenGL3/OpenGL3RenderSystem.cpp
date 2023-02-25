@@ -93,5 +93,21 @@ void OpenGL3RenderSystem::SetViewport(uint32_t x, uint32_t y, uint32_t width, ui
     glViewport(x, y, width, height);
 }
 
+std::string OpenGL3RenderSystem::GetVendor()
+{
+    const char* vendor = reinterpret_cast<const char*>(glGetString(GL_VENDOR));
+    return std::string(vendor);
+}
+std::string OpenGL3RenderSystem::GetRenderer()
+{
+    const char* renderer = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+    return std::string(renderer);
+}
+std::string OpenGL3RenderSystem::GetVersion()
+{
+    const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+    return std::string(version);
+}
+
 }
 

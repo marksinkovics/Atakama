@@ -19,7 +19,6 @@ public:
     virtual void OnUpdateUI(float ts) override;
 private:
     EditorApplication* m_Application;
-    Ref<Engine> m_Engine;
 };
 
 }

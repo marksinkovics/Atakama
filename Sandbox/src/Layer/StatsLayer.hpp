@@ -22,7 +22,6 @@ public:
     virtual void OnUpdateUI(float ts) override;
 private:
     Application* m_Application;
-    Ref<Engine> m_Engine;
 };
 
 }

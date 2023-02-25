@@ -31,6 +31,16 @@ class Camera;
 class Engine
 {
 public:
+    struct Statistics
+    {
+        float CPUTime;
+        float GPUTime;
+        std::string Vendor;
+        std::string Renderer;
+        std::string Version;
+    };
+public:
+
     void Init(Ref<Window>& window, Ref<Profiler>& profiler);
     void Shutdown();
     void Run();
@@ -54,7 +64,11 @@ public:
 
     Ref<Scene> GetScene() { return m_Scene; };
 
+    Statistics GetStatistics() { return m_Statistics; };
+
 private:
+    Statistics m_Statistics;
+
     std::chrono::time_point<std::chrono::high_resolution_clock> m_LastTime {std::chrono::high_resolution_clock::now()};
     float m_FrameTime;
     

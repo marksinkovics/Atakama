@@ -18,6 +18,10 @@ public:
     virtual void SetDepthCompare(DepthCompare depthCompare) override;
     virtual void Draw(DrawingMode mode, Ref<VertexArray>& vertexArray) override;
     virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override;
+
+    virtual std::string GetVendor() override;
+    virtual std::string GetRenderer() override;
+    virtual std::string GetVersion() override;
 };
 
 }

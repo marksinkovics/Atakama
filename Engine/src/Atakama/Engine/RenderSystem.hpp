@@ -37,6 +37,11 @@ public:
     virtual void Draw(Entity& entity, Ref<Shader>& shader);
     
     static Ref<RenderSystem> Create();
+
+
+    virtual std::string GetVendor() = 0;
+    virtual std::string GetRenderer() = 0;
+    virtual std::string GetVersion() = 0;
 };
 
 }

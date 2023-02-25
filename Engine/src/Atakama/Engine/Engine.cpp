@@ -41,6 +41,10 @@ void Engine::Init(Ref<Window>& window, Ref<Profiler>& profiler)
     m_RenderSystem->Init();
     m_RenderSystem->SetClearColor({0.0f, 0.0f, 0.4f, 0.0f});
 
+    m_Statistics.Vendor = m_RenderSystem->GetVendor();
+    m_Statistics.Renderer = m_RenderSystem->GetRenderer();
+    m_Statistics.Version = m_RenderSystem->GetVersion();
+
     m_Scene = CreateRef<SandboxScene>();
     m_Scene->Init();
 
@@ -142,6 +146,9 @@ void Engine::Run()
     }
 
     m_Profiler->Stop();
+
+    m_Statistics.CPUTime = m_Profiler->GetCPUTime();
+    m_Statistics.GPUTime = m_Profiler->GetGPUTime();
 }
 
 }
