@@ -31,37 +31,34 @@ bool InputSystem::OnMouseMoved(MouseMovedEvent &event)
 
 bool InputSystem::OnMouseButtonPressed(MouseButtonPressedEvent &event)
 {
-    auto it = m_ButtonPressed.find(event.GetButton());
-    if (it == m_ButtonPressed.end())
-        m_ButtonPressed[event.GetButton()] = true;
-    
+    m_ButtonPressed.insert(event.GetButton());
     return false;
 }
 
 bool InputSystem::OnMouseButtonReleased(MouseButtonReleasedEvent &event)
 {
-    auto it = m_ButtonPressed.find(event.GetButton());
-    if (it != m_ButtonPressed.end())
-        m_ButtonPressed.erase(it);
-    
+    m_ButtonPressed.erase(event.GetButton());
     return false;
 }
 
 bool InputSystem::OnKeyPressed(KeyPressedEvent &event)
 {
-    auto it = m_KeyPressed.find(event.GetKeyCode());
-    if (it == m_KeyPressed.end())
-        m_KeyPressed[event.GetKeyCode()] = true;
-    
+//    auto it = m_KeyPressed.find(event.GetKeyCode());
+//    if (it == m_KeyPressed.end())
+//        m_KeyPressed[event.GetKeyCode()] = true;
+
+    m_KeyPressed.insert(event.GetKeyCode());
     return false;
 }
 
 bool InputSystem::OnKeyReleased(KeyReleasedEvent &event)
 {
-    auto it = m_KeyPressed.find(event.GetKeyCode());
-    if (it != m_KeyPressed.end())
-        m_KeyPressed.erase(it);
-    
+//    auto it = m_KeyPressed.find(event.GetKeyCode());
+//    m_KeyPressed[event.GetKeyCode()] = false;
+//    if (it != m_KeyPressed.end())
+//        m_KeyPressed.erase(it);
+
+    m_KeyPressed.erase(event.GetKeyCode());
     return false;
 }
 
@@ -78,10 +75,7 @@ bool InputSystem::GetFocusMode() const
 
 bool InputSystem::IsKeyPressed(uint32_t key) const
 {
-    auto it = m_KeyPressed.find(key);
-    if (it == m_KeyPressed.end())
-        return false;
-    return it->second;
+    return m_KeyPressed.find(key) != m_KeyPressed.end();
 }
 
 glm::dvec2 InputSystem::GetMouseDelta()
@@ -96,10 +90,7 @@ void InputSystem::Clear()
 
 bool InputSystem::IsMouseButtonPressed(int button) const
 {
-    auto it = m_ButtonPressed.find(button);
-    if (it == m_ButtonPressed.end())
-        return false;
-    return it->second;
+    return m_ButtonPressed.find(button) != m_ButtonPressed.end();
 }
 
 bool InputSystem::IsMovement(Movement movement) const

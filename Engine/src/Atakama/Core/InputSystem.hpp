@@ -2,6 +2,7 @@
 #define ATAKAMA_INPUT_SYSTEM_HPP
 
 #include <map>
+#include <unordered_set>
 
 namespace Atakama
 {
@@ -45,9 +46,9 @@ private:
     glm::dvec2 m_LastCursorPos;
     glm::dvec2 m_DeltaCursorPos;
     bool m_FocusMode {false};
-    
-    std::map<int, bool> m_ButtonPressed;
-    std::map<int, bool> m_KeyPressed;
+
+    std::unordered_set<int> m_ButtonPressed;
+    std::unordered_set<int> m_KeyPressed;
 };
 
 }
