@@ -4,7 +4,6 @@
 
 #include "Atakama/Engine/AssetManager.hpp"
 #include "Atakama/Engine/Shader.hpp"
-#include "Atakama/Engine/Mesh.hpp"
 #include "Atakama/Engine/RenderSystem.hpp"
 
 namespace Atakama

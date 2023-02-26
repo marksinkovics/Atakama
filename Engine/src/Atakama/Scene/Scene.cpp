@@ -133,11 +133,6 @@ Ref<Texture> Scene::GetTextureById(const std::string& id) const
     return it->second;
 }
 
-std::vector<Ref<Mesh>> Scene::GetMeshes() const
-{
-    return m_Meshes;
-}
-
 //
 // Sandbox scene
 //

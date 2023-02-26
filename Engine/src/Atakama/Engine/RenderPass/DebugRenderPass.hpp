@@ -6,7 +6,6 @@
 namespace Atakama
 {
 
-class Mesh;
 class Scene;
 class Shader;
 

@@ -1,7 +1,6 @@
 #include "Shader.hpp"
 #include "RenderTypes.hpp"
 #include "Atakama/Engine/OpenGL3/OpenGL3ShaderBackend.hpp"
-#include "SubMesh.hpp"
 
 namespace Atakama
 {

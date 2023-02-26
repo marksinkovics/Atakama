@@ -2,7 +2,6 @@
 #define ATAKAMA_ENGINE_HPP
 
 #include "Shader.hpp"
-#include "Mesh.hpp"
 
 #include "Atakama/Engine/RenderSystem.hpp"
 #include "Atakama/Core/Profiler.hpp"

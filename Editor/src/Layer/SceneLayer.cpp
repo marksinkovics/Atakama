@@ -337,7 +337,7 @@ std::vector<PropertyField<PointLightComponent>> UpdatePropertyPanel<PointLightCo
 }
 
 template<>
-std::vector<PropertyField<MeshComponent>> UpdatePropertyPanel<MeshComponent>(Entity& entity, MeshComponent& component)
+std::vector<PropertyField<MeshObjectComponent>> UpdatePropertyPanel<MeshObjectComponent>(Entity& entity, MeshObjectComponent& component)
 {
     return {};
 }
@@ -418,12 +418,10 @@ void SceneLayer::UpdateComponentList()
         UpdatePropertyTree<PointLightComponent>("Point light", m_SelectedEntity);
     }
 
-    if (m_SelectedEntity.HasComponent<MeshComponent>())
+    if (m_SelectedEntity.HasComponent<MeshObjectComponent>())
     {
-        UpdatePropertyTree<MeshComponent>("Mesh", m_SelectedEntity);
+        UpdatePropertyTree<MeshObjectComponent>("Mesh", m_SelectedEntity);
     }
-
-
 }
 
 }
