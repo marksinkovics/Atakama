@@ -1,5 +1,5 @@
-#ifndef ATAKAMA_MESH_OBJECT_HPP
-#define ATAKAMA_MESH_OBJECT_HPP
+#ifndef ATAKAMA_MESH_HPP
+#define ATAKAMA_MESH_HPP
 
 #include "Atakama/Engine/RenderTypes.hpp"
 #include "Atakama/Engine/Texture.hpp"
@@ -14,13 +14,13 @@
 namespace Atakama
 {
 
-class MeshObject
+class Mesh
 {
 public:
-    MeshObject(std::vector<Vertex>& vertices);
-    MeshObject(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
+    Mesh(std::vector<Vertex>& vertices);
+    Mesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
 
-    ~MeshObject();
+    ~Mesh();
 
     DrawingMode GetMode();
     void SetMode(DrawingMode mode);

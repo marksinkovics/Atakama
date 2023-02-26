@@ -1,9 +1,9 @@
-#include "MeshObject.hpp"
+#include "Mesh.hpp"
 
 namespace Atakama
 {
 
-MeshObject::MeshObject(std::vector<Vertex>& vertices)
+Mesh::Mesh(std::vector<Vertex>& vertices)
 {
     m_VertexBuffer = VertexBuffer::Create((float*)vertices.data(), sizeof(Vertex) * vertices.size());
     m_VertexBuffer->SetLayout(Vertex::GetLayout());
@@ -11,7 +11,7 @@ MeshObject::MeshObject(std::vector<Vertex>& vertices)
     m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 }
 
-MeshObject::MeshObject(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices)
+Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices)
 {
     m_VertexBuffer = VertexBuffer::Create((float*)vertices.data(), sizeof(Vertex) * vertices.size());
     m_VertexBuffer->SetLayout(Vertex::GetLayout());
@@ -21,21 +21,21 @@ MeshObject::MeshObject(std::vector<Vertex>& vertices, std::vector<uint32_t>& ind
     m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 }
 
-MeshObject::~MeshObject()
+Mesh::~Mesh()
 {
 }
 
-DrawingMode MeshObject::GetMode()
+DrawingMode Mesh::GetMode()
 {
     return m_Mode;
 }
 
-void MeshObject::SetMode(DrawingMode mode)
+void Mesh::SetMode(DrawingMode mode)
 {
     m_Mode = mode;
 }
 
-Ref<VertexArray>& MeshObject::GetVertexArray()
+Ref<VertexArray>& Mesh::GetVertexArray()
 {
     return m_VertexArray;
 }

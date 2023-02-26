@@ -7,7 +7,7 @@ namespace Atakama
 {
 
 class Shader;
-class MeshObject;
+class Mesh;
 
 class OutlineRenderPass: public RenderPass
 {
@@ -19,7 +19,7 @@ protected:
     virtual void Draw() override;
 
 private:
-    Ref<MeshObject> m_Mesh;
+    Ref<Mesh> m_Mesh;
     Ref<Shader> m_Shader;
 };
 

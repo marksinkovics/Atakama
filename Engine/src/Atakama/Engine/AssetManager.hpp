@@ -2,7 +2,7 @@
 #define ATAKAMA_ASSET_MANAGER_HPP
 
 #include "Vertex.hpp"
-#include "MeshObject.hpp"
+#include "Mesh.hpp"
 
 namespace Atakama
 {
@@ -16,7 +16,7 @@ public:
     void LoadTriangle(std::vector<Vertex>& vertices,  std::vector<uint32_t>& indices);
     void LoadAxis(std::vector<Vertex>& vertices,  std::vector<uint32_t>& indices);
     void LoadOBJFile(const std::filesystem::path& path, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
-    Ref<MeshObject> LoadMeshObject(const std::filesystem::path& path);
+    Ref<Mesh> LoadMesh(const std::filesystem::path& path);
 
     void LoadQuad(std::vector<Vertex>& vertices,  std::vector<uint32_t>& indices);
     void LoadSkyBox(std::vector<Vertex>& vertices,  std::vector<uint32_t>& indices);

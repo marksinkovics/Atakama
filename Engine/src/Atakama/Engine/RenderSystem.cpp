@@ -52,7 +52,7 @@ void RenderSystem::Draw(Entity& entity, Ref<Shader>& shader)
         shader->SetUniformInt("textureSampler", 0);
     }
 
-    MeshObjectComponent& mesh = entity.GetComponent<MeshObjectComponent>();
+    MeshComponent& mesh = entity.GetComponent<MeshComponent>();
     Draw(mesh.Mesh->GetMode(), mesh.Mesh->GetVertexArray());
 
     if (entity.HasComponent<TextureComponent>())

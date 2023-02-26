@@ -81,7 +81,7 @@ void AssetManager::LoadOBJFile(const std::filesystem::path& path, std::vector<Ve
     if(!file)
     {
         std::cerr << "Path " << path << " could not be opened.\n";
-        return nullptr;
+        return;
     }
     
     while(1)
@@ -117,7 +117,7 @@ void AssetManager::LoadOBJFile(const std::filesystem::path& path, std::vector<Ve
             if (matches != 9){
                 printf("File can't be read by our simple parser\n");
                 fclose(file);
-                return nullptr;
+                return;
             }
             vertexIndices.push_back(vertexIndex[0]);
             vertexIndices.push_back(vertexIndex[1]);
@@ -165,13 +165,13 @@ void AssetManager::LoadOBJFile(const std::filesystem::path& path, std::vector<Ve
     fclose(file);
 }
 
-Ref<MeshObject> AssetManager::LoadMeshObject(const std::filesystem::path& path)
+Ref<Mesh> AssetManager::LoadMesh(const std::filesystem::path& path)
 {
     std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
     LoadOBJFile(path, vertices, indices);
 
-    return CreateScope<MeshObject>(vertices, indices);
+    return CreateRef<Mesh>(vertices, indices);
 }
 
 void AssetManager::GenerateIndices(const std::vector<Vertex>& input, std::vector<Vertex>& output, std::vector<uint32_t>& indices)

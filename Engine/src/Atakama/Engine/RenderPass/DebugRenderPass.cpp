@@ -28,7 +28,7 @@ void DebugRenderPass::Draw()
     Entity lightEntity = m_Scene->GetLight();
     PointLightComponent& lightLightComponent = lightEntity.GetComponent<PointLightComponent>();
     TransformComponent& lightTransformComponent = lightEntity.GetComponent<TransformComponent>();
-    MeshObjectComponent& lightMeshComponent = lightEntity.GetComponent<MeshObjectComponent>();
+    MeshComponent& lightMeshComponent = lightEntity.GetComponent<MeshComponent>();
 
 
     m_SimpleShader->Bind();
@@ -37,10 +37,10 @@ void DebugRenderPass::Draw()
     m_SimpleShader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
 
 
-    auto view = m_Scene->GetRegistry().view<MeshObjectComponent, DebugComponent>(entt::exclude<PointLightComponent, SkyBoxComponent>);
+    auto view = m_Scene->GetRegistry().view<MeshComponent, DebugComponent>(entt::exclude<PointLightComponent, SkyBoxComponent>);
     for (auto entityId : view)
     {
-        const MeshObjectComponent& meshComponent = view.get<MeshObjectComponent>(entityId);
+        const MeshComponent& meshComponent = view.get<MeshComponent>(entityId);
         Entity entity { entityId, m_Scene.get() };
         m_RenderSystem->Draw(entity, m_SimpleShader);
     }

@@ -3,7 +3,7 @@
 #define ATAKAMA_ENGINE_COMPONENTS_HPP
 
 #include "Atakama/Engine/Camera.hpp"
-#include "Atakama/Engine/MeshObject.hpp"
+#include "Atakama/Engine/Mesh.hpp"
 #include "Atakama/Engine/Texture.hpp"
 
 #include <entt/entt.hpp>
@@ -43,9 +43,9 @@ struct PointLightComponent
     glm::vec4 Color;
 };
 
-struct MeshObjectComponent
+struct MeshComponent
 {
-    Ref<MeshObject> Mesh;
+    Ref<Mesh> Mesh;
 };
 
 struct DebugComponent

@@ -4,7 +4,7 @@
 
 #include "Atakama/Engine/AssetManager.hpp"
 #include "Atakama/Engine/Shader.hpp"
-#include "Atakama/Engine/MeshObject.hpp"
+#include "Atakama/Engine/Mesh.hpp"
 #include "Atakama/Engine/RenderSystem.hpp"
 
 namespace Atakama
@@ -19,7 +19,7 @@ ViewportRenderPass::ViewportRenderPass(Ref<RenderSystem> renderSystem)
     std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
     AssetManager::Get()->LoadQuad(vertices, indices);
-    m_Mesh = CreateRef<MeshObject>(vertices, indices);
+    m_Mesh = CreateRef<Mesh>(vertices, indices);
 
     m_Shader = CreateRef<Shader>(FileSystem::GetShaderFile("viewport.vert"), FileSystem::GetShaderFile("viewport.frag"));
 }

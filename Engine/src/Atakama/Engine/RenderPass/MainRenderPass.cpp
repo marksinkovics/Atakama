@@ -47,7 +47,7 @@ void MainRenderPass::Draw()
     // Mesh
     m_Shader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
 
-    auto view = m_Scene->GetRegistry().view<MeshObjectComponent>(entt::exclude<DebugComponent, SkyBoxComponent>);
+    auto view = m_Scene->GetRegistry().view<MeshComponent>(entt::exclude<DebugComponent, SkyBoxComponent>);
     for (auto entityId : view)
     {
         Entity entity { entityId, m_Scene.get() };
