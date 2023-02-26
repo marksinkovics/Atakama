@@ -76,7 +76,6 @@ Entity Scene::GetPrimaryCameraEntity()
 void Scene::Init()
 {
     LoadLight();
-    LoadTextures();
     LoadMeshes();
     LoadSkyBox();
 }
@@ -89,12 +88,6 @@ void Scene::LoadLight()
 void Scene::LoadSkyBox()
 {
 
-}
-
-
-void Scene::LoadTextures()
-{
-    
 }
 
 void Scene::LoadMeshes()
@@ -122,18 +115,6 @@ Entity Scene::GetSkyBox()
     return Entity();
 }
 
-
-Ref<Texture> Scene::GetTextureById(const std::string& id) const
-{
-    auto it = m_Textures.find(id);
-    if (it == m_Textures.end())
-    {
-        LOG_ERROR("Cannot find texture by id {}", id)
-        return nullptr;
-    }
-    return it->second;
-}
-
 //
 // Sandbox scene
 //
@@ -151,8 +132,7 @@ void SandboxScene::LoadLight()
     transformComponent.Scale = glm::vec3(0.2f, 0.2f, 0.2f);
     PointLightComponent& pointLightComponent = pointLightEntity.AddComponent<PointLightComponent>();
     pointLightComponent.Color = glm::vec4(1.f, 1.f, 1.f, 1.f);
-    auto& meshComponent = pointLightEntity.AddComponent<MeshComponent>();
-    meshComponent.Mesh = AssetManager::Get()->LoadMesh(FileSystem::GetModelPath() / "cube.obj");
+    pointLightEntity.AddComponent<MeshComponent>(AssetManager::Get()->GetMeshById("cube"));
 }
 
 void SandboxScene::LoadSkyBox()
@@ -160,29 +140,8 @@ void SandboxScene::LoadSkyBox()
     Entity skyBoxEntity = CreateEntity("Skybox");
     skyBoxEntity.AddComponent<SkyBoxComponent>();
     skyBoxEntity.AddComponent<TransformComponent>();
-    skyBoxEntity.AddComponent<TextureComponent>(m_Textures["skybox"]);
-
-    std::vector<Vertex> vertices;
-    std::vector<uint32_t> indices;
-    AssetManager::Get()->LoadSkyBox(vertices, indices);
-    Ref<Mesh> mesh = CreateRef<Mesh>(vertices, indices);
-    skyBoxEntity.AddComponent<MeshComponent>(mesh);
-}
-
-void SandboxScene::LoadTextures()
-{
-    m_Textures["uvtemplate"] = Texture2D::Create(FileSystem::GetTexturePath() / "uvtemplate.bmp");
-    m_Textures["uvmap"] = Texture2D::Create(FileSystem::GetTexturePath() / "uvmap.png");
-    m_Textures["vikingRoom"] = Texture2D::Create(FileSystem::GetTexturePath() / "viking_room.png");
-    m_Textures["skybox"] = TextureCube::Create({
-        FileSystem::GetTexturePath() / "right.jpg",
-        FileSystem::GetTexturePath() / "left.jpg",
-        FileSystem::GetTexturePath() / "top.jpg",
-        FileSystem::GetTexturePath() / "bottom.jpg",
-        FileSystem::GetTexturePath() / "front.jpg",
-        FileSystem::GetTexturePath() / "back.jpg"
-    });
-
+    skyBoxEntity.AddComponent<TextureComponent>(AssetManager::Get()->GetTextureById("skybox"));
+    skyBoxEntity.AddComponent<MeshComponent>(AssetManager::Get()->GetMeshById("skybox"));
 }
 
 void SandboxScene::LoadMeshes()
@@ -190,27 +149,24 @@ void SandboxScene::LoadMeshes()
 
     {
         Entity meshEntity = CreateEntity("UVTemplate Mesh");
-        Ref<Mesh> Mesh = AssetManager::Get()->LoadMesh(FileSystem::GetModelPath() / "cube.obj");
-        meshEntity.AddComponent<MeshComponent>(Mesh);
-        meshEntity.AddComponent<TextureComponent>(m_Textures["uvtemplate"]);
+        meshEntity.AddComponent<MeshComponent>(AssetManager::Get()->GetMeshById("cube"));
+        meshEntity.AddComponent<TextureComponent>(AssetManager::Get()->GetTextureById("uvtemplate"));
         TransformComponent& transform = meshEntity.AddComponent<TransformComponent>();
         transform.Translate = {-1.8f, 1.0f, -1.f};
     }
 
     {
         Entity meshEntity = CreateEntity("UVMap Mesh");
-        Ref<Mesh> Mesh = AssetManager::Get()->LoadMesh(FileSystem::GetModelPath() / "cube.obj");
-        meshEntity.AddComponent<MeshComponent>(Mesh);
-        meshEntity.AddComponent<TextureComponent>(m_Textures["uvmap"]);
+        meshEntity.AddComponent<MeshComponent>(AssetManager::Get()->GetMeshById("cube"));
+        meshEntity.AddComponent<TextureComponent>(AssetManager::Get()->GetTextureById("uvmap"));
         TransformComponent& transform = meshEntity.AddComponent<TransformComponent>();
         transform.Translate = {1.8f, 1.0f, -1.f};
     }
 
     {
         Entity meshEntity = CreateEntity("Viking room");
-        Ref<Mesh> Mesh = AssetManager::Get()->LoadMesh(FileSystem::GetModelPath() / "viking_room.obj");
-        meshEntity.AddComponent<MeshComponent>(Mesh);
-        meshEntity.AddComponent<TextureComponent>(m_Textures["vikingRoom"]);
+        meshEntity.AddComponent<MeshComponent>(AssetManager::Get()->GetMeshById("vikingRoom"));
+        meshEntity.AddComponent<TextureComponent>(AssetManager::Get()->GetTextureById("vikingRoom"));
         TransformComponent& transform = meshEntity.AddComponent<TransformComponent>();
         transform.Scale = {1.5f, 1.5f, 1.5f};
         transform.Translate = {-1.8f, 0.1f, 1.8f};
@@ -219,31 +175,21 @@ void SandboxScene::LoadMeshes()
 
     {
         Entity meshEntity = CreateEntity("Floor");
-        Ref<Mesh> Mesh = AssetManager::Get()->LoadMesh(FileSystem::GetModelPath() / "quad.obj");
-        meshEntity.AddComponent<MeshComponent>(Mesh);
+        meshEntity.AddComponent<MeshComponent>(AssetManager::Get()->GetMeshById("quad"));
         TransformComponent& transform = meshEntity.AddComponent<TransformComponent>();
         transform.Scale = {3.f, 1.f, 3.f};
     }
 
     {
 
-        std::vector<Vertex> vertices;
-        std::vector<uint32_t> indices;
-        AssetManager::Get()->LoadAxis(vertices, indices);
-
-        Ref<Mesh> parent = CreateRef<Mesh>(vertices, indices);
-        parent->SetMode(DrawingMode::Lines);
-        Ref<Mesh> child = CreateRef<Mesh>(vertices, indices);
-        child->SetMode(DrawingMode::Lines);
-
         Entity parentEntity = CreateEntity("Axis Parent");
         parentEntity.AddComponent<DebugComponent>();
-        parentEntity.AddComponent<MeshComponent>(parent);
+        parentEntity.AddComponent<MeshComponent>(AssetManager::Get()->GetMeshById("axis"));
         TransformComponent& parentTransform = parentEntity.AddComponent<TransformComponent>();
 
         Entity childEntity = CreateEntity("Axis Child");
         childEntity.AddComponent<DebugComponent>();
-        childEntity.AddComponent<MeshComponent>(child);
+        childEntity.AddComponent<MeshComponent>(AssetManager::Get()->GetMeshById("axis"));
         TransformComponent& childTransform = childEntity.AddComponent<TransformComponent>();
         childTransform.Translate = {1.0f, 0.0f, 1.0f};
 

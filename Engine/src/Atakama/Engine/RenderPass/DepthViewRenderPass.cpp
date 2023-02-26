@@ -13,10 +13,7 @@ namespace Atakama
 DepthViewRenderPass::DepthViewRenderPass(Ref<RenderSystem> renderSystem)
 : RenderPass(renderSystem)
 {
-    std::vector<Vertex> vertices;
-    std::vector<uint32_t> indices;
-    AssetManager::Get()->LoadQuad(vertices, indices);
-    m_Mesh = CreateRef<Mesh>(vertices, indices);
+    m_Mesh = AssetManager::Get()->GetMeshById("canvas");
     m_Shader = CreateRef<Shader>(FileSystem::GetShaderFile("screen_depth_shader.vert"), FileSystem::GetShaderFile("screen_depth_shader.frag"));
 }
 

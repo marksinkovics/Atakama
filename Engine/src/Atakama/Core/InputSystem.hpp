@@ -1,9 +1,6 @@
 #ifndef ATAKAMA_INPUT_SYSTEM_HPP
 #define ATAKAMA_INPUT_SYSTEM_HPP
 
-#include <map>
-#include <unordered_set>
-
 namespace Atakama
 {
 

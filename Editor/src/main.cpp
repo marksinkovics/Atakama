@@ -4,8 +4,8 @@
 
 int main(int argc, char **argv)
 {
-    Atakama::g_RuntimeGlobalContext.Init();
     Atakama::SetArguments({argc, argv});
+    Atakama::g_RuntimeGlobalContext.Init();
 
     {
         Atakama::Editor::EditorApplication app;

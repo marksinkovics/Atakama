@@ -45,6 +45,8 @@ void Engine::Init(Ref<Window>& window, Ref<Profiler>& profiler)
     m_Statistics.Renderer = m_RenderSystem->GetRenderer();
     m_Statistics.Version = m_RenderSystem->GetVersion();
 
+    g_RuntimeGlobalContext.m_AssetManager->Preload();
+
     m_Scene = CreateRef<SandboxScene>();
     m_Scene->Init();
 

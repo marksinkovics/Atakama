@@ -4,7 +4,6 @@
 #include "Atakama/Engine/Shader.hpp"
 #include "Atakama/Engine/Texture.hpp"
 
-#include <map>
 #include <entt/entt.hpp>
 
 namespace Atakama
@@ -28,18 +27,13 @@ public:
     virtual void Init();
     virtual void LoadLight();
     virtual void LoadSkyBox();
-    virtual void LoadTextures();
     virtual void LoadMeshes();
     
     Entity GetLight();
     Entity GetSkyBox();
 
-    Ref<Texture> GetTextureById(const std::string& id) const;
-
     const entt::registry& GetRegistry() const { return m_Registry; }
 protected:
-    std::map<std::string, Ref<Texture>> m_Textures;
-
     entt::registry m_Registry;
     friend class Entity;
 };
@@ -51,7 +45,6 @@ public:
     virtual ~SandboxScene() = default;
     virtual void LoadLight() override;
     virtual void LoadSkyBox() override;
-    virtual void LoadTextures() override;
     virtual void LoadMeshes() override;
 };
 

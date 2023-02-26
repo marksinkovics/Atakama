@@ -16,11 +16,7 @@ ViewportRenderPass::ViewportRenderPass(Ref<RenderSystem> renderSystem)
 {
     m_FrameBuffer = nullptr;
 
-    std::vector<Vertex> vertices;
-    std::vector<uint32_t> indices;
-    AssetManager::Get()->LoadQuad(vertices, indices);
-    m_Mesh = CreateRef<Mesh>(vertices, indices);
-
+    m_Mesh = AssetManager::Get()->GetMeshById("canvas");
     m_Shader = CreateRef<Shader>(FileSystem::GetShaderFile("viewport.vert"), FileSystem::GetShaderFile("viewport.frag"));
 }
 

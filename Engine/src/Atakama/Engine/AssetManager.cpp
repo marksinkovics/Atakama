@@ -1,9 +1,31 @@
 #include "AssetManager.hpp"
 
-#include <unordered_map>
+#include "Atakama/Core/FileSystem.hpp"
 
 namespace Atakama
 {
+
+void AssetManager::Preload()
+{
+    m_Textures["uvtemplate"] = Texture2D::Create(FileSystem::GetTexturePath() / "uvtemplate.bmp");
+    m_Textures["uvmap"] = Texture2D::Create(FileSystem::GetTexturePath() / "uvmap.png");
+    m_Textures["vikingRoom"] = Texture2D::Create(FileSystem::GetTexturePath() / "viking_room.png");
+    m_Textures["skybox"] = TextureCube::Create({
+        FileSystem::GetTexturePath() / "right.jpg",
+        FileSystem::GetTexturePath() / "left.jpg",
+        FileSystem::GetTexturePath() / "top.jpg",
+        FileSystem::GetTexturePath() / "bottom.jpg",
+        FileSystem::GetTexturePath() / "front.jpg",
+        FileSystem::GetTexturePath() / "back.jpg"
+    });
+    
+    m_Meshes["cube"] = LoadMesh(FileSystem::GetModelPath() / "cube.obj");
+    m_Meshes["vikingRoom"] = LoadMesh(FileSystem::GetModelPath() / "viking_room.obj");
+    m_Meshes["quad"] = LoadMesh(FileSystem::GetModelPath() / "quad.obj");
+    m_Meshes["canvas"] = LoadQuad();
+    m_Meshes["axis"] = LoadAxis();
+    m_Meshes["skybox"] = LoadSkyBox();
+}
 
 void AssetManager::SetSelectedMeshId(int id)
 {
@@ -18,6 +40,30 @@ int AssetManager::GetSelectedMeshId() const
 Ref<AssetManager> AssetManager::Get()
 {
     return g_RuntimeGlobalContext.m_AssetManager;
+}
+
+Ref<Texture> AssetManager::GetTextureById(const std::string& id) const
+{
+    auto it = m_Textures.find(id);
+    if (it == m_Textures.end())
+    {
+        LOG_ERROR("Cannot find texture by id {}", id)
+        return nullptr;
+    }
+    return it->second;
+
+}
+
+Ref<Mesh> AssetManager::GetMeshById(const std::string& id) const
+{
+    auto it = m_Meshes.find(id);
+    if (it == m_Meshes.end())
+    {
+        LOG_ERROR("Cannot find texture by id {}", id)
+        return nullptr;
+    }
+    return it->second;
+
 }
 
 void AssetManager::LoadTriangle(std::vector<Vertex>& vertices,  std::vector<uint32_t>& indices)
@@ -165,15 +211,6 @@ void AssetManager::LoadOBJFile(const std::filesystem::path& path, std::vector<Ve
     fclose(file);
 }
 
-Ref<Mesh> AssetManager::LoadMesh(const std::filesystem::path& path)
-{
-    std::vector<Vertex> vertices;
-    std::vector<uint32_t> indices;
-    LoadOBJFile(path, vertices, indices);
-
-    return CreateRef<Mesh>(vertices, indices);
-}
-
 void AssetManager::GenerateIndices(const std::vector<Vertex>& input, std::vector<Vertex>& output, std::vector<uint32_t>& indices)
 {
     std::unordered_map<Vertex, uint32_t> uniqueVertices {};
@@ -253,5 +290,54 @@ void AssetManager::LoadSkyBox(std::vector<Vertex>& vertices,  std::vector<uint32
 
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
 }
+
+Ref<Mesh> AssetManager::LoadTriangle()
+{
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+
+    LoadTriangle(vertices, indices);
+    return CreateRef<Mesh>(vertices, indices);
+}
+
+Ref<Mesh> AssetManager::LoadAxis()
+{
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+
+    LoadAxis(vertices, indices);
+    Ref<Mesh> mesh = CreateRef<Mesh>(vertices, indices);
+    mesh->SetMode(DrawingMode::Lines);
+    return mesh;
+}
+
+Ref<Mesh> AssetManager::LoadMesh(const std::filesystem::path& path)
+{
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+
+    LoadOBJFile(path, vertices, indices);
+    return CreateRef<Mesh>(vertices, indices);
+}
+
+Ref<Mesh> AssetManager::LoadQuad()
+{
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+
+    LoadQuad(vertices, indices);
+    return CreateRef<Mesh>(vertices, indices);
+}
+
+Ref<Mesh> AssetManager::LoadSkyBox()
+{
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+
+    LoadSkyBox(vertices, indices);
+    return CreateRef<Mesh>(vertices, indices);
+}
+
+
 
 }

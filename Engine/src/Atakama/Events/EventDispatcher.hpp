@@ -4,9 +4,6 @@
 #include "Atakama/Events/Event.hpp"
 
 #include <functional>
-#include <iostream>
-#include <map>
-#include <vector>
 
 #define EVENT_SUBSCRIBE()
 
