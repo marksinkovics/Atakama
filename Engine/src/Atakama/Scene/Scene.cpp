@@ -47,7 +47,7 @@ void Scene::RemoveEntity(Entity entity)
     if (entity.HasComponent<Children>())
     {
         Children& children = entity.GetComponent<Children>();
-        for (auto& childId : children.Children)
+        for (auto& childId : children.Values)
         {
             Entity child { childId, this };
             RemoveEntity(child);

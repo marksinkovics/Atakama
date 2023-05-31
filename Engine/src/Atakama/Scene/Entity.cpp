@@ -18,7 +18,7 @@ void Entity::SetParent(const Entity& parent)
 Entity Entity::GetParent() const
 {
     if (HasComponent<Parent>())
-        return {GetComponent<Parent>().Parent, m_Scene};
+        return {GetComponent<Parent>().Value, m_Scene};
     return {};
 }
 
@@ -48,7 +48,7 @@ std::set<Entity> Entity::GetChildren() const
     if (HasComponent<Children>())
     {
         std::set<Entity> result;
-        for (const entt::entity& childId : GetComponent<Children>().Children)
+        for (const entt::entity& childId : GetComponent<Children>().Values)
         {
             result.insert({childId, m_Scene});
         }

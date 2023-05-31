@@ -13,12 +13,12 @@ namespace Atakama
 
 struct Parent
 {
-    entt::entity Parent { entt::null };
+    entt::entity Value { entt::null };
 };
 
 struct Children
 {
-    std::set<entt::entity> Children;
+    std::set<entt::entity> Values;
 };
 
 

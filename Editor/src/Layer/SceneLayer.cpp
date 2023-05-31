@@ -103,7 +103,7 @@ void SceneLayer::UpdateEntityList()
             if (entity.HasComponent<Children>())
             {
                 Children& children = entity.GetComponent<Children>();
-                for (const auto& child : children.Children)
+                for (const auto& child : children.Values)
                 {
                     EntityOnUpdate(child, child);
                 }
@@ -168,8 +168,8 @@ void SceneLayer::RemoveEntity(Entity entity)
 
     if (entity.HasComponent<Parent>())
     {
-        Entity parentEntity { entity.GetComponent<Parent>().Parent, m_Scene.get() };
-        std::set<entt::entity>& currentIds = parentEntity.GetComponent<Children>().Children;
+        Entity parentEntity { entity.GetComponent<Parent>().Value, m_Scene.get() };
+        std::set<entt::entity>& currentIds = parentEntity.GetComponent<Children>().Values;
         currentIds.erase((entt::entity)entity);
         entity.RemoveComponent<Parent>();
     }
