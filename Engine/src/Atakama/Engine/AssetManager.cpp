@@ -123,7 +123,7 @@ void AssetManager::LoadOBJFile(const std::filesystem::path& path, std::vector<Ve
 
     LOG_DEBUG("Loading OBJ from path: {}", path);
 
-    FILE* file = fopen(path.c_str(), "r");
+    FILE* file = fopen((const char*)(path.c_str()), "r");
     if(!file)
     {
         std::cerr << "Path " << path << " could not be opened.\n";
