@@ -3,7 +3,7 @@
 
 #include "Atakama/Engine/Platform/GraphicsContext.hpp"
 
-class GLFWwindow;
+struct GLFWwindow;
 
 namespace Atakama
 {
