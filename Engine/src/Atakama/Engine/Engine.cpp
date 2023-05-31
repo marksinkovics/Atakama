@@ -95,6 +95,8 @@ bool Engine::OnMouseScrollEvent(MouseScrolledEvent &event)
         Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
         camera.Zoom(event.GetYOffset() * 0.1f);
     }
+
+    return false;
 }
 
 void Engine::UpdateRenderingViewportSize(glm::uvec2 size)

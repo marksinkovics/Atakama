@@ -74,6 +74,7 @@ bool Application::OnKeyPressed(KeyPressedEvent &event)
     {
         m_Running = false;
     }
+    return false;
 }
 
 bool Application::OnWindowClose(WindowCloseEvent &event)
@@ -85,6 +86,7 @@ bool Application::OnWindowClose(WindowCloseEvent &event)
 bool Application::OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event)
 {
     m_Engine->UpdateRenderingViewportSize({event.GetWidth(), event.GetHeight()});
+    return false;
 }
 
 void Application::BlockEvent(bool value)
