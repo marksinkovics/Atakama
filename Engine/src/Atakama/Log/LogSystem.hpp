@@ -21,28 +21,28 @@ public:
     ~LogSystem();
     
     template<typename... ARGS>
-    void log(Level level, ARGS&&... args)
+    void log(Level level, fmt::format_string<ARGS...> format_str, ARGS&&... args)
     {
         switch(level)
         {
             case Level::Trace:
-                m_Logger->trace(std::forward<ARGS>(args)...);
+                m_Logger->trace(format_str, std::forward<ARGS>(args)...);
                 break;
             case Level::Debug:
-                m_Logger->debug(std::forward<ARGS>(args)...);
+                m_Logger->debug(format_str, std::forward<ARGS>(args)...);
                 break;
             case Level::Info:
-                m_Logger->info(std::forward<ARGS>(args)...);
+                m_Logger->info(format_str, std::forward<ARGS>(args)...);
                 break;
             case Level::Warn:
-                m_Logger->warn(std::forward<ARGS>(args)...);
+                m_Logger->warn(format_str, std::forward<ARGS>(args)...);
                 break;
             case Level::Error:
-                m_Logger->error(std::forward<ARGS>(args)...);
+                m_Logger->error(format_str, std::forward<ARGS>(args)...);
                 break;
             case Level::Fatal:
-                m_Logger->critical(std::forward<ARGS>(args)...);
-                fatalCallback(std::forward<ARGS>(args)...);
+                m_Logger->critical(format_str, std::forward<ARGS>(args)...);
+                fatalCallback(format_str, std::forward<ARGS>(args)...);
                 break;
             default:
                 break;
@@ -50,10 +50,10 @@ public:
     }
     
     template<typename... ARGS>
-    void fatalCallback(ARGS&&... args)
+    void fatalCallback(fmt::format_string<ARGS...> format_str, ARGS&&... args)
     {
-        const std::string format_str = fmt::format(std::forward<ARGS>(args)...);
-        throw std::runtime_error(format_str);
+        const std::string str = fmt::format(format_str, std::forward<ARGS>(args)...);
+        throw std::runtime_error(str);
     }
 private:
     Ref<spdlog::logger> m_Logger;
