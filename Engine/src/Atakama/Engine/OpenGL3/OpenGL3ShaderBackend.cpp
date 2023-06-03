@@ -26,16 +26,15 @@ OpenGL3ShaderBackend::~OpenGL3ShaderBackend()
 std::string OpenGL3ShaderBackend::LoadFile(const std::filesystem::path& path)
 {
     std::string code;
-    std::ifstream fileStream(path.c_str(), std::ios::in);
+    std::ifstream fileStream(path.string());
     if(!fileStream.is_open())
     {
-        LOG_ERROR("Cannot open: {}", path);
+        LOG_ERROR("Cannot open shader: {}", path);
         return "";
     }
     std::stringstream stream;
     stream << fileStream.rdbuf();
     code = stream.str();
-    fileStream.close();
     return code;
 }
 

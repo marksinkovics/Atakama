@@ -25,6 +25,7 @@ void AssetManager::Preload()
     m_Meshes["canvas"] = LoadQuad();
     m_Meshes["axis"] = LoadAxis();
     m_Meshes["skybox"] = LoadSkyBox();
+    m_Meshes["triangle"] = LoadTriangle();
 }
 
 void AssetManager::SetSelectedMeshId(int id)
@@ -121,56 +122,49 @@ void AssetManager::LoadOBJFile(const std::filesystem::path& path, std::vector<Ve
     std::vector<glm::vec2> temp_uvs;
     std::vector<glm::vec3> temp_normals;
 
-    LOG_DEBUG("Loading OBJ from path: {}", path);
+    //LOG_DEBUG("Loading OBJ from path: {}", path);
 
-    FILE* file = fopen((const char*)(path.c_str()), "r");
-    if(!file)
-    {
-        std::cerr << "Path " << path << " could not be opened.\n";
+    std::ifstream stream(path.string());
+    if (!stream.is_open()) {
+        LOG_ERROR("Cannot open: {}", path);
         return;
     }
-    
-    while(1)
+
+    std::string line;
+    while (getline(stream, line))
     {
-        char lineHeader[128];
-        int res = fscanf(file, "%s", lineHeader);
-        if (res == EOF) {
-            break; // end of file
-        }
-        
-        if (strcmp(lineHeader, "v" ) == 0)
-        {
-            glm::vec3 vertex;
-            fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
-            temp_positions.push_back(vertex);
-        }
-        else if (strcmp(lineHeader, "vt" ) == 0)
+        if (line.rfind("vt", 0) == 0)
         {
             glm::vec2 uv;
-            fscanf(file, "%f %f\n", &uv.x, &uv.y );
+            sscanf(line.c_str(), "vt %f %f\n", &uv.x, &uv.y);
             temp_uvs.push_back(uv);
         }
-        else if (strcmp( lineHeader, "vn" ) == 0){
+        else if (line.rfind("vn", 0) == 0) {
             glm::vec3 normal;
-            fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
+            sscanf(line.c_str(), "vn %f %f %f\n", &normal.x, &normal.y, &normal.z);
             temp_normals.push_back(normal);
         }
-        else if ( strcmp( lineHeader, "f" ) == 0 )
+        else if (line.rfind("v", 0) == 0)
+        {
+            glm::vec3 vertex;
+            sscanf(line.c_str(), "v %f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
+            temp_positions.push_back(vertex);
+        }
+        else if (line.rfind("f", 0) == 0)
         {
             std::string vertex1, vertex2, vertex3;
             unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-            int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
-            if (matches != 9){
-                printf("File can't be read by our simple parser\n");
-                fclose(file);
+            int matches = sscanf(line.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+            if (matches != 9) {
+                LOG_ERROR("File can't be read by our simple parser");
                 return;
             }
             vertexIndices.push_back(vertexIndex[0]);
             vertexIndices.push_back(vertexIndex[1]);
             vertexIndices.push_back(vertexIndex[2]);
-            uvIndices    .push_back(uvIndex[0]);
-            uvIndices    .push_back(uvIndex[1]);
-            uvIndices    .push_back(uvIndex[2]);
+            uvIndices.push_back(uvIndex[0]);
+            uvIndices.push_back(uvIndex[1]);
+            uvIndices.push_back(uvIndex[2]);
             normalIndices.push_back(normalIndex[0]);
             normalIndices.push_back(normalIndex[1]);
             normalIndices.push_back(normalIndex[2]);
@@ -178,8 +172,6 @@ void AssetManager::LoadOBJFile(const std::filesystem::path& path, std::vector<Ve
         else
         {
             // Probably a comment, eat up the rest of the line
-            char buffer[1000];
-            fgets(buffer, 1000, file);
         }
     }
     
@@ -207,8 +199,6 @@ void AssetManager::LoadOBJFile(const std::filesystem::path& path, std::vector<Ve
 
         indices.push_back(uniqueVertices[vertex]);
     }
-    
-    fclose(file);
 }
 
 void AssetManager::GenerateIndices(const std::vector<Vertex>& input, std::vector<Vertex>& output, std::vector<uint32_t>& indices)
