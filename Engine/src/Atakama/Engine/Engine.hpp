@@ -37,6 +37,7 @@ public:
         std::string Vendor;
         std::string Renderer;
         std::string Version;
+        std::string ShadingLanguageVersion;
     };
 public:
 

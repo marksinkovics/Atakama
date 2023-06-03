@@ -42,6 +42,7 @@ public:
     virtual std::string GetVendor() = 0;
     virtual std::string GetRenderer() = 0;
     virtual std::string GetVersion() = 0;
+    virtual std::string GetShadingLanguageVersion() = 0;
 };
 
 }

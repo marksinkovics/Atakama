@@ -44,6 +44,7 @@ void Engine::Init(Ref<Window>& window, Ref<Profiler>& profiler)
     m_Statistics.Vendor = m_RenderSystem->GetVendor();
     m_Statistics.Renderer = m_RenderSystem->GetRenderer();
     m_Statistics.Version = m_RenderSystem->GetVersion();
+    m_Statistics.ShadingLanguageVersion = m_RenderSystem->GetShadingLanguageVersion();
 
     g_RuntimeGlobalContext.m_AssetManager->Preload();
 

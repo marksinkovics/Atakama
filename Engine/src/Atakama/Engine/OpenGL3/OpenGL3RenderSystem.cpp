@@ -109,5 +109,11 @@ std::string OpenGL3RenderSystem::GetVersion()
     return std::string(version);
 }
 
+std::string OpenGL3RenderSystem::GetShadingLanguageVersion()
+{
+    const char* version = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+    return std::string(version);
+}
+
 }
 

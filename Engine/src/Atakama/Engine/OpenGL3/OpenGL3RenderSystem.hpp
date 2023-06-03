@@ -22,6 +22,7 @@ public:
     virtual std::string GetVendor() override;
     virtual std::string GetRenderer() override;
     virtual std::string GetVersion() override;
+    virtual std::string GetShadingLanguageVersion() override;
 };
 
 }
