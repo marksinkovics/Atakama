@@ -46,14 +46,8 @@ public:
     void Run();
     float CalculateDeltaTime();
 
-    void StartProfile();
-    void StopProfile();
-
     bool OnMouseScrollEvent(MouseScrolledEvent& event);
     void UpdateRenderingViewportSize(glm::uvec2 size);
-
-    void AddMainRenderPasses(Ref<RenderPass>& renderPass);
-    void AddPostRenderPass(Ref<RenderPass>& renderPass);
 
     Ref<SkyBoxRenderPass> GetSkyBoxRenderPass() { return m_SkyBoxRenderPass; }
     Ref<MainRenderPass> GetMainRenderPass() { return m_MainRenderPass; }

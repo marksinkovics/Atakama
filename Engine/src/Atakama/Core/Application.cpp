@@ -96,7 +96,6 @@ void Application::BlockEvent(bool value)
 
 void Application::Run()
 {
-
     while (m_Running)
     {
         float ts = m_Engine->CalculateDeltaTime();
