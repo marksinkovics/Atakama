@@ -11,9 +11,19 @@
 namespace Atakama
 {
 
+void error_callback(int error, const char* description)
+{
+    LOG_ERROR("GLFW error [{}]: {}", error, description);
+
+    fprintf(stderr, "Error: %s\n", description);
+}
+
+
 Window::Window(uint32_t width, uint32_t height, const std::string& name)
 : m_Width(width), m_Height(height), m_Name(name)
 {
+    glfwSetErrorCallback(error_callback);
+
     if(!glfwInit())
     {
         LOG_FATAL("Failed to initialize GLFW");
