@@ -12,6 +12,7 @@ project(Atakama
 )
 
 include("cmake/add_asset.cmake")
+include("cmake/source_group_by_folder.cmake")
 
 add_subdirectory("vendor")
 add_subdirectory("Engine")
