@@ -4,6 +4,8 @@ function(target_add_asset TARGET FOLDER ASSET_PATH)
 
     if(CMAKE_GENERATOR STREQUAL Xcode)
         set(ASSET_OUTPUT_PATH "${CMAKE_BINARY_DIR}/${TARGET}/$<CONFIG>/${FOLDER}/${ASSET_NAME}")
+    elseif(CMAKE_GENERATOR MATCHES "Visual Studio")
+        set(ASSET_OUTPUT_PATH "${CMAKE_BINARY_DIR}/${TARGET}/$<CONFIG>/${FOLDER}/${ASSET_NAME}")
     else()
         set(ASSET_OUTPUT_PATH ${CMAKE_BINARY_DIR}/${TARGET}/${FOLDER}/${ASSET_NAME})
     endif()
