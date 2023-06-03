@@ -12,6 +12,7 @@ class KeyReleasedEvent;
 
 enum class Movement
 {
+    None,
     Forward, Backward,
     Left, Right,
     Up, Down
@@ -40,8 +41,8 @@ public:
     
     void Clear();
 private:
-    glm::dvec2 m_LastCursorPos;
-    glm::dvec2 m_DeltaCursorPos;
+    glm::dvec2 m_LastCursorPos {0.f, 0.f};
+    glm::dvec2 m_DeltaCursorPos {0.f, 0.f};
     bool m_FocusMode {false};
 
     std::unordered_set<int> m_ButtonPressed;

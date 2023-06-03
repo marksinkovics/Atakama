@@ -159,6 +159,8 @@ Movement InputSystem::GetMovement() const
         return Movement::Down;
     }
 
+    return Movement::None;
+
 }
 
 }

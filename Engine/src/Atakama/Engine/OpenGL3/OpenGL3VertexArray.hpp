@@ -25,10 +25,10 @@ public:
     virtual std::vector<Ref<VertexBuffer>>& GetVertexBuffers();
     virtual Ref<IndexBuffer> GetIndexBuffer();
 private:
-    uint32_t m_Id;
+    uint32_t m_Id{ 0 };
     std::vector<Ref<VertexBuffer>> m_VertexBuffers;
     Ref<IndexBuffer> m_IndexBuffer;
-    uint32_t m_VertexBufferIndex;
+    uint32_t m_VertexBufferIndex{ 0 };
 };
 
 }

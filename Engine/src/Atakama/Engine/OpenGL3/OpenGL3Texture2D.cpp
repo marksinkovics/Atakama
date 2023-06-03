@@ -10,6 +10,7 @@ namespace Atakama
 {
 
 OpenGL3Texture2D::OpenGL3Texture2D()
+    : m_Id(-1), m_TotalUnits(0)
 {
     glGenTextures(1, &m_Id);
     glBindTexture(GL_TEXTURE_2D, m_Id);
@@ -18,6 +19,7 @@ OpenGL3Texture2D::OpenGL3Texture2D()
 }
 
 OpenGL3Texture2D::OpenGL3Texture2D(const std::filesystem::path& path)
+    : m_Id(-1), m_TotalUnits(0)
 {
     LOG_DEBUG("Loading Texture2D from path: {}", path)
 
@@ -42,7 +44,7 @@ OpenGL3Texture2D::OpenGL3Texture2D(const std::filesystem::path& path)
 }
 
 OpenGL3Texture2D::OpenGL3Texture2D(uint32_t id)
-: m_Id(id)
+: m_Id(id), m_TotalUnits(0)
 {
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &m_TotalUnits);
 }
