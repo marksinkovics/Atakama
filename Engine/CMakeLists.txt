@@ -29,7 +29,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         ${OPENGL_gl_LIBRARY}
         glfw
-        GLEW::glew_s 
+        GLEW::GLEW 
         glm::glm
         stb
         Vulkan::Vulkan
