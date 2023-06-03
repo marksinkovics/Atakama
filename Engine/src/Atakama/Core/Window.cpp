@@ -5,9 +5,6 @@
 
 #include "Atakama/Engine/Platform/OpenGL3/OpenGL3GraphicsContext.hpp"
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 namespace Atakama
 {
 

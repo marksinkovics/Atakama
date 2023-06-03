@@ -6,6 +6,8 @@ project(Engine
 
 find_package(OpenGL REQUIRED)
 find_package(Vulkan REQUIRED)
+
+set(GLEW_USE_STATIC_LIBS true)
 find_package(GLEW REQUIRED)
 
 set(SOURCE_ROOT ${PROJECT_SOURCE_DIR}/src)
@@ -27,7 +29,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         ${OPENGL_gl_LIBRARY}
         glfw
-        GLEW::GLEW
+        GLEW::glew_s 
         glm::glm
         stb
         Vulkan::Vulkan
@@ -40,6 +42,7 @@ target_link_libraries(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${SOURCE_ROOT}
+        ${GLEW_INCLUDE_DIRS}
         EnTT
     PRIVATE
         ${SOURCE_ROOT}

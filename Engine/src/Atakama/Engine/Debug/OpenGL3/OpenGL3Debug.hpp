@@ -1,9 +1,6 @@
 #ifndef ATAKAMA_OPENGL3_DEBUG_HPP
 #define ATAKAMA_OPENGL3_DEBUG_HPP
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 namespace Atakama
 {
 

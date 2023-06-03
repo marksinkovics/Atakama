@@ -1,8 +1,5 @@
 #include "OpenGL3VertexArray.hpp"
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 namespace Atakama
 {
 

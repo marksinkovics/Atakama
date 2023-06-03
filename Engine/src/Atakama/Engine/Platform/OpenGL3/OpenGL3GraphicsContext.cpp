@@ -1,7 +1,5 @@
 #include "OpenGL3GraphicsContext.hpp"
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 namespace Atakama
 {

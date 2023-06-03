@@ -1,8 +1,6 @@
 #include "Atakama/Engine/OpenGL3/OpenGL3RenderSystem.hpp"
 #include "Atakama/Engine/VertexArray.hpp"
 
-#include <GL/glew.h>
-
 namespace Atakama
 {
 
