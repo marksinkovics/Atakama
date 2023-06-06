@@ -43,21 +43,12 @@ bool InputSystem::OnMouseButtonReleased(MouseButtonReleasedEvent &event)
 
 bool InputSystem::OnKeyPressed(KeyPressedEvent &event)
 {
-//    auto it = m_KeyPressed.find(event.GetKeyCode());
-//    if (it == m_KeyPressed.end())
-//        m_KeyPressed[event.GetKeyCode()] = true;
-
     m_KeyPressed.insert(event.GetKeyCode());
     return false;
 }
 
 bool InputSystem::OnKeyReleased(KeyReleasedEvent &event)
 {
-//    auto it = m_KeyPressed.find(event.GetKeyCode());
-//    m_KeyPressed[event.GetKeyCode()] = false;
-//    if (it != m_KeyPressed.end())
-//        m_KeyPressed.erase(it);
-
     m_KeyPressed.erase(event.GetKeyCode());
     return false;
 }
@@ -86,6 +77,11 @@ glm::dvec2 InputSystem::GetMouseDelta()
 void InputSystem::Clear()
 {
     m_DeltaCursorPos = {0.f, 0.f};
+}
+
+void InputSystem::ClearKeyboardEvents()
+{
+    m_KeyPressed.clear();
 }
 
 bool InputSystem::IsMouseButtonPressed(int button) const

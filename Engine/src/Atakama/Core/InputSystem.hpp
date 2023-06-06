@@ -40,6 +40,7 @@ public:
     glm::dvec2 GetMouseDelta();
     
     void Clear();
+    void ClearKeyboardEvents();
 private:
     glm::dvec2 m_LastCursorPos {0.f, 0.f};
     glm::dvec2 m_DeltaCursorPos {0.f, 0.f};

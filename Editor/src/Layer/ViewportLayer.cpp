@@ -1,6 +1,7 @@
 #include "ViewportLayer.hpp"
 
 #include <Atakama/Core/Application.hpp>
+#include <Atakama/Core/InputSystem.hpp>
 #include <Atakama/Engine/AssetManager.hpp>
 #include <Atakama/Engine/RenderPass/RenderPass.hpp>
 #include <Atakama/Engine/RenderPass/OutlineRenderPass.hpp>
@@ -41,6 +42,10 @@ void ViewportLayer::OnUpdateUI(float ts)
     vMin.y += ImGui::GetWindowPos().y;
     vMax.x += ImGui::GetWindowPos().x;
     vMax.y += ImGui::GetWindowPos().y;
+
+    if (m_ViewportFocused && !ImGui::IsWindowFocused()) {
+        g_RuntimeGlobalContext.m_InputSystem->ClearKeyboardEvents();
+    }
 
     m_ViewportFocused = ImGui::IsWindowFocused();
     m_ViewportHovered = ImGui::IsMouseHoveringRect(vMin, vMax);
