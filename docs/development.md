@@ -1,6 +1,6 @@
 # Atakama Engine Development
 
-## Build the project
+## Build the project on macOS
 
 1. Clone the repository, it manages dependencies by using git modules.
    `git clone --recursive https://github.com/marksinkovics/Atakama.git`
@@ -11,6 +11,19 @@
 4. Build the project with Xcode
    1. Open the project in Xcode
      `open ./build/xcode/Atakama.xcodeproj`
+   2. Select the target Sandbox, or Editor
+   3. Click run
+
+## Build the project on Window with Visual Studio
+
+1. Make sure the glew has been added to the global $PATH
+2. Clone the repository, it manages dependencies by using git modules.
+   `git clone --recursive https://github.com/marksinkovics/Atakama.git`
+3. Generate the build system files
+   `./generate.bat`
+4. Build the project with Visual Studio
+   1. Open the project in Xcode
+     `start ./build/visualstudio/Atakama.sln`
    2. Select the target Sandbox, or Editor
    3. Click run
 
