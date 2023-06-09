@@ -54,7 +54,6 @@ target_add_assets(${PROJECT_NAME} "assets/textures"
     ${TEXTURES}
 )
 
-
 set(MODELS_ROOT ${ASSETS_ROOT}/models)
 file(GLOB_RECURSE MODELS
     ${MODELS_ROOT}/*.*
@@ -62,6 +61,15 @@ file(GLOB_RECURSE MODELS
 
 target_add_assets(${PROJECT_NAME} "assets/models"
     ${MODELS}
+)
+
+set(CONFIGS_ROOT ${PROJECT_SOURCE_DIR}/configs)
+file(GLOB_RECURSE CONFIGS
+    ${CONFIGS_ROOT}/*.*
+)
+
+target_add_assets(${PROJECT_NAME} "configs"
+    ${CONFIGS}
 )
 
 target_include_directories(${PROJECT_NAME}
@@ -93,6 +101,5 @@ target_precompile_headers(${PROJECT_NAME}
     PUBLIC
         ${SOURCE_ROOT}/pch.hpp
 )
-
 
 # add_subdirectory("libs/tinyobjloader")

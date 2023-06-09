@@ -30,5 +30,14 @@ const std::filesystem::path FileSystem::GetModelPath()
   return FileSystem::GetBinaryPath() / "assets" / "models";
 }
 
+const std::filesystem::path FileSystem::GetConfigsPath()
+{
+	return FileSystem::GetBinaryPath() / "configs";
+}
+
+const std::filesystem::path FileSystem::GetImGuiInitPath()
+{
+	return FileSystem::GetConfigsPath() / "imgui.ini";
+}
 
 }

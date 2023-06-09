@@ -10,8 +10,6 @@ MenuBarLayer::MenuBarLayer()
 
 }
 
-
-
 void MenuBarLayer::OnUpdateUI(float ts)
 {
 

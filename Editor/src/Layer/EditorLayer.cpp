@@ -65,7 +65,7 @@ namespace Atakama::Editor
         if (!opt_padding)
             ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
-        ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
+        ImGui::Begin("DockSpace", &dockspaceOpen, window_flags);
 
         if (!opt_padding)
             ImGui::PopStyleVar();
@@ -81,7 +81,7 @@ namespace Atakama::Editor
 
         if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
         {
-            ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+            ImGuiID dockspace_id = ImGui::GetID("EditorDockSpace");
             ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
         }
 

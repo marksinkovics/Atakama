@@ -29,6 +29,4 @@ EditorApplication::EditorApplication()
     m_Engine->GetViewportRenderPass()->SetEnable(false);
 }
 
-
-
 }

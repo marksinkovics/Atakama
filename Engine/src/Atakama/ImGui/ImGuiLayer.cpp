@@ -1,6 +1,7 @@
 #include "ImGuiLayer.hpp"
 
 #include "Atakama/Core/Window.hpp"
+#include "Atakama/Core/FileSystem.hpp"
 #include "Atakama/Engine/RenderSystem.hpp"
 
 #include <imgui.h>
@@ -25,6 +26,9 @@ void ImGuiLayer::OnAttach()
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
+    io.IniFilename = NULL;
+    ImGui::LoadIniSettingsFromDisk(FileSystem::GetImGuiInitPath().string().c_str());
+
     if (IsEditor())
     {
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
@@ -40,6 +44,8 @@ void ImGuiLayer::OnAttach()
 }
 void ImGuiLayer::OnDetach()
 {
+    ImGui::SaveIniSettingsToDisk(FileSystem::GetImGuiInitPath().string().c_str());
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
