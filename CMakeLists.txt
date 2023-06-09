@@ -14,11 +14,19 @@ project(Atakama
 include("cmake/add_asset.cmake")
 include("cmake/source_group_by_folder.cmake")
 
+if (MSVC)
+    message(STATUS "Apply compile options: /Od /ZI")
+    add_compile_options(
+        $<$<CONFIG:DEBUG>:/Od>
+        $<$<CONFIG:DEBUG>:/ZI>
+    )
+endif()
+
 add_subdirectory("vendor")
 add_subdirectory("Engine")
 add_subdirectory("Sandbox")
 add_subdirectory("Editor")
 
 if(CMAKE_GENERATOR MATCHES "Visual Studio")
-    SET(CMAKE_DEFAULT_STARTUP_PROJECT "Editor")
+    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT "Editor")
 endif()
