@@ -4,6 +4,7 @@
 .idea
 .cache
 *.log
+*.rsls
 
 # Neovim
 
