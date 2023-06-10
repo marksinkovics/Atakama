@@ -62,7 +62,7 @@ void Engine::Init(Ref<Window>& window, Ref<Profiler>& profiler)
     m_SkyBoxRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
     m_DepthViewRenderPass = CreateRef<DepthViewRenderPass>(m_RenderSystem);
     m_DepthViewRenderPass->AddDependency(m_MainRenderPass);
-    m_OutlineRenderPass = CreateRef<OutlineRenderPass>(m_RenderSystem);
+    m_OutlineRenderPass = CreateRef<OutlineRenderPass>(m_RenderSystem, m_Scene);
     m_OutlineRenderPass->AddDependency(m_MainRenderPass);
     m_ViewportRenderPass = CreateRef<ViewportRenderPass>(m_RenderSystem);
     m_ViewportRenderPass->AddDependency(m_MainRenderPass);

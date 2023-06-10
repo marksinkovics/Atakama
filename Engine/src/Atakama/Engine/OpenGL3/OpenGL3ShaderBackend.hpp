@@ -17,7 +17,7 @@ public:
     virtual void Bind() override;
     virtual void Unbind() override;
 
-    virtual void SetUniformInt(const std::string& name, const int value) override;
+    virtual void SetUniformInt(const std::string& name, int value) override;
     virtual void SetUniformMat3(const std::string& name, const glm::mat3& matrix) override;
     virtual void SetUniformMat4(const std::string& name, const glm::mat4& matrix) override;
     virtual void SetUniformVec4Array(const std::string& name, int count, const float* values) override;

@@ -116,7 +116,7 @@ void OpenGL3ShaderBackend::Unbind()
     glUseProgram(0);
 }
 
-void OpenGL3ShaderBackend::SetUniformInt(const std::string& name, const int value)
+void OpenGL3ShaderBackend::SetUniformInt(const std::string& name, int value)
 {
     GLint location = glGetUniformLocation(m_Id, name.c_str());
     if (location == -1)

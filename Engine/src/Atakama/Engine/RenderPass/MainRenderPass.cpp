@@ -45,7 +45,7 @@ void MainRenderPass::Draw()
     // Camera / View
     m_Shader->SetUniformFloat3("uViewPosition", cameraTransform.Translate);
     // Mesh
-    m_Shader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
+    m_Shader->SetUniformInt("u_SelectedMeshId", m_Scene->GetSelectedEntity());
 
     auto view = m_Scene->GetRegistry().view<MeshComponent>(entt::exclude<DebugComponent, SkyBoxComponent>);
     for (auto entityId : view)

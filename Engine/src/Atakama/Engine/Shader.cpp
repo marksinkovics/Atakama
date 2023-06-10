@@ -49,7 +49,7 @@ void Shader::Unbind()
     return m_ShaderBackend->Unbind();
 }
 
-void Shader::SetUniformInt(const std::string& name, const int value)
+void Shader::SetUniformInt(const std::string& name, int value)
 {
     return m_ShaderBackend->SetUniformInt(name, value);
 }

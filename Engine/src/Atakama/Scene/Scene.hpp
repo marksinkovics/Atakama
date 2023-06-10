@@ -28,13 +28,18 @@ public:
     virtual void LoadLight();
     virtual void LoadSkyBox();
     virtual void LoadMeshes();
-    
+
     Entity GetLight();
     Entity GetSkyBox();
 
     const entt::registry& GetRegistry() const { return m_Registry; }
+
+    Entity GetSelectedEntity();
+    void SetSelectedEntity(Entity entity);
+    bool HasSelectedEntity() const;
 protected:
     entt::registry m_Registry;
+    entt::entity m_SelectedEntity { entt::null };
     friend class Entity;
 };
 

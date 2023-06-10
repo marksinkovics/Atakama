@@ -6,6 +6,7 @@
 #include <Atakama/Engine/RenderPass/RenderPass.hpp>
 #include <Atakama/Engine/RenderPass/OutlineRenderPass.hpp>
 #include <Atakama/Engine/FrameBuffer.hpp>
+#include <Atakama/Scene/Entity.hpp>
 
 #include <imgui.h>
 
@@ -43,7 +44,8 @@ void ViewportLayer::OnUpdateUI(float ts)
     vMax.x += ImGui::GetWindowPos().x;
     vMax.y += ImGui::GetWindowPos().y;
 
-    if (m_ViewportFocused && !ImGui::IsWindowFocused()) {
+    // Fixes a bug where the user clicked or hovered out of the window
+    if ((m_ViewportFocused && !ImGui::IsWindowFocused()) || (m_ViewportHovered && !ImGui::IsMouseHoveringRect(vMin, vMax))) {
         g_RuntimeGlobalContext.m_InputSystem->ClearKeyboardEvents();
     }
 
@@ -70,6 +72,11 @@ void ViewportLayer::OnUpdateUI(float ts)
     {
         m_MeshId = m_RenderPass->GetFrameBuffer()->ReadInt(1, mouseX * scale, mouseY * scale);
         Atakama::AssetManager::Get()->SetSelectedMeshId(m_MeshId);
+
+        if (g_RuntimeGlobalContext.m_InputSystem->IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT)) {
+            Entity entity = Entity(static_cast<entt::entity>(m_MeshId), m_Engine->GetScene().get());
+            m_Engine->GetScene()->SetSelectedEntity(entity);
+        }
     }
 
     Ref<Texture> texture = m_RenderPass->GetOutputColorTexture();

@@ -6,13 +6,14 @@
 #include "Atakama/Engine/Shader.hpp"
 #include "Atakama/Engine/RenderSystem.hpp"
 #include "Atakama/Engine/FrameBuffer.hpp"
+#include "Atakama/Scene/Scene.hpp"
+#include "Atakama/Scene/Entity.hpp"
 
 namespace Atakama
 {
 
-
-OutlineRenderPass::OutlineRenderPass(Ref<RenderSystem> renderSystem)
-: RenderPass(renderSystem)
+OutlineRenderPass::OutlineRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene)
+: SceneRenderPass(renderSystem, scene)
 {
     m_Mesh = AssetManager::Get()->GetMeshById("canvas");
     m_Shader = CreateRef<Shader>(FileSystem::GetShaderFile("outline.vert"), FileSystem::GetShaderFile("outline.frag"));
@@ -51,7 +52,7 @@ void OutlineRenderPass::Draw()
 
     m_Shader->Bind();
 
-    m_Shader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
+    m_Shader->SetUniformInt("u_SelectedMeshId", m_Scene->GetSelectedEntity());
 
     m_Shader->SetUniformFloat2("u_TextureSize", glm::vec2(m_FrameBuffer->GetWidth(), m_FrameBuffer->GetHeight()));
 
@@ -64,5 +65,11 @@ void OutlineRenderPass::Draw()
     m_RenderSystem->Draw(m_Mesh->GetMode(), m_Mesh->GetVertexArray());
     m_Shader->Unbind();
 }
+
+std::string OutlineRenderPass::GetName()
+{
+    return "Outline RenderPass";
+}
+
 
 }

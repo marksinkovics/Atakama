@@ -35,7 +35,7 @@ void SceneLayer::OnUpdateUI(float ts)
     if (g_RuntimeEditorContext.ObjectPropertiesViewOpen)
     {
         ImGui::Begin("Object Properties", &g_RuntimeEditorContext.ObjectPropertiesViewOpen, window_flags);
-        if (m_SelectedEntity)
+        if (m_Scene->HasSelectedEntity())
         {
             UpdateComponentList();
         }
@@ -61,12 +61,12 @@ void SceneLayer::UpdateEntityList()
         ImGui::TableSetColumnIndex(0);
 
         const std::string& name = entity.GetComponent<NameComponent>().Name;
-        ImGuiTreeNodeFlags flags = base_flags | ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+        ImGuiTreeNodeFlags flags = base_flags | ((m_Scene->GetSelectedEntity() == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
         bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, "%s", name.c_str());
 
         if (ImGui::IsItemClicked())
         {
-            m_SelectedEntity = entity;
+            m_Scene->SetSelectedEntity(entity);
         }
 
         ImGui::TableSetColumnIndex(1);
@@ -91,7 +91,7 @@ void SceneLayer::UpdateEntityList()
             {
                 Entity child = m_Scene->CreateEntity("New Entity");
                 entity.AddChildren({child});
-                m_SelectedEntity = child;
+                m_Scene->SetSelectedEntity(child);
             }
 
             ImGui::EndPopup();
@@ -159,9 +159,9 @@ void SceneLayer::RemoveEntity(Entity entity)
 
     for (const Entity &e : entity.GetDescendents())
     {
-        if (e == m_SelectedEntity)
+        if (e == m_Scene->GetSelectedEntity())
         {
-            m_SelectedEntity = {};
+            m_Scene->SetSelectedEntity({});
             break;
         }
     }
@@ -367,7 +367,7 @@ static void UpdatePropertyTable(Entity entity, T& component)
 }
 
 template<typename T>
-static void UpdatePropertyTree(const std::string& name, Entity& entity)
+static void UpdatePropertyTree(const std::string& name, Entity entity)
 {
     ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
@@ -401,26 +401,26 @@ static void UpdatePropertyTree(const std::string& name, Entity& entity)
 
 void SceneLayer::UpdateComponentList()
 {
-    UpdatePropertyTable<NameComponent>(m_SelectedEntity, m_SelectedEntity.GetComponent<NameComponent>());
+    UpdatePropertyTable<NameComponent>(m_Scene->GetSelectedEntity(), m_Scene->GetSelectedEntity().GetComponent<NameComponent>());
 
-    if (m_SelectedEntity.HasComponent<CameraComponent>())
+    if (m_Scene->GetSelectedEntity().HasComponent<CameraComponent>())
     {
-        UpdatePropertyTree<CameraComponent>("Camera", m_SelectedEntity);
+        UpdatePropertyTree<CameraComponent>("Camera", m_Scene->GetSelectedEntity());
     }
 
-    if (m_SelectedEntity.HasComponent<TransformComponent>())
+    if (m_Scene->GetSelectedEntity().HasComponent<TransformComponent>())
     {
-        UpdatePropertyTree<TransformComponent>("Transform", m_SelectedEntity);
+        UpdatePropertyTree<TransformComponent>("Transform", m_Scene->GetSelectedEntity());
     }
 
-    if (m_SelectedEntity.HasComponent<PointLightComponent>())
+    if (m_Scene->GetSelectedEntity().HasComponent<PointLightComponent>())
     {
-        UpdatePropertyTree<PointLightComponent>("Point light", m_SelectedEntity);
+        UpdatePropertyTree<PointLightComponent>("Point light", m_Scene->GetSelectedEntity());
     }
 
-    if (m_SelectedEntity.HasComponent<MeshComponent>())
+    if (m_Scene->GetSelectedEntity().HasComponent<MeshComponent>())
     {
-        UpdatePropertyTree<MeshComponent>("Mesh", m_SelectedEntity);
+        UpdatePropertyTree<MeshComponent>("Mesh", m_Scene->GetSelectedEntity());
     }
 }
 

@@ -6,23 +6,22 @@
 namespace Atakama
 {
 
+class Scene;
 class Shader;
 class Mesh;
 
-class OutlineRenderPass: public RenderPass
+class OutlineRenderPass: public SceneRenderPass
 {
 public:
-    OutlineRenderPass(Ref<RenderSystem> renderSystem);
+    OutlineRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scene);
     virtual ~OutlineRenderPass();
-    virtual std::string GetName() override { return "Outline RenderPass"; }
 protected:
     virtual void Draw() override;
-
+    virtual std::string GetName() override;
 private:
     Ref<Mesh> m_Mesh;
     Ref<Shader> m_Shader;
 };
-
 
 }
 

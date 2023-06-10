@@ -13,7 +13,6 @@ public:
 
     bool SceneViewOpen { true };
     bool ObjectPropertiesViewOpen { true };
-
 };
 
 extern RuntimeEditorContext g_RuntimeEditorContext;

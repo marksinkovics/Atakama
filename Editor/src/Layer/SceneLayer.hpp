@@ -28,7 +28,6 @@ private:
 
     Ref<Engine> m_Engine;
     Ref<Scene> m_Scene;
-    Entity m_SelectedEntity = Entity();
 };
 
 }

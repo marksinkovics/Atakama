@@ -34,7 +34,7 @@ void DebugRenderPass::Draw()
     m_SimpleShader->Bind();
     m_SimpleShader->SetUniformMat4("uView", camera.GetViewMatrix(cameraTransform));
     m_SimpleShader->SetUniformMat4("uProjection", camera.GetProjectionMatrix());
-    m_SimpleShader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
+    m_SimpleShader->SetUniformInt("u_SelectedMeshId", m_Scene->GetSelectedEntity());
 
 
     auto view = m_Scene->GetRegistry().view<MeshComponent, DebugComponent>(entt::exclude<PointLightComponent, SkyBoxComponent>);
@@ -57,7 +57,7 @@ void DebugRenderPass::Draw()
     // Camera / View
     m_PointLightShader->SetUniformFloat3("uViewPosition", cameraTransform.Translate);
     // Mesh
-    m_PointLightShader->SetUniformInt("u_SelectedMeshId", AssetManager::Get()->GetSelectedMeshId());
+    m_PointLightShader->SetUniformInt("u_SelectedMeshId", m_Scene->GetSelectedEntity());
 
     m_RenderSystem->Draw(lightEntity, m_PointLightShader);
 

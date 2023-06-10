@@ -105,6 +105,21 @@ Entity Scene::GetSkyBox()
     return Entity();
 }
 
+Entity Scene::GetSelectedEntity()
+{
+    return Entity(m_SelectedEntity, this);
+}
+
+void Scene::SetSelectedEntity(Entity entity)
+{
+    m_SelectedEntity = entity;
+}
+
+bool Scene::HasSelectedEntity() const
+{
+    return m_SelectedEntity != entt::null;
+}
+
 //
 // Sandbox scene
 //
