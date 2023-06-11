@@ -8,7 +8,7 @@ namespace Atakama
 
 class Application;
 
-namespace Sandbox
+namespace Runtime
 {
 
 class StatsLayer: public Layer

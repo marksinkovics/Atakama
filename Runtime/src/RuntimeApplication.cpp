@@ -1,4 +1,4 @@
-#include "SandboxApplication.hpp"
+#include "RuntimeApplication.hpp"
 
 #include "Layer/StatsLayer.hpp"
 
@@ -6,10 +6,10 @@
 #include <Atakama/Engine/RenderPass/DepthViewRenderPass.hpp>
 #include <Atakama/Engine/RenderPass/OutlineRenderPass.hpp>
 
-namespace Atakama::Sandbox
+namespace Atakama::Runtime
 {
 
-SandboxApplication::SandboxApplication()
+RuntimeApplication::RuntimeApplication()
 : Application()
 {
     AddLayer(new StatsLayer());

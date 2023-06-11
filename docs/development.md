@@ -11,7 +11,7 @@
 4. Build the project with Xcode
    1. Open the project in Xcode
      `open ./build/xcode/Atakama.xcodeproj`
-   2. Select the target Sandbox, or Editor
+   2. Select the target Runtime, or Editor
    3. Click run
 
 ## Build the project on Window with Visual Studio
@@ -24,7 +24,7 @@
 4. Build the project with Visual Studio
    1. Open the project in Xcode
      `start ./build/visualstudio/Atakama.sln`
-   2. Select the target Sandbox, or Editor
+   2. Select the target Runtime, or Editor
    3. Click run
 
 ## Dependencies

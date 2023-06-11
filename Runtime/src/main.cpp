@@ -1,4 +1,4 @@
-#include "SandboxApplication.hpp"
+#include "RuntimeApplication.hpp"
 
 #include <Atakama/Core/Args.hpp>
 
@@ -9,7 +9,7 @@ int main(int argc, char **argv)
     Atakama::SetArguments({argc, argv});
 
     {
-        Atakama::Sandbox::SandboxApplication app;
+        Atakama::Runtime::RuntimeApplication app;
         app.Run();
     }
 

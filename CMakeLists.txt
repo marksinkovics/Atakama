@@ -24,7 +24,7 @@ endif()
 
 add_subdirectory("vendor")
 add_subdirectory("Engine")
-add_subdirectory("Sandbox")
+add_subdirectory("Runtime")
 add_subdirectory("Editor")
 
 if(CMAKE_GENERATOR MATCHES "Visual Studio")

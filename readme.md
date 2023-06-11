@@ -10,5 +10,5 @@ Currently, it support macOS and Windows
 
 | Platform | Editor  | Sanbox |
 | ------------- | ------------- | ------------- |
-| macOS | <img src="docs/assets/Atakama%20Editor.png" width="50%" /> | <img src="docs/assets/Atakama%20Sandbox.png" width="50%" /> |
-| Windows | <img src="docs/assets/Atakama%20Editor%20Win.png" width="50%" /> | <img src="docs/assets/Atakama%20Sandbox%20Win.png" width="50%" /> |
+| macOS | <img src="docs/assets/Atakama%20Editor.png" width="50%" /> | <img src="docs/assets/Atakama%20Runtime.png" width="50%" /> |
+| Windows | <img src="docs/assets/Atakama%20Editor%20Win.png" width="50%" /> | <img src="docs/assets/Atakama%20Runtime%20Win.png" width="50%" /> |

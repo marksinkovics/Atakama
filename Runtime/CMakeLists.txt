@@ -1,4 +1,4 @@
-project(Sandbox
+project(Runtime
     LANGUAGES
     C
     CXX

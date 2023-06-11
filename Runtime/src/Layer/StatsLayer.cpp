@@ -1,6 +1,6 @@
 #include "StatsLayer.hpp"
 
-#include "SandboxApplication.hpp"
+#include "RuntimeApplication.hpp"
 
 #include <imgui.h>
 #include <imgui_internal.h>
@@ -9,7 +9,7 @@
 
 #include <GLFW/glfw3.h>
 
-namespace Atakama::Sandbox
+namespace Atakama::Runtime
 {
 
 StatsLayer::StatsLayer()
