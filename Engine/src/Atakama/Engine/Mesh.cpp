@@ -35,6 +35,21 @@ void Mesh::SetMode(DrawingMode mode)
     m_Mode = mode;
 }
 
+std::string Mesh::GetTextureId()
+{
+    return m_TextureId;
+}
+
+void Mesh::SetTextureId(const std::string& textureId)
+{
+    m_TextureId = textureId;
+}
+
+bool Mesh::HasTextureId()
+{
+    return !m_TextureId.empty();
+}
+
 Ref<VertexArray>& Mesh::GetVertexArray()
 {
     return m_VertexArray;

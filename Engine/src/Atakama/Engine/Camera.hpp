@@ -43,9 +43,14 @@ public:
     float GetZoom() { return m_Zoom; }
     void SetZoom(float value) { m_Zoom = value; }
 
+    float GetFar() { return m_Far; }
+    void SetFar(float value) { m_Far = value; }
+
 protected:
     float m_FOV = glm::radians(45.0f); // Perspective only
     float m_Zoom = 2.0f; // Ortho only
+
+    float m_Far = 1000.f;
 
     glm::mat4 m_ProjectionMatrix {1.f};
     

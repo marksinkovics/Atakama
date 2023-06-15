@@ -24,10 +24,15 @@ public:
 
     DrawingMode GetMode();
     void SetMode(DrawingMode mode);
-    
+
+    std::string GetTextureId();
+    void SetTextureId(const std::string& textureId);
+    bool HasTextureId();
+
     Ref<VertexArray>& GetVertexArray();
 private:
     DrawingMode m_Mode = DrawingMode::Triangles;
+    std::string m_TextureId = "";
 
     Ref<VertexBuffer> m_VertexBuffer;
     Ref<IndexBuffer> m_IndexBuffer;

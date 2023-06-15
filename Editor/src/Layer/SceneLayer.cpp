@@ -317,8 +317,19 @@ std::vector<PropertyField<CameraComponent>> UpdatePropertyPanel<CameraComponent>
                 }
             }
         });
-
     }
+
+    fields.push_back({
+        "Far",
+        [](Entity& entity, auto& component) {
+            float value = component.Camera.GetFar();
+            if (ImGui::DragFloat("##FAR", &value, 0.01))
+            {
+                component.Camera.SetFar(value);
+            }
+        }
+    });
+
 
     return fields;
 }
@@ -339,8 +350,25 @@ std::vector<PropertyField<PointLightComponent>> UpdatePropertyPanel<PointLightCo
 template<>
 std::vector<PropertyField<MeshComponent>> UpdatePropertyPanel<MeshComponent>(Entity& entity, MeshComponent& component)
 {
+    return
+    {
+        {
+            "TextureId",
+            [](Entity& entity, auto& component) {
+                ImGui::PushItemWidth(-FLT_MIN);
+                ImGui::Text("%s", component.Mesh->GetTextureId().c_str());
+            }
+        }
+    };
+
+}
+
+template<>
+std::vector<PropertyField<TextureComponent>> UpdatePropertyPanel<TextureComponent>(Entity& entity, TextureComponent& component)
+{
     return {};
 }
+
 
 template<typename T>
 static void UpdatePropertyTable(Entity entity, T& component)
@@ -422,6 +450,12 @@ void SceneLayer::UpdateComponentList()
     {
         UpdatePropertyTree<MeshComponent>("Mesh", m_Scene->GetSelectedEntity());
     }
+
+    if (m_Scene->GetSelectedEntity().HasComponent<TextureComponent>())
+    {
+        UpdatePropertyTree<TextureComponent>("Texture", m_Scene->GetSelectedEntity());
+    }
+
 }
 
 }
