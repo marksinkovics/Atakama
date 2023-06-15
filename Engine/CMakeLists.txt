@@ -37,6 +37,7 @@ target_link_libraries(${PROJECT_NAME}
         spdlog
         # tinyobjloader
         EnTT
+        assimp
 )
 
 target_include_directories(${PROJECT_NAME}

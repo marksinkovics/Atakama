@@ -36,3 +36,7 @@ if (NOT TARGET entt)
     set_target_properties(EnTT PROPERTIES FOLDER ${vendor_folder}/entt)
 endif()
 
+if (NOT TARGET assimp)
+    add_subdirectory(assimp)
+    set_target_properties(assimp PROPERTIES FOLDER ${vendor_folder}/assimp)
+endif()
