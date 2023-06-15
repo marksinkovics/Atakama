@@ -2,6 +2,7 @@
 #define ATAKAMA_EDITOR_MENUBAR_LAYER_HPP
 
 #include <Atakama/Core/Layer.hpp>
+#include <Atakama/ImGui/FileDialog.hpp>
 
 namespace Atakama
 {
@@ -18,6 +19,9 @@ public:
     MenuBarLayer();
     ~MenuBarLayer() = default;
     virtual void OnUpdateUI(float ts) override;
+private:
+    bool m_fileDialogOpen { false };
+    FileDialogInfo m_fileDialogInfo;
 };
 
 }
