@@ -93,7 +93,7 @@ bool ImGui::FileDialog(bool* open, FileDialogInfo* dialogInfo)
 
 	if (ImGui::Begin(dialogInfo->title.c_str(), open))
 	{
-		if (dialogInfo->currentFiles.empty() && dialogInfo->currentDirectories.empty() || dialogInfo->refreshInfo)
+        if ((dialogInfo->currentFiles.empty() && dialogInfo->currentDirectories.empty()) || dialogInfo->refreshInfo)
 			RefreshInfo(dialogInfo);
 
 		// Draw path
@@ -305,7 +305,11 @@ bool ImGui::FileDialog(bool* open, FileDialogInfo* dialogInfo)
 			auto st = std::chrono::time_point_cast<std::chrono::system_clock::duration>(lastWriteTime - decltype(lastWriteTime)::clock::now() + std::chrono::system_clock::now());
 			std::time_t tt = std::chrono::system_clock::to_time_t(st);
 			std::tm mt;
+        #ifdef __APPLE__
+            localtime_r(&tt, &mt);
+        #else
 			localtime_s(&mt, &tt);
+        #endif
 			std::stringstream ss;
 			ss << std::put_time(&mt, "%F %R");
 			ImGui::TextUnformatted(ss.str().c_str());
@@ -329,7 +333,7 @@ bool ImGui::FileDialog(bool* open, FileDialogInfo* dialogInfo)
 
 			ImGui::NextColumn();
 
-			std::string fileSizeStr {std::move(HumanReadable(fileEntry.file_size()).str())};
+            std::string fileSizeStr {std::move(HumanReadable{fileEntry.file_size()}.str())};
 			float fileSizeTextWidth = ImGui::CalcTextSize(fileSizeStr.c_str()).x;
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - fileSizeTextWidth);
 			ImGui::TextUnformatted(fileSizeStr.c_str());
@@ -341,7 +345,11 @@ bool ImGui::FileDialog(bool* open, FileDialogInfo* dialogInfo)
 			auto st = std::chrono::time_point_cast<std::chrono::system_clock::duration>(lastWriteTime - decltype(lastWriteTime)::clock::now() + std::chrono::system_clock::now());
 			std::time_t tt = std::chrono::system_clock::to_time_t(st);
 			std::tm mt;
-			localtime_s(&mt, &tt);
+        #ifdef __APPLE__
+            localtime_r(&tt, &mt);
+        #else
+            localtime_s(&mt, &tt);
+        #endif
 			std::stringstream ss;
 			ss << std::put_time(&mt, "%F %R");
 			ImGui::TextUnformatted(ss.str().c_str());

@@ -128,7 +128,7 @@ void Scene::AddModeById(const std::string& modelId)
 
     std::vector<Ref<Mesh>> meshes = AssetManager::Get()->GetModelById(modelId);
     for (int i = 0; i < meshes.size(); i++) {
-        const std::string name = std::format("Mesh {}", i);
+        const std::string name = fmt::format("Mesh {}", i);
         Entity meshEntity = CreateEntity(name);
         meshEntity.AddComponent<MeshComponent>(meshes[i]);
         if (meshes[i]->HasTextureId()) 
