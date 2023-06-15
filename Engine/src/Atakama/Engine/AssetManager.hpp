@@ -34,10 +34,14 @@ public:
 
     Ref<Texture> GetTextureById(const std::string& id) const;
     Ref<Mesh> GetMeshById(const std::string& id) const;
+    std::vector<Ref<Mesh>> GetModelById(const std::string& id) const;
+
+    void ImportModel(std::filesystem::path& path);
 
 private:
     std::map<std::string, Ref<Texture>> m_Textures;
     std::map<std::string, Ref<Mesh>> m_Meshes;
+    std::map<std::string, std::vector<Ref<Mesh>>> m_Models;
     int m_SelectedId {0};
 };
 

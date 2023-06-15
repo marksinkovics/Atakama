@@ -37,6 +37,8 @@ public:
     Entity GetSelectedEntity();
     void SetSelectedEntity(Entity entity);
     bool HasSelectedEntity() const;
+
+    void AddModeById(const std::string& modelId);
 protected:
     entt::registry m_Registry;
     entt::entity m_SelectedEntity { entt::null };

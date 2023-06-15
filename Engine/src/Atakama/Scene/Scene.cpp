@@ -120,6 +120,26 @@ bool Scene::HasSelectedEntity() const
     return m_SelectedEntity != entt::null;
 }
 
+void Scene::AddModeById(const std::string& modelId)
+{
+    Entity rootEntity = CreateEntity(modelId);
+    TransformComponent& transform = rootEntity.AddComponent<TransformComponent>();
+    rootEntity.AddComponent<DebugComponent>();
+
+    std::vector<Ref<Mesh>> meshes = AssetManager::Get()->GetModelById(modelId);
+    for (int i = 0; i < meshes.size(); i++) {
+        const std::string name = std::format("Mesh {}", i);
+        Entity meshEntity = CreateEntity(name);
+        meshEntity.AddComponent<MeshComponent>(meshes[i]);
+        if (meshes[i]->HasTextureId()) 
+        {
+            meshEntity.AddComponent<TextureComponent>(AssetManager::Get()->GetTextureById(meshes[i]->GetTextureId()));
+        }
+        TransformComponent& transform = meshEntity.AddComponent<TransformComponent>();
+        rootEntity.AddChildren({ meshEntity });
+    }
+}
+
 //
 // Sandbox scene
 //
@@ -151,7 +171,6 @@ void SandboxScene::LoadSkyBox()
 
 void SandboxScene::LoadMeshes()
 {
-
     {
         Entity meshEntity = CreateEntity("UVTemplate Mesh");
         meshEntity.AddComponent<MeshComponent>(AssetManager::Get()->GetMeshById("cube"));
