@@ -36,6 +36,8 @@ private:
     CallbackFunc m_Callback;
 
     int m_MeshId;
+
+    int m_GizmoType;
 };
 
 }

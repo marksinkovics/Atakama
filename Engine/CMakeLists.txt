@@ -29,7 +29,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         ${OPENGL_gl_LIBRARY}
         glfw
-        GLEW::GLEW 
+        GLEW::GLEW
         glm::glm
         stb
         Vulkan::Vulkan
@@ -38,6 +38,7 @@ target_link_libraries(${PROJECT_NAME}
         # tinyobjloader
         EnTT
         assimp
+        ImGuizmo
 )
 
 target_include_directories(${PROJECT_NAME}
@@ -45,6 +46,7 @@ target_include_directories(${PROJECT_NAME}
         ${SOURCE_ROOT}
         ${GLEW_INCLUDE_DIRS}
         EnTT
+        ImGuizmo
     PRIVATE
         ${SOURCE_ROOT}
 )

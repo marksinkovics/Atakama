@@ -94,6 +94,8 @@ public:
     bool operator==(const Entity& other) const;
     bool operator!=(const Entity& other) const;
     bool operator<(const Entity &other) const;
+
+    bool IsValid() { return m_Handle != entt::null; }
 private:
     entt::entity m_Handle { entt::null };
     Scene* m_Scene { nullptr };

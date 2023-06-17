@@ -95,6 +95,7 @@ target_link_libraries(${PROJECT_NAME}
         # # tinyobjloader
         EnTT
         Engine
+        ImGuizmo
 )
 
 target_precompile_headers(${PROJECT_NAME}

@@ -40,3 +40,8 @@ if (NOT TARGET assimp)
     add_subdirectory(assimp)
     set_target_properties(assimp PROPERTIES FOLDER ${vendor_folder}/assimp)
 endif()
+
+if(NOT TARGET ImGuizmo)
+    include(imguizmo.cmake)
+    set_target_properties(ImGuizmo PROPERTIES FOLDER ${vendor_folder}/imguizmo)
+endif()

@@ -40,7 +40,7 @@ void CameraSystem::Update(Entity cameraEntity, float ts)
 
     glm::dvec2 mousePos = {0.f, 0.f};
 
-    if (inputSystem->IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) || inputSystem->GetFocusMode())
+    if (inputSystem->IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT) || inputSystem->GetFocusMode())
     {
         mousePos = inputSystem->GetMouseDelta();
         Rotate(cameraEntity, mousePos, ts);

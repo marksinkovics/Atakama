@@ -16,7 +16,8 @@ glm::mat4 TransformComponent::GetMat4()
     glm::mat4 translate = glm::translate(glm::mat4(1.0), Translate);
     glm::mat4 rotation = glm::toMat4(glm::quat(Rotation));
     glm::mat4 scale = glm::scale(glm::mat4(1.0), Scale);
-    return translate * glm::mat4_cast(GetOrientation()) * scale;
+//    return translate * glm::mat4_cast(GetOrientation()) * scale;
+    return translate * rotation * scale;
 }
 
 glm::mat3 TransformComponent::GetInverseMat3()
