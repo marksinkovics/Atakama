@@ -45,13 +45,13 @@ void Camera::SetMode(Mode mode)
 
     if (m_Mode == Mode::Perspective)
     {
-        m_ProjectionMatrix = glm::perspective(m_FOV, m_Ratio, 0.1f, m_Far);
+        m_ProjectionMatrix = glm::perspective(m_FOV, m_Ratio, m_Near, m_Far);
         return;
     }
 
     if (m_Mode == Mode::Ortho)
     {
-        m_ProjectionMatrix = glm::ortho(-m_Ratio * m_Zoom, m_Ratio * m_Zoom, -m_Zoom, m_Zoom, -1.0f, m_Far);
+        m_ProjectionMatrix = glm::ortho(-m_Ratio * m_Zoom, m_Ratio * m_Zoom, -m_Zoom, m_Zoom, m_NearOrtho, m_Far);
         return;
     }
 
@@ -63,14 +63,14 @@ void Camera::Zoom(float offset)
     if (m_Mode == Mode::Perspective)
     {
         m_FOV += offset;
-        m_ProjectionMatrix = glm::perspective(m_FOV, m_Ratio, 0.1f, m_Far);
+        m_ProjectionMatrix = glm::perspective(m_FOV, m_Ratio, m_Near, m_Far);
         return;
     }
 
     if (m_Mode == Mode::Ortho)
     {
         m_Zoom += offset;
-        m_ProjectionMatrix = glm::ortho(-m_Ratio * m_Zoom, m_Ratio * m_Zoom, -m_Zoom, m_Zoom, -1.0f, m_Far);
+        m_ProjectionMatrix = glm::ortho(-m_Ratio * m_Zoom, m_Ratio * m_Zoom, -m_Zoom, m_Zoom, m_NearOrtho, m_Far);
         return;
     }
 
@@ -90,7 +90,7 @@ void Camera::Resize(uint32_t width, uint32_t height)
 
     if (m_Mode == Mode::Ortho)
     {
-        m_ProjectionMatrix = glm::ortho(-m_Ratio * m_Zoom, m_Ratio * m_Zoom, -m_Zoom, m_Zoom, -1.0f, m_Far);
+        m_ProjectionMatrix = glm::ortho(-m_Ratio * m_Zoom, m_Ratio * m_Zoom, -m_Zoom, m_Zoom, m_NearOrtho, m_Far);
         return;
     }
 

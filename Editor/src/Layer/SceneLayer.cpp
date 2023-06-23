@@ -319,6 +319,33 @@ std::vector<PropertyField<CameraComponent>> UpdatePropertyPanel<CameraComponent>
         });
     }
 
+
+    if (component.Camera.GetMode() == Camera::Mode::Perspective)
+    {
+        fields.push_back({
+            "Near",
+            [](Entity& entity, auto& component) {
+                float value = component.Camera.GetNear();
+                if (ImGui::DragFloat("##NEAR", &value, 0.01))
+                {
+                    component.Camera.SetNear(value);
+                }
+            }
+        });
+    }
+    else
+    {
+        fields.push_back({
+            "Near",
+            [](Entity& entity, auto& component) {
+                float value = component.Camera.GetNearOrtho();
+                if (ImGui::DragFloat("##NEAR_ORTHO", &value, 0.01))
+                {
+                    component.Camera.SetNearOrtho(value);
+                }
+            }
+        });
+    }
     fields.push_back({
         "Far",
         [](Entity& entity, auto& component) {

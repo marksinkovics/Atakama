@@ -17,7 +17,7 @@ class Camera
 {
 
 public:
-    enum class Mode: uint8_t
+    enum class Mode : uint8_t
     {
         Perspective = 0, Ortho
     };
@@ -33,7 +33,7 @@ public:
 
     virtual Mode GetMode() const;
     virtual void SetMode(Mode mode);
-    
+
     virtual void Resize(uint32_t width, uint32_t height);
     virtual void Zoom(float offset);
 
@@ -46,10 +46,18 @@ public:
     float GetFar() { return m_Far; }
     void SetFar(float value) { m_Far = value; }
 
+    float GetNear() { return m_Near; }
+    void SetNear(float value) { m_Near = value; }
+
+    float GetNearOrtho() { return m_NearOrtho; }
+    void SetNearOrtho(float value) { m_NearOrtho = value; }
+
 protected:
     float m_FOV = glm::radians(45.0f); // Perspective only
     float m_Zoom = 2.0f; // Ortho only
 
+    float m_Near = 0.1f;
+    float m_NearOrtho = -1.0f;
     float m_Far = 1000.f;
 
     glm::mat4 m_ProjectionMatrix {1.f};
