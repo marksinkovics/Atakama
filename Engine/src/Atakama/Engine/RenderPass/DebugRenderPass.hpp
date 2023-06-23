@@ -8,6 +8,7 @@ namespace Atakama
 
 class Scene;
 class Shader;
+class Mesh;
 
 class DebugRenderPass: public SceneRenderPass
 {
@@ -20,6 +21,9 @@ protected:
 private:
     Ref<Shader> m_SimpleShader;
     Ref<Shader> m_PointLightShader;
+    Ref<Shader> m_GridShader;
+
+    Ref<Mesh> m_Grid;
 };
 
 }

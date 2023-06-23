@@ -7,6 +7,7 @@
 #include "Atakama/Scene/Components/Components.hpp"
 #include "Atakama/Scene/Components/TransformComponent.hpp"
 #include "Atakama/Engine/Shader.hpp"
+#include "Atakama/Engine/Mesh.hpp"
 
 namespace Atakama
 {
@@ -22,6 +23,14 @@ Ref<RenderSystem> RenderSystem::Create()
         }
         case GraphicsAPI::OpenGL3: return CreateRef<OpenGL3RenderSystem>();
     }
+}
+
+void RenderSystem::Draw(Ref<Mesh> mesh, Ref<Shader>& shader)
+{
+    glm::mat4 modelMatrix {1.f};
+
+    shader->SetUniformMat4("uModel", modelMatrix);
+    Draw(mesh->GetMode(), mesh->GetVertexArray());
 }
 
 void RenderSystem::Draw(Entity& entity, Ref<Shader>& shader)

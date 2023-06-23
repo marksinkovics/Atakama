@@ -3,6 +3,14 @@ setlocal
 
 CALL :ARG-PARSER %*
 
+if "%ARG_HELP%" == "1" (
+    echo Usage: .\generate.bat
+    echo Parameters:
+    echo     /clean - clean the build folder
+    echo     /open -  open the project in Visual Studio
+    goto :EOF
+)
+
 if "%ARG_CLEAN%" == "1" (
     echo "Clean build folder"
     rmdir /s /q .\build

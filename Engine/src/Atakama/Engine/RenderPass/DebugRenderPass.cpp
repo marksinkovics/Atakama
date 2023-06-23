@@ -17,6 +17,8 @@ DebugRenderPass::DebugRenderPass(Ref<RenderSystem> renderSystem, Ref<Scene> scen
 {
     m_SimpleShader = CreateRef<Shader>(FileSystem::GetShaderFile("simple_shader.vert"), FileSystem::GetShaderFile("simple_shader.frag"));
     m_PointLightShader = CreateRef<Shader>(FileSystem::GetShaderFile("point_light.vert"), FileSystem::GetShaderFile("point_light.frag"));
+    m_GridShader = CreateRef<Shader>(FileSystem::GetShaderFile("grid.vert"), FileSystem::GetShaderFile("grid.frag"));
+    m_Grid = AssetManager::Get()->GetMeshById("grid");
 }
 
 void DebugRenderPass::Draw()
@@ -62,6 +64,16 @@ void DebugRenderPass::Draw()
     m_RenderSystem->Draw(lightEntity, m_PointLightShader);
 
     m_PointLightShader->Unbind();
+
+
+    // Drawing grid
+    m_GridShader->Bind();
+    m_GridShader->SetUniformMat4("uView", camera.GetViewMatrix(cameraTransform));
+    m_GridShader->SetUniformMat4("uProjection", camera.GetProjectionMatrix());
+    m_GridShader->SetUniformFloat4("uCameraPos", glm::vec4(cameraTransform.Translate, 1.0f));
+
+    m_RenderSystem->Draw(m_Grid, m_GridShader);
+    m_GridShader->Unbind();
 }
 
 std::string DebugRenderPass::GetName()

@@ -56,10 +56,10 @@ void Engine::Init(Ref<Window>& window, Ref<Profiler>& profiler)
     m_CameraSystem->LookAt(cameraEntity, {5.0f, 5.f, 5.f}, {0.0f, 0.0f, 0.0f});
 
     m_MainRenderPass = CreateRef<MainRenderPass>(m_RenderSystem, m_Scene);
-    m_DebugRenderPass = CreateRef<DebugRenderPass>(m_RenderSystem, m_Scene);
-    m_DebugRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
     m_SkyBoxRenderPass = CreateRef<SkyBoxRenderPass>(m_RenderSystem, m_Scene);
     m_SkyBoxRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
+    m_DebugRenderPass = CreateRef<DebugRenderPass>(m_RenderSystem, m_Scene);
+    m_DebugRenderPass->SetFrameBuffer(m_MainRenderPass->GetFrameBuffer());
     m_DepthViewRenderPass = CreateRef<DepthViewRenderPass>(m_RenderSystem);
     m_DepthViewRenderPass->AddDependency(m_MainRenderPass);
     m_OutlineRenderPass = CreateRef<OutlineRenderPass>(m_RenderSystem, m_Scene);
@@ -68,8 +68,8 @@ void Engine::Init(Ref<Window>& window, Ref<Profiler>& profiler)
     m_ViewportRenderPass->AddDependency(m_MainRenderPass);
 
     m_MainRenderPasses.push_back(m_MainRenderPass);
-    m_MainRenderPasses.push_back(m_DebugRenderPass);
     m_MainRenderPasses.push_back(m_SkyBoxRenderPass);
+    m_MainRenderPasses.push_back(m_DebugRenderPass);
     m_PostRenderPasses.push_back(m_DepthViewRenderPass);
     m_PostRenderPasses.push_back(m_OutlineRenderPass);
     m_PostRenderPasses.push_back(m_ViewportRenderPass);

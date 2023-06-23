@@ -26,6 +26,7 @@ public:
     Ref<Mesh> LoadMesh(const std::filesystem::path& path);
     Ref<Mesh> LoadQuad();
     Ref<Mesh> LoadSkyBox();
+    Ref<Mesh> LoadGrid();
 
     void GenerateIndices(const std::vector<Vertex>& input, std::vector<Vertex>& output, std::vector<uint32_t>& indices);
 

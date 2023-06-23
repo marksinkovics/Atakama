@@ -23,7 +23,7 @@ void AssetManager::Preload()
         FileSystem::GetTexturePath() / "front.jpg",
         FileSystem::GetTexturePath() / "back.jpg"
     });
-    
+
     m_Meshes["cube"] = LoadMesh(FileSystem::GetModelPath() / "cube.obj");
     m_Meshes["vikingRoom"] = LoadMesh(FileSystem::GetModelPath() / "viking_room.obj");
     m_Meshes["quad"] = LoadMesh(FileSystem::GetModelPath() / "quad.obj");
@@ -31,6 +31,8 @@ void AssetManager::Preload()
     m_Meshes["axis"] = LoadAxis();
     m_Meshes["skybox"] = LoadSkyBox();
     m_Meshes["triangle"] = LoadTriangle();
+    m_Meshes["grid"] = LoadGrid();
+
 }
 
 void AssetManager::SetSelectedMeshId(int id)
@@ -104,7 +106,7 @@ void AssetManager::LoadAxis(std::vector<Vertex>& vertices,  std::vector<uint32_t
         {{0.0f, 0.0f, 0.0f}, {0.f, 0.f}, {0.f, 0.f, 0.f}, {0.0f, 0.0f, 1.0f}},
         {{0.0f, 0.0f, 3.0f}, {0.f, 0.f}, {0.f, 0.f, 0.f}, {0.0f, 0.0f, 1.0f}},
     };
-    
+
 
     AssetManager::GenerateIndices(rawVertices, vertices, indices);
 }
@@ -190,23 +192,23 @@ void AssetManager::LoadOBJFile(const std::filesystem::path& path, std::vector<Ve
             // Probably a comment, eat up the rest of the line
         }
     }
-    
+
     std::unordered_map<Vertex, uint32_t> uniqueVertices{};
-    
+
     for( unsigned int i=0; i<vertexIndices.size(); i++ )
     {
         Vertex vertex{};
-        
+
         // Get the indices of its attributes
         unsigned int vertexIndex = vertexIndices[i];
         unsigned int uvIndex = uvIndices[i];
         unsigned int normalIndex = normalIndices[i];
-        
+
         // Get the attributes thanks to the index
         vertex.position = temp_positions[vertexIndex-1];
         vertex.uv = {temp_uvs[uvIndex-1].x, 1.f - temp_uvs[uvIndex-1].y};
         vertex.normal =  temp_normals[normalIndex-1];
-        
+
         if (uniqueVertices.count(vertex) == 0)
         {
             uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
@@ -220,7 +222,7 @@ void AssetManager::LoadOBJFile(const std::filesystem::path& path, std::vector<Ve
 void AssetManager::GenerateIndices(const std::vector<Vertex>& input, std::vector<Vertex>& output, std::vector<uint32_t>& indices)
 {
     std::unordered_map<Vertex, uint32_t> uniqueVertices {};
-    
+
     for (const Vertex& vertex : input)
     {
         if (uniqueVertices.count(vertex) == 0)
@@ -228,7 +230,7 @@ void AssetManager::GenerateIndices(const std::vector<Vertex>& input, std::vector
             uniqueVertices[vertex] = static_cast<uint32_t>(output.size());
             output.push_back(vertex);
         }
-        
+
         indices.push_back(uniqueVertices[vertex]);
     }
 }
@@ -345,7 +347,29 @@ Ref<Mesh> AssetManager::LoadSkyBox()
 }
 
 
-class AssimpImporter 
+Ref<Mesh> AssetManager::LoadGrid()
+{
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+
+    std::vector<Vertex> rawVertices {
+        { { 1.0, 0.0,  1.0}, { 0.0f, 0.0f }, { 0.f, 0.f, 1.f }, { 1.0f, 0.0f, 1.0f } },
+        { {  1.0, 0.0, -1.0}, {1.0f, 0.0f}, {0.f, 0.f, 1.f }, { 1.0f, 0.0f, 1.0f } },
+        { { -1.0, 0.0, -1.0}, {0.0f, 1.0f}, {0.f, 0.f, 1.f }, { 0.0f, 1.0f, 1.0f } },
+
+        { {-1.0, 0.0, -1.0}, {0.0f, 1.0f}, { 0.f, 0.f, 1.f }, { 0.0f, 1.0f, 1.0f } },
+        { {-1.0, 0.0,  1.0}, {0.0f, 1.0f}, { 0.f, 0.f, 1.f }, { 0.0f, 1.0f, 1.0f } },
+        { { 1.0, 0.0,  1.0}, {0.0f, 0.0f}, { 0.f, 0.f, 1.f }, { 1.0f, 0.0f, 1.0f } },
+
+    };
+
+    AssetManager::GenerateIndices(rawVertices, vertices, indices);
+
+    return CreateRef<Mesh>(vertices, indices);
+}
+
+
+class AssimpImporter
 {
 public:
     AssimpImporter(std::filesystem::path& path) : m_Path(path) {}
