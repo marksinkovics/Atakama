@@ -38,6 +38,21 @@ endif()
 
 if (NOT TARGET assimp)
     add_subdirectory(assimp)
+    if (MSVC)
+        # This should be enough, but unfortunately
+        # \WX flag is enabled on another place as well
+        # option(ASSIMP_WARNINGS_AS_ERRORS "Treat all warnings as errors." OFF)
+        set(CUSTOM_ASSIMP_DEBUG_OPTIONS /WX-)
+        set(CUSTOM_ASSIMP_RELEASE_OPTIONS /WX-)
+        target_compile_options(assimp PRIVATE "$<$<CONFIG:DEBUG>:${CUSTOM_ASSIMP_DEBUG_OPTIONS}>")
+        target_compile_options(assimp PRIVATE "$<$<CONFIG:RELEASE>:${CUSTOM_ASSIMP_RELEASE_OPTIONS}>")
+    elseif(XCODE)
+        # IFCLoader failed with implicit conversation warning (treated as error)
+        set_target_properties(assimp PROPERTIES XCODE_ATTRIBUTE_GCC_WARN_64_TO_32_BIT_CONVERSION NO)
+    else()
+        set_property(TARGET assimp PROPERTY CMAKE_COMPILE_WARNING_AS_ERROR OFF)
+    endif()
+    option(ASSIMP_WARNINGS_AS_ERRORS "Treat all warnings as errors." OFF)
     set_target_properties(assimp PROPERTIES FOLDER ${vendor_folder}/assimp)
 endif()
 
