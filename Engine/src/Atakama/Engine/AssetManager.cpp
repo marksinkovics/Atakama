@@ -35,16 +35,6 @@ void AssetManager::Preload()
 
 }
 
-void AssetManager::SetSelectedMeshId(int id)
-{
-    m_SelectedId = id;
-}
-
-int AssetManager::GetSelectedMeshId() const
-{
-    return m_SelectedId;
-}
-
 Ref<AssetManager> AssetManager::Get()
 {
     return g_RuntimeGlobalContext.m_AssetManager;

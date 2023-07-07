@@ -105,15 +105,18 @@ Window::Window(uint32_t width, uint32_t height, const std::string& name)
         Window* handler = (Window*)glfwGetWindowUserPointer(window);
         if (!handler)
             return;
+
+        double xPos, yPos;
+        glfwGetCursorPos(window, &xPos, &yPos);
         
         if (action == GLFW_PRESS) {
-            MouseButtonPressedEvent event(button);
+            MouseButtonPressedEvent event(button, xPos, yPos, mods);
             handler->m_EventCallback(event);
             return;
         }
 
         if (action == GLFW_RELEASE) {
-            MouseButtonReleasedEvent event(button);
+            MouseButtonReleasedEvent event(button, xPos, yPos, mods);
             handler->m_EventCallback(event);
             return;
         }

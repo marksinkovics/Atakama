@@ -30,9 +30,6 @@ public:
 
     void GenerateIndices(const std::vector<Vertex>& input, std::vector<Vertex>& output, std::vector<uint32_t>& indices);
 
-    void SetSelectedMeshId(int id);
-    int GetSelectedMeshId() const;
-
     Ref<Texture> GetTextureById(const std::string& id) const;
     Ref<Mesh> GetMeshById(const std::string& id) const;
     std::vector<Ref<Mesh>> GetModelById(const std::string& id) const;

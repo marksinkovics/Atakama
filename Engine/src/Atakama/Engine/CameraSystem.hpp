@@ -6,11 +6,22 @@ namespace Atakama
 
 enum class Movement;
 class Entity;
+class MouseButtonPressedEvent;
+class MouseButtonReleasedEvent;
+class KeyPressedEvent;
+class KeyReleasedEvent;
 
 class CameraSystem
 {
 public:
-    virtual void Update(Entity cameraEntity, float ts);
+    enum class Movement
+    {
+        None,
+        Forward, Backward,
+        Left, Right,
+        Up, Down
+    };
+public:
     virtual void Move(Entity cameraEntity, Movement movement, float ts);
     virtual void Rotate(Entity cameraEntity, glm::vec2 delta, float ts, bool constrainPitch = true);
     virtual void LookAt(Entity cameraEntity, const glm::vec3& cameraPostion, const glm::vec3& cameraTarget);

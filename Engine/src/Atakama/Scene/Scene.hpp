@@ -25,6 +25,7 @@ public:
     Entity GetPrimaryCameraEntity();
 
     virtual void Init();
+    virtual void LoadCamera();
     virtual void LoadLight();
     virtual void LoadSkyBox();
     virtual void LoadMeshes();

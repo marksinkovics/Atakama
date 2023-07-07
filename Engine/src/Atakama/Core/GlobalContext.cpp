@@ -7,6 +7,7 @@
 #include "Atakama/Core/InputSystem.hpp"
 #include "Atakama/Engine/RenderSystem.hpp"
 #include "Atakama/Engine/AssetManager.hpp"
+#include "Atakama/Engine/CameraSystem.hpp"
 
 namespace Atakama
 {
@@ -24,6 +25,8 @@ void RuntimeGlobalContext::Init()
     m_InputSystem->Init();
 
     m_AssetManager = CreateRef<AssetManager>();
+
+    m_CameraSystem = CreateRef<CameraSystem>();
 }
 
 void RuntimeGlobalContext::Shutdown()

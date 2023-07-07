@@ -8,6 +8,8 @@ namespace Atakama
 
 class Engine;
 class RenderPass;
+class InputSystem;
+class CameraSystem;
 
 }
 
@@ -22,10 +24,13 @@ public:
     ViewportLayer();
     virtual ~ViewportLayer() = default;
     virtual void OnAttach() override;
+    virtual void OnUpdate(float ts) override;
     virtual void OnUpdateUI(float ts) override;
 private:
     Ref<Engine> m_Engine;
     Ref<RenderPass> m_RenderPass;
+    Ref<InputSystem> m_InputSystem;
+    Ref<CameraSystem> m_CameraSystem;
 
     bool m_ViewportFocused = false;
     bool m_ViewportHovered = false;
@@ -38,6 +43,8 @@ private:
     int m_MeshId;
 
     int m_GizmoType;
+
+    bool m_EnableGizmoSnapping { false };
 };
 
 }

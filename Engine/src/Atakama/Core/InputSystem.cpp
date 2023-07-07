@@ -19,6 +19,13 @@ void InputSystem::Init()
     dispatcher->subscribe<MouseButtonReleasedEvent>(std::bind(&InputSystem::OnMouseButtonReleased, this, std::placeholders::_1));
     dispatcher->subscribe<KeyPressedEvent>(std::bind(&InputSystem::OnKeyPressed, this, std::placeholders::_1));
     dispatcher->subscribe<KeyReleasedEvent>(std::bind(&InputSystem::OnKeyReleased, this, std::placeholders::_1));
+    dispatcher->subscribe<MouseScrolledEvent>(std::bind(&InputSystem::OnMouseScrollEvent, this, std::placeholders::_1));
+}
+
+void InputSystem::Update(float timestamp)
+{
+    m_DeltaCursorPos = { 0.f, 0.f };
+    m_ScrollOffset = { 0.f, 0.f };
 }
 
 bool InputSystem::OnMouseMoved(MouseMovedEvent &event)
@@ -31,25 +38,31 @@ bool InputSystem::OnMouseMoved(MouseMovedEvent &event)
 
 bool InputSystem::OnMouseButtonPressed(MouseButtonPressedEvent &event)
 {
-    m_ButtonPressed.insert(event.GetButton());
+    m_MouseButtonPressed.insert(event.GetButton());
     return false;
 }
 
 bool InputSystem::OnMouseButtonReleased(MouseButtonReleasedEvent &event)
 {
-    m_ButtonPressed.erase(event.GetButton());
+    m_MouseButtonPressed.erase(event.GetButton());
     return false;
 }
 
 bool InputSystem::OnKeyPressed(KeyPressedEvent &event)
 {
-    m_KeyPressed.insert(event.GetKeyCode());
+    m_KeyboardKeyPressed.insert(event.GetKeyCode());
     return false;
 }
 
 bool InputSystem::OnKeyReleased(KeyReleasedEvent &event)
 {
-    m_KeyPressed.erase(event.GetKeyCode());
+    m_KeyboardKeyPressed.erase(event.GetKeyCode());
+    return false;
+}
+
+bool InputSystem::OnMouseScrollEvent(MouseScrolledEvent& event)
+{
+    m_ScrollOffset += event.GetOffset();
     return false;
 }
 
@@ -66,7 +79,12 @@ bool InputSystem::GetFocusMode() const
 
 bool InputSystem::IsKeyPressed(uint32_t key) const
 {
-    return m_KeyPressed.find(key) != m_KeyPressed.end();
+    return m_KeyboardKeyPressed.find(key) != m_KeyboardKeyPressed.end();
+}
+
+bool InputSystem::IsShiftPressed() const
+{
+    return IsKeyPressed(GLFW_KEY_RIGHT_SHIFT) || IsKeyPressed(GLFW_KEY_LEFT_SHIFT);
 }
 
 glm::dvec2 InputSystem::GetMouseDelta()
@@ -74,89 +92,30 @@ glm::dvec2 InputSystem::GetMouseDelta()
     return m_DeltaCursorPos;
 }
 
+glm::dvec2 InputSystem::GetMouseScrollOffset()
+{
+    return m_ScrollOffset;
+}
+
 void InputSystem::Clear()
 {
-    m_DeltaCursorPos = {0.f, 0.f};
+    ClearKeyboardEvents();
+    ClearMouseEvents();
 }
 
 void InputSystem::ClearKeyboardEvents()
 {
-    m_KeyPressed.clear();
+    m_KeyboardKeyPressed.clear();
+}
+
+void InputSystem::ClearMouseEvents()
+{
+    m_KeyboardKeyPressed.clear();
 }
 
 bool InputSystem::IsMouseButtonPressed(int button) const
 {
-    return m_ButtonPressed.find(button) != m_ButtonPressed.end();
-}
-
-bool InputSystem::IsMovement(Movement movement) const
-{
-    if (movement == Movement::Forward)
-    {
-        return IsKeyPressed(GLFW_KEY_UP) || IsKeyPressed(GLFW_KEY_W);
-    }
-    
-    if (movement == Movement::Backward)
-    {
-        return IsKeyPressed(GLFW_KEY_DOWN) || IsKeyPressed(GLFW_KEY_S);
-    }
-
-    if (movement == Movement::Left)
-    {
-        return IsKeyPressed(GLFW_KEY_LEFT) || IsKeyPressed(GLFW_KEY_A);
-    }
-    
-    if (movement == Movement::Right)
-    {
-        return IsKeyPressed(GLFW_KEY_RIGHT) || IsKeyPressed(GLFW_KEY_D);
-    }
-    
-    if (movement == Movement::Up)
-    {
-        return IsKeyPressed(GLFW_KEY_Q);
-    }
-    
-    if (movement == Movement::Down)
-    {
-        return IsKeyPressed(GLFW_KEY_E);
-    }
-
-}
-
-Movement InputSystem::GetMovement() const
-{
-    if (IsKeyPressed(GLFW_KEY_UP) || IsKeyPressed(GLFW_KEY_W))
-    {
-        return Movement::Forward;
-    }
-
-    if (IsKeyPressed(GLFW_KEY_DOWN) || IsKeyPressed(GLFW_KEY_S))
-    {
-        return Movement::Backward;
-    }
-
-    if (IsKeyPressed(GLFW_KEY_RIGHT) || IsKeyPressed(GLFW_KEY_D))
-    {
-        return Movement::Right;
-    }
-
-    if (IsKeyPressed(GLFW_KEY_LEFT) || IsKeyPressed(GLFW_KEY_A))
-    {
-        return Movement::Left;
-    }
-    
-    if (IsKeyPressed(GLFW_KEY_Q))
-    {
-        return Movement::Up;
-    }
-
-    if (IsKeyPressed(GLFW_KEY_E))
-    {
-        return Movement::Down;
-    }
-
-    return Movement::None;
-
+    return m_MouseButtonPressed.find(button) != m_MouseButtonPressed.end();
 }
 
 }

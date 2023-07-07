@@ -1,8 +1,6 @@
 #ifndef ATAKAMA_EVENT_HPP
 #define ATAKAMA_EVENT_HPP
 
-#include <array>
-
 namespace Atakama
 {
 

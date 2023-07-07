@@ -11,12 +11,15 @@
 #include <Atakama/Scene/Scene.hpp>
 #include <Atakama/Scene/Entity.hpp>
 #include <Atakama/Engine/Camera.hpp>
+#include <Atakama/Engine/CameraSystem.hpp>
 #include <Atakama/Scene/Components/Components.hpp>
 
 #include <imgui.h>
 #include <ImGuizmo.h>
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/scalar_relational.hpp>
+
 
 namespace Atakama::Editor
 {
@@ -24,6 +27,8 @@ namespace Atakama::Editor
 ViewportLayer::ViewportLayer()
 : Layer("Viewport Layer"), m_GizmoType(-1)
 {
+    m_InputSystem = g_RuntimeGlobalContext.m_InputSystem;
+    m_CameraSystem = g_RuntimeGlobalContext.m_CameraSystem;
     m_Engine = g_RuntimeGlobalContext.m_Engine;
     m_RenderPass = m_Engine->GetOutlineRenderPass();
     m_Callback = std::bind(&Engine::UpdateRenderingViewportSize, *m_Engine, std::placeholders::_1);
@@ -31,6 +36,72 @@ ViewportLayer::ViewportLayer()
 
 void ViewportLayer::OnAttach()
 {
+}
+
+void ViewportLayer::OnUpdate(float ts)
+{
+    if (!m_ViewportFocused)
+        return;
+
+    m_EnableGizmoSnapping = m_InputSystem->IsKeyPressed(GLFW_KEY_LEFT_CONTROL);
+
+    if (ImGuizmo::IsUsing())
+        return;
+
+    Entity cameraEntity = m_Engine->GetScene()->GetPrimaryCameraEntity();
+
+
+    if (m_InputSystem->IsMouseButtonPressed(GLFW_MOUSE_BUTTON_MIDDLE))
+    {
+        m_CameraSystem->Rotate(cameraEntity, m_InputSystem->GetMouseDelta(), ts);
+
+        //TODO: If Shift is pressed
+        // - Move up or down
+    }
+
+    if (m_InputSystem->IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
+    {
+        Entity entity = Entity(static_cast<entt::entity>(m_MeshId), m_Engine->GetScene().get());
+        m_Engine->GetScene()->SetSelectedEntity(entity);
+    }
+
+    if (m_InputSystem->IsKeyPressed(GLFW_KEY_UP) || m_InputSystem->IsKeyPressed(GLFW_KEY_W)) 
+    {
+        m_CameraSystem->Move(cameraEntity, CameraSystem::Movement::Forward, ts);
+    }
+
+    if (m_InputSystem->IsKeyPressed(GLFW_KEY_DOWN) || m_InputSystem->IsKeyPressed(GLFW_KEY_S))
+    {
+        m_CameraSystem->Move(cameraEntity, CameraSystem::Movement::Backward, ts);
+    }
+
+    if (m_InputSystem->IsKeyPressed(GLFW_KEY_RIGHT) || m_InputSystem->IsKeyPressed(GLFW_KEY_D))
+    {
+        m_CameraSystem->Move(cameraEntity, CameraSystem::Movement::Right, ts);
+    }
+
+    if (m_InputSystem->IsKeyPressed(GLFW_KEY_LEFT) || m_InputSystem->IsKeyPressed(GLFW_KEY_A))
+    {
+        m_CameraSystem->Move(cameraEntity, CameraSystem::Movement::Left, ts);
+    }
+
+    if (m_InputSystem->IsKeyPressed(GLFW_KEY_Q))
+    {
+        m_CameraSystem->Move(cameraEntity, CameraSystem::Movement::Down, ts);
+    }
+
+    if (m_InputSystem->IsKeyPressed(GLFW_KEY_E))
+    {
+        m_CameraSystem->Move(cameraEntity, CameraSystem::Movement::Up, ts);
+    }
+
+    glm::dvec2 offset = m_InputSystem->GetMouseScrollOffset();
+
+    if (offset.y != 0.f)
+    { 
+        Camera& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+        camera.Zoom(offset.y * ts);
+    }
 }
 
 void ViewportLayer::OnUpdateUI(float ts)
@@ -51,14 +122,18 @@ void ViewportLayer::OnUpdateUI(float ts)
     vMax.x += ImGui::GetWindowPos().x;
     vMax.y += ImGui::GetWindowPos().y;
 
-    // Fixes a bug where the user clicked or hovered out of the window
-    if ((m_ViewportFocused && !ImGui::IsWindowFocused()) || (m_ViewportHovered && !ImGui::IsMouseHoveringRect(vMin, vMax))) {
-        g_RuntimeGlobalContext.m_InputSystem->ClearKeyboardEvents();
-    }
-
     m_ViewportFocused = ImGui::IsWindowFocused();
     m_ViewportHovered = ImGui::IsMouseHoveringRect(vMin, vMax);
-    g_RuntimeGlobalContext.m_Application->BlockEvent(!(m_ViewportFocused && m_ViewportHovered));
+
+    if (m_ViewportFocused)
+    {
+        g_RuntimeGlobalContext.m_Application->BlockEvent(false);
+    }
+    else
+    {
+        g_RuntimeGlobalContext.m_InputSystem->Clear();
+        g_RuntimeGlobalContext.m_Application->BlockEvent(true);
+    }
 
     ImVec2 wSize = ImGui::GetContentRegionAvail();
     float scale = ImGui::GetMainViewport()->DpiScale;
@@ -78,12 +153,6 @@ void ViewportLayer::OnUpdateUI(float ts)
     if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
     {
         m_MeshId = m_RenderPass->GetFrameBuffer()->ReadInt(1, mouseX * scale, mouseY * scale);
-        Atakama::AssetManager::Get()->SetSelectedMeshId(m_MeshId);
-
-        if (g_RuntimeGlobalContext.m_InputSystem->IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT)) {
-            Entity entity = Entity(static_cast<entt::entity>(m_MeshId), m_Engine->GetScene().get());
-            m_Engine->GetScene()->SetSelectedEntity(entity);
-        }
     }
 
     Ref<Texture> texture = m_RenderPass->GetOutputColorTexture();
@@ -123,11 +192,13 @@ void ViewportLayer::OnUpdateUI(float ts)
         auto& tc = selectedEntity.GetComponent<TransformComponent>();
         glm::mat4 transform = tc.GetMat4();
 
-        bool snap = g_RuntimeGlobalContext.m_InputSystem->IsKeyPressed(GLFW_KEY_LEFT_CONTROL);
         float snapValue = 0.5f; // Snap to 0.5m for translation/scale
         // Snap to 45 degrees for rotation
         if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+        {
             snapValue = 5.0f;
+        }
+
         float snapValues[3] = { snapValue, snapValue, snapValue };
 
         ImGuizmo::Manipulate(
@@ -137,12 +208,11 @@ void ViewportLayer::OnUpdateUI(float ts)
             ImGuizmo::LOCAL, // mode
             glm::value_ptr(transform), //matrix
             nullptr, // delta matrix
-            snap ? snapValues : nullptr // snap
+            m_EnableGizmoSnapping ? snapValues : nullptr // snap
             // localBounds
             // boundsSnap
         );
 
-        g_RuntimeGlobalContext.m_Application->BlockEvent(ImGuizmo::IsUsing());
         if (ImGuizmo::IsUsing())
         {
             glm::vec3 translation, rotation, scale;

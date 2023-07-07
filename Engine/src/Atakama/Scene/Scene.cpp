@@ -5,6 +5,7 @@
 #include "Atakama/Engine/RenderSystem.hpp"
 #include "Atakama/Engine/Shader.hpp"
 #include "Atakama/Engine/Mesh.hpp"
+#include "Atakama/Engine/CameraSystem.hpp"
 
 #include "Atakama/Scene/Entity.hpp"
 
@@ -16,10 +17,6 @@ namespace Atakama
 
 Scene::Scene()
 {
-    Entity cameraEntity = CreateEntity("Camera #1");
-    CameraComponent& cameraComponent = cameraEntity.AddComponent<CameraComponent>(Camera::Mode::Perspective);
-    TransformComponent& transformComponent = cameraEntity.AddComponent<TransformComponent>();
-    cameraComponent.Primary = true;
 }
 
 Entity Scene::CreateEntity(const std::string& name)
@@ -65,9 +62,19 @@ Entity Scene::GetPrimaryCameraEntity()
 
 void Scene::Init()
 {
+    LoadCamera();
     LoadLight();
     LoadMeshes();
     LoadSkyBox();
+}
+
+void Scene::LoadCamera()
+{
+    Entity cameraEntity = CreateEntity("Camera #1");
+    CameraComponent& cameraComponent = cameraEntity.AddComponent<CameraComponent>(Camera::Mode::Perspective);
+    TransformComponent& transformComponent = cameraEntity.AddComponent<TransformComponent>();
+    g_RuntimeGlobalContext.m_CameraSystem->LookAt(cameraEntity, { 5.0f, 5.f, 5.f }, { 0.0f, 0.0f, 0.0f });
+    cameraComponent.Primary = true;
 }
 
 void Scene::LoadLight()

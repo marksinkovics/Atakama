@@ -20,8 +20,6 @@ Application::Application()
     m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
     g_RuntimeGlobalContext.m_Window = m_Window;
     
-    g_RuntimeGlobalContext.m_Dispatcher->subscribe<MouseButtonPressedEvent>(std::bind(&Application::OnMouseButtonPressed, this, std::placeholders::_1));
-    g_RuntimeGlobalContext.m_Dispatcher->subscribe<KeyPressedEvent>(std::bind(&Application::OnKeyPressed, this, std::placeholders::_1));
     g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowCloseEvent>(std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
     g_RuntimeGlobalContext.m_Dispatcher->subscribe<WindowFrameBufferResizeEvent>(std::bind(&Application::OnWindowFrameBufferResize, this, std::placeholders::_1));
 
@@ -55,26 +53,6 @@ void Application::OnEvent(Event &event)
         return;
     
     g_RuntimeGlobalContext.m_Dispatcher->post(event);
-}
-
-bool Application::OnMouseButtonPressed(MouseButtonPressedEvent &event)
-{
-    if (event.GetButton() == GLFW_MOUSE_BUTTON_MIDDLE)
-    {
-        Ref<InputSystem> inputSystem = g_RuntimeGlobalContext.m_InputSystem;
-        inputSystem->SetFocusMode(!inputSystem->GetFocusMode());
-    }
-    
-    return false;
-}
-
-bool Application::OnKeyPressed(KeyPressedEvent &event)
-{
-    if (event.GetKeyCode() == GLFW_KEY_ESCAPE)
-    {
-        m_Running = false;
-    }
-    return false;
 }
 
 bool Application::OnWindowClose(WindowCloseEvent &event)
@@ -114,8 +92,8 @@ void Application::Run()
         }
         m_ImGuiLayer->End();
 
-        // TODO: Move this to OnUpdate function to each system
-        g_RuntimeGlobalContext.m_InputSystem->Clear();
+        g_RuntimeGlobalContext.m_InputSystem->Update(ts);
+
         m_Window->SwapBuffers();
         m_Window->PollEvents();
     }

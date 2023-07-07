@@ -1,13 +1,6 @@
 #ifndef ATAKAMA_ENGINE_HPP
 #define ATAKAMA_ENGINE_HPP
 
-#include "Shader.hpp"
-
-#include "Atakama/Engine/RenderSystem.hpp"
-#include "Atakama/Core/Profiler.hpp"
-
-#include "Atakama/Scene/Scene.hpp"
-
 #include <chrono>
 
 namespace Atakama
@@ -21,11 +14,9 @@ class EditorRenderPass;
 class DepthViewRenderPass;
 class OutlineRenderPass;
 class ViewportRenderPass;
-class WindowFrameBufferResizeEvent;
-class MouseScrolledEvent;
-
-class CameraSystem;
-class Camera;
+class RenderSystem;
+class Profiler;
+class Scene;
 
 class Engine
 {
@@ -46,7 +37,6 @@ public:
     void Run();
     float CalculateDeltaTime();
 
-    bool OnMouseScrollEvent(MouseScrolledEvent& event);
     void UpdateRenderingViewportSize(glm::uvec2 size);
 
     Ref<SkyBoxRenderPass> GetSkyBoxRenderPass() { return m_SkyBoxRenderPass; }
@@ -69,8 +59,6 @@ private:
     Ref<Scene> m_Scene;
     Ref<Window> m_Window;
     Ref<RenderSystem> m_RenderSystem;
-
-    Ref<CameraSystem> m_CameraSystem;
 
     Ref<SkyBoxRenderPass> m_SkyBoxRenderPass;
     Ref<MainRenderPass> m_MainRenderPass;

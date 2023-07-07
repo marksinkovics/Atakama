@@ -12,6 +12,7 @@ class InputSystem;
 class LogSystem;
 enum class GraphicsAPI;
 class AssetManager;
+class CameraSystem;
 
 class RuntimeGlobalContext
 {
@@ -31,6 +32,8 @@ public:
     GraphicsAPI m_GraphicsAPI;
 
     Ref<AssetManager> m_AssetManager;
+
+    Ref<CameraSystem> m_CameraSystem;
 
     bool m_Editor { true };
 };

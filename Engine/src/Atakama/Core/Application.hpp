@@ -3,8 +3,6 @@
 
 #include "Atakama/Core/Window.hpp"
 #include "Atakama/Events/Event.hpp"
-#include "Atakama/Events/KeyEvent.hpp"
-#include "Atakama/Events/MouseEvent.hpp"
 #include "Atakama/Events/WindowEvent.hpp"
 
 #include "Atakama/Engine/Engine.hpp"
@@ -28,8 +26,6 @@ public:
 
     virtual void OnEvent(Event &event);
 
-    virtual bool OnMouseButtonPressed(MouseButtonPressedEvent &event);
-    virtual bool OnKeyPressed(KeyPressedEvent &event);
     virtual bool OnWindowClose(WindowCloseEvent &event);
     virtual bool OnWindowFrameBufferResize(WindowFrameBufferResizeEvent& event);
 

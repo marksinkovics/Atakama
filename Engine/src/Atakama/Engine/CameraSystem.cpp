@@ -1,53 +1,14 @@
 #include "CameraSystem.hpp"
+
 #include "Camera.hpp"
+
 #include "Atakama/Core/InputSystem.hpp"
 #include "Atakama/Scene/Entity.hpp"
 #include "Atakama/Scene/Components/Components.hpp"
 #include "Atakama/Scene/Components/TransformComponent.hpp"
 
-
-#include <GLFW/glfw3.h>
-
 namespace Atakama
 {
-
-void CameraSystem::Update(Entity cameraEntity, float ts)
-{
-    Ref<InputSystem> inputSystem = g_RuntimeGlobalContext.m_InputSystem;
-    if (inputSystem->IsKeyPressed(GLFW_KEY_X))
-    {
-        LookAt(cameraEntity, glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-        return;
-    }
-
-    if (inputSystem->IsKeyPressed(GLFW_KEY_Y))
-    {
-        LookAt(cameraEntity, glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-        return;
-    }
-
-    if (inputSystem->IsKeyPressed(GLFW_KEY_Z))
-    {
-        LookAt(cameraEntity, glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-        return;
-    }
-
-    if (inputSystem->IsKeyPressed(GLFW_KEY_R))
-    {
-        LookAt(cameraEntity, glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-        return;
-    }
-
-    glm::dvec2 mousePos = {0.f, 0.f};
-
-    if (inputSystem->IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT) || inputSystem->GetFocusMode())
-    {
-        mousePos = inputSystem->GetMouseDelta();
-        Rotate(cameraEntity, mousePos, ts);
-    }
-
-    Move(cameraEntity, inputSystem->GetMovement(), ts);
-}
 
 void CameraSystem::Move(Entity cameraEntity, Movement movement, float ts)
 {
@@ -128,6 +89,7 @@ glm::vec3 CameraSystem::GetForward(Entity cameraEntity)
     auto& transform = cameraEntity.GetComponent<TransformComponent>();
     return glm::rotate(glm::inverse(transform.GetOrientation()), glm::vec3(0.0, 0.0, -1.0));
 }
+
 glm::vec3 CameraSystem::GetRight(Entity cameraEntity)
 {
     auto& transform = cameraEntity.GetComponent<TransformComponent>();

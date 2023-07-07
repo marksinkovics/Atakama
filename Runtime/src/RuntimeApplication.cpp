@@ -1,5 +1,6 @@
 #include "RuntimeApplication.hpp"
 
+#include "Layer/RuntimeLayer.hpp"
 #include "Layer/StatsLayer.hpp"
 
 #include <Atakama/Engine/RenderPass/DebugRenderPass.hpp>
@@ -12,6 +13,7 @@ namespace Atakama::Runtime
 RuntimeApplication::RuntimeApplication()
 : Application()
 {
+    AddLayer(new RuntimeLayer());
     AddLayer(new StatsLayer());
 
     m_Engine->UpdateRenderingViewportSize(m_Window->GetFrameBufferSize());
