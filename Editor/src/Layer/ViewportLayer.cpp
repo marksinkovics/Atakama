@@ -40,7 +40,7 @@ void ViewportLayer::OnAttach()
 
 void ViewportLayer::OnUpdate(float ts)
 {
-    if (!m_ViewportFocused)
+    if (!m_ViewportHovered)
         return;
 
     m_EnableGizmoSnapping = m_InputSystem->IsKeyPressed(GLFW_KEY_LEFT_CONTROL);
@@ -61,8 +61,11 @@ void ViewportLayer::OnUpdate(float ts)
 
     if (m_InputSystem->IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
     {
-        Entity entity = Entity(static_cast<entt::entity>(m_MeshId), m_Engine->GetScene().get());
-        m_Engine->GetScene()->SetSelectedEntity(entity);
+        if (!m_ToolbarHovered)
+        {
+            Entity entity = Entity(static_cast<entt::entity>(m_MeshId), m_Engine->GetScene().get());
+            m_Engine->GetScene()->SetSelectedEntity(entity);
+        }
     }
 
     if (m_InputSystem->IsKeyPressed(GLFW_KEY_UP) || m_InputSystem->IsKeyPressed(GLFW_KEY_W)) 
@@ -123,17 +126,9 @@ void ViewportLayer::OnUpdateUI(float ts)
     vMax.y += ImGui::GetWindowPos().y;
 
     m_ViewportFocused = ImGui::IsWindowFocused();
-    m_ViewportHovered = ImGui::IsMouseHoveringRect(vMin, vMax);
+    m_ViewportHovered = ImGui::IsWindowHovered();
 
-    if (m_ViewportFocused)
-    {
-        g_RuntimeGlobalContext.m_Application->BlockEvent(false);
-    }
-    else
-    {
-        g_RuntimeGlobalContext.m_InputSystem->Clear();
-        g_RuntimeGlobalContext.m_Application->BlockEvent(true);
-    }
+    g_RuntimeGlobalContext.m_Application->BlockEvent(!m_ViewportHovered);
 
     ImVec2 wSize = ImGui::GetContentRegionAvail();
     float scale = ImGui::GetMainViewport()->DpiScale;
@@ -157,19 +152,27 @@ void ViewportLayer::OnUpdateUI(float ts)
 
     Ref<Texture> texture = m_RenderPass->GetOutputColorTexture();
     if (texture)
+    {
         ImGui::Image(reinterpret_cast<ImTextureID>(texture->GetId()), wSize, ImVec2(0, 1), ImVec2(1, 0));
+    }
 
 
     //TODO: fetch the titlebar height and adjust the Y coordinate
     ImGui::SetCursorPos(ImVec2(20, 40));
     ImGui::BeginGroup();
-    ImGui::RadioButton("Select", &m_GizmoType, -1);
-    ImGui::RadioButton("Rotate", &m_GizmoType, ImGuizmo::OPERATION::ROTATE);
-    ImGui::RadioButton("Translate", &m_GizmoType, ImGuizmo::OPERATION::TRANSLATE);
-    ImGui::RadioButton("Scale", &m_GizmoType, ImGuizmo::OPERATION::SCALE);
-    ImGui::NewLine();
-    ImGui::Text("Mesh: %d", m_MeshId);
+    {
+        ImGui::RadioButton("Select", &m_GizmoType, -1);
+        ImGui::RadioButton("Rotate", &m_GizmoType, ImGuizmo::OPERATION::ROTATE);
+        ImGui::RadioButton("Translate", &m_GizmoType, ImGuizmo::OPERATION::TRANSLATE);
+        ImGui::RadioButton("Scale", &m_GizmoType, ImGuizmo::OPERATION::SCALE);
+        ImGui::Text("Mesh: %d", m_MeshId);
+        ImGui::Text("Focused: %s", m_ViewportFocused ? "YES" : "NO");
+        ImGui::Text("Hovered: %s", m_ViewportHovered ? "YES" : "NO");
+        ImGui::Text("Toolbar hovered: %s", m_ToolbarHovered ? "YES" : "NO");
+    }
     ImGui::EndGroup();
+    m_ToolbarHovered = ImGui::IsItemHovered();
+
 
     //ImGuizmo
     Entity selectedEntity = m_Engine->GetScene()->GetSelectedEntity();

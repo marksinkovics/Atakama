@@ -43,11 +43,17 @@ void Application::OnEvent(Event &event)
 {
     ImGuiIO& io = ImGui::GetIO();
 
-    if (IsMouseEvent(event) && m_BlockEvents)
-        event.Handled |= io.WantCaptureMouse;
+    if (IsMouseEvent(event) && io.WantCaptureMouse && m_BlockEvents)
+    {
+        g_RuntimeGlobalContext.m_InputSystem->ClearMouseEvents();
+        event.Handled = true;
+    }
 
-    if (IsKeyboardEvent(event) && m_BlockEvents)
-        event.Handled |= io.WantCaptureKeyboard;
+    if (IsKeyboardEvent(event) && io.WantCaptureKeyboard && m_BlockEvents)
+    {
+        g_RuntimeGlobalContext.m_InputSystem->ClearKeyboardEvents();
+        event.Handled = true;
+    }
 
     if (event.Handled)
         return;

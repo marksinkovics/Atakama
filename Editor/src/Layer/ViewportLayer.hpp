@@ -34,6 +34,7 @@ private:
 
     bool m_ViewportFocused = false;
     bool m_ViewportHovered = false;
+    bool m_ToolbarHovered = false;
 
     glm::uvec2 m_ViewportSize;
     glm::vec2 m_ViewportBounds[2];

@@ -110,7 +110,7 @@ void InputSystem::ClearKeyboardEvents()
 
 void InputSystem::ClearMouseEvents()
 {
-    m_KeyboardKeyPressed.clear();
+    m_MouseButtonPressed.clear();
 }
 
 bool InputSystem::IsMouseButtonPressed(int button) const
