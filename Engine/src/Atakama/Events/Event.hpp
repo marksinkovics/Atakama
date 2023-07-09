@@ -8,8 +8,9 @@ enum class EventType
 {
     None,
     WindowClose, WindowResize, WindowFrameBufferResize,
-    MouseMoved, MouseButtonPressed, MouseButtonReleased, MouseScrolled,
-    KeyPressed, KeyReleased, KeyTyped
+    MouseMoved, MouseButtonPressed, MouseButtonReleased, MouseScrolled, MouseEnter, MouseLeave,
+    KeyPressed, KeyReleased, KeyTyped,
+    Drop
 };
 
 #define EVENT_PROPERTIES(Type) \

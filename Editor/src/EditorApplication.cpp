@@ -10,6 +10,10 @@
 #include <Atakama/Engine/RenderPass/MainRenderPass.hpp>
 #include <Atakama/Engine/RenderPass/ViewportRenderPass.hpp>
 #include <Atakama/Engine/RenderPass/OutlineRenderPass.hpp>
+#include <Atakama/Engine/AssetManager.hpp>
+
+#include "Atakama/Events/EventDispatcher.hpp"
+#include <Atakama/Events/DropEvent.hpp>
 
 namespace Atakama::Editor
 {
@@ -27,6 +31,22 @@ EditorApplication::EditorApplication()
     m_Engine->GetViewportRenderPass()->RemoveDependency(m_Engine->GetMainRenderPass());
     m_Engine->GetViewportRenderPass()->AddDependency(m_Engine->GetOutlineRenderPass());
     m_Engine->GetViewportRenderPass()->SetEnable(false);
+
+    g_RuntimeGlobalContext.m_Dispatcher->subscribe<DropEvent>(std::bind(&EditorApplication::OnDrop, this, std::placeholders::_1));
+}
+
+bool EditorApplication::OnDrop(DropEvent& event)
+{
+
+    for (auto&& path : event.GetPaths()) 
+    {
+        LOG_DEBUG("Editor - PATH: {}", path);
+
+        g_RuntimeGlobalContext.m_AssetManager->ImportModel(path);
+        g_RuntimeGlobalContext.m_Engine->GetScene()->AddModeById(path.filename().string());
+
+    }
+    return false;
 }
 
 }

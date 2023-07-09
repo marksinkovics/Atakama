@@ -3,14 +3,22 @@
 
 #include <Atakama/Core/Application.hpp>
 
-namespace Atakama::Editor
+namespace Atakama
 {
 
-class EditorApplication: public Application
+class DropEvent;
+
+namespace Editor
+{
+
+class EditorApplication : public Application
 {
 public:
     EditorApplication();
+    virtual bool OnDrop(DropEvent& event);
 };
+
+}
 
 }
 

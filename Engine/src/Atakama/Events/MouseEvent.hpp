@@ -69,6 +69,24 @@ protected:
     double m_YPos;
 };
 
+
+class MouseEnterEvent : public MouseEvent
+{
+public:
+    MouseEnterEvent() {}
+    virtual ~MouseEnterEvent() = default;
+    EVENT_PROPERTIES(EventType::MouseEnter);
+};
+
+class MouseLeaveEvent : public MouseEvent
+{
+public:
+    MouseLeaveEvent() {}
+    virtual ~MouseLeaveEvent() = default;
+    EVENT_PROPERTIES(EventType::MouseLeave);
+};
+
+
 }
 
 #endif

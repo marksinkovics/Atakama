@@ -2,6 +2,8 @@
 #include "Atakama/Events/KeyEvent.hpp"
 #include "Atakama/Events/MouseEvent.hpp"
 #include "Atakama/Events/WindowEvent.hpp"
+#include "Atakama/Events/DropEvent.hpp"
+
 
 #include "Atakama/Engine/Platform/OpenGL3/OpenGL3GraphicsContext.hpp"
 
@@ -137,6 +139,40 @@ Window::Window(uint32_t width, uint32_t height, const std::string& name)
             return;
         
         MouseMovedEvent event(xPos, yPos);
+        handler->m_EventCallback(event);
+    });
+
+    glfwSetCursorEnterCallback(m_Window, [](GLFWwindow* window, int entered){
+        Window* handler = (Window*)glfwGetWindowUserPointer(window);
+        if (!handler)
+            return;
+
+        if (entered) 
+        {
+            MouseEnterEvent event;
+            handler->m_EventCallback(event);
+        }
+        else 
+        {
+            MouseLeaveEvent event;
+            handler->m_EventCallback(event);
+        }
+    });
+
+    glfwSetDropCallback(m_Window, [](GLFWwindow* window, int path_count, const char* paths[]) {
+        Window* handler = (Window*)glfwGetWindowUserPointer(window);
+        if (!handler)
+            return;
+        
+        std::vector<std::filesystem::path> filePaths;
+        filePaths.reserve(path_count);
+
+        for (int i = 0; i < path_count; i++)
+        {
+            filePaths.push_back(std::filesystem::path(paths[i]));
+        }
+
+        DropEvent event(filePaths);
         handler->m_EventCallback(event);
     });
 }
