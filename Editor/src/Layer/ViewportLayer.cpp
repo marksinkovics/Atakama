@@ -45,7 +45,7 @@ void ViewportLayer::OnUpdate(float ts)
 
     m_EnableGizmoSnapping = m_InputSystem->IsKeyPressed(GLFW_KEY_LEFT_CONTROL);
 
-    if (ImGuizmo::IsUsing())
+    if (ImGuizmo::IsOver())
         return;
 
     Entity cameraEntity = m_Engine->GetScene()->GetPrimaryCameraEntity();

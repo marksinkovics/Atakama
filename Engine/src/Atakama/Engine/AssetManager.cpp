@@ -417,7 +417,7 @@ private:
         for (uint32_t i = 0; i < mesh->mNumFaces; i++)
         {
             const aiFace& face = mesh->mFaces[i];
-            ASSERT(face.mNumIndices == 3 && "Face has more vertext than 3");
+            ASSERT(face.mNumIndices == 3 && "Face has more vertex than 3");
             indices.push_back(face.mIndices[0]);
             indices.push_back(face.mIndices[1]);
             indices.push_back(face.mIndices[2]);
@@ -467,7 +467,7 @@ public:
 
 private:
     std::filesystem::path& m_Path;
-    uint32_t m_ImportFlags = aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_MaxQuality;
+    uint32_t m_ImportFlags = aiProcess_FlipUVs | aiProcess_Triangulate;
     std::vector<Ref<Mesh>> m_Meshes;
     std::map<std::string, Ref<Texture>> m_Textures;
     const aiScene* m_Scene = nullptr;
