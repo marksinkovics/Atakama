@@ -1,6 +1,6 @@
 #include "MenuBarLayer.hpp"
 
-#include <Atakama/Engine/AssetManager.hpp>
+#include <Atakama/Asset/AssetManager.hpp>
 #include <Atakama/Engine/Engine.hpp>
 #include <Atakama/Scene/Scene.hpp>
 

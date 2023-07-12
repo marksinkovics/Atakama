@@ -6,7 +6,7 @@
 #include "Atakama/Events/EventDispatcher.hpp"
 #include "Atakama/Core/InputSystem.hpp"
 #include "Atakama/Engine/RenderSystem.hpp"
-#include "Atakama/Engine/AssetManager.hpp"
+#include "Atakama/Asset/AssetManager.hpp"
 #include "Atakama/Engine/CameraSystem.hpp"
 
 namespace Atakama

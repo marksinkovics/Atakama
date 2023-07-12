@@ -3,7 +3,7 @@
 #include "Atakama/Core/Window.hpp"
 #include "Atakama/Core/FileSystem.hpp"
 #include "Atakama/Core/Profiler.hpp"
-#include "AssetManager.hpp"
+#include "Atakama/Asset/AssetManager.hpp"
 
 #include "RenderSystem.hpp"
 

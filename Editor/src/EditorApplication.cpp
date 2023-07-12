@@ -10,7 +10,7 @@
 #include <Atakama/Engine/RenderPass/MainRenderPass.hpp>
 #include <Atakama/Engine/RenderPass/ViewportRenderPass.hpp>
 #include <Atakama/Engine/RenderPass/OutlineRenderPass.hpp>
-#include <Atakama/Engine/AssetManager.hpp>
+#include <Atakama/Asset/AssetManager.hpp>
 
 #include "Atakama/Events/EventDispatcher.hpp"
 #include <Atakama/Events/DropEvent.hpp>

@@ -2,7 +2,7 @@
 
 #include <Atakama/Core/Application.hpp>
 #include <Atakama/Core/InputSystem.hpp>
-#include <Atakama/Engine/AssetManager.hpp>
+#include <Atakama/Asset/AssetManager.hpp>
 #include <Atakama/Engine/RenderPass/RenderPass.hpp>
 #include <Atakama/Engine/RenderPass/OutlineRenderPass.hpp>
 #include <Atakama/Engine/FrameBuffer.hpp>

@@ -1,6 +1,6 @@
 #include "DebugRenderPass.hpp"
 
-#include "Atakama/Engine/AssetManager.hpp"
+#include "Atakama/Asset/AssetManager.hpp"
 #include "Atakama/Core/FileSystem.hpp"
 #include "Atakama/Engine/RenderSystem.hpp"
 
