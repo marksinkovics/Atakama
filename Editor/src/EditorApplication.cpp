@@ -6,6 +6,7 @@
 #include "Layer/ViewportLayer.hpp"
 #include "Layer/DepthViewLayer.hpp"
 #include "Layer/SceneLayer.hpp"
+#include "Layer/TestLayer.hpp"
 
 #include <Atakama/Engine/RenderPass/MainRenderPass.hpp>
 #include <Atakama/Engine/RenderPass/ViewportRenderPass.hpp>
@@ -15,18 +16,25 @@
 #include "Atakama/Events/EventDispatcher.hpp"
 #include <Atakama/Events/DropEvent.hpp>
 
+// Reminder: remove the imgui.ini file from the Debug folder, otherwise it will crash
+#define TEST_LAYER 0
+
 namespace Atakama::Editor
 {
 
 EditorApplication::EditorApplication()
 : Application()
 {
+#if TEST_LAYER
+    AddLayer(new TestLayer());
+#else
     AddLayer(new EditorLayer());
     AddLayer(new MenuBarLayer());
     AddLayer(new StatsLayer());
     AddLayer(new ViewportLayer());
     AddLayer(new DepthViewLayer());
     AddLayer(new SceneLayer());
+#endif
 
     m_Engine->GetViewportRenderPass()->RemoveDependency(m_Engine->GetMainRenderPass());
     m_Engine->GetViewportRenderPass()->AddDependency(m_Engine->GetOutlineRenderPass());
