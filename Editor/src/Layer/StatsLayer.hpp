@@ -11,7 +11,7 @@ class EditorApplication;
 class StatsLayer: public Layer
 {
 public:
-    StatsLayer();
+    StatsLayer(const EditorUIConfig& config);
     ~StatsLayer() = default;
 
     virtual void OnAttach() override;
@@ -19,6 +19,7 @@ public:
     virtual void OnUpdateUI(float ts) override;
 private:
     EditorApplication* m_Application;
+    const EditorUIConfig& m_UIConfig;
 };
 
 }

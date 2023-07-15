@@ -1,6 +1,8 @@
 #ifndef ATAKAMA_EDITOR_VIEWPORT_LAYER_CPP
 #define ATAKAMA_EDITOR_VIEWPORT_LAYER_CPP
 
+#include "EditorUIConfig.hpp"
+
 #include <Atakama/Core/Layer.hpp>
 
 namespace Atakama
@@ -21,7 +23,7 @@ class ViewportLayer: public Layer
 public:
     typedef std::function<void(glm::uvec2)> CallbackFunc;
 
-    ViewportLayer();
+    ViewportLayer(const EditorUIConfig& config);
     virtual ~ViewportLayer() = default;
     virtual void OnAttach() override;
     virtual void OnUpdate(float ts) override;
@@ -46,6 +48,8 @@ private:
     int m_GizmoType;
 
     bool m_EnableGizmoSnapping { false };
+
+    const EditorUIConfig& m_UIConfig;
 };
 
 }

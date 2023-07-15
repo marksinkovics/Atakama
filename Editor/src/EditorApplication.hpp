@@ -11,11 +11,17 @@ class DropEvent;
 namespace Editor
 {
 
+class EditorLayer;
+
 class EditorApplication : public Application
 {
 public:
     EditorApplication();
     virtual bool OnDrop(DropEvent& event);
+private:
+    EditorLayer* m_EditorLayer { nullptr };
+
+    std::map<WindowId, WindowConfig> m_WindowConfigs;
 };
 
 }

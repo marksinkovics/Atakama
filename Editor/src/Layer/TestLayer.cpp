@@ -21,7 +21,6 @@ TestLayer::TestLayer()
 
 void TestLayer::OnAttach()
 {
-
 }
 
 void TestLayer::OnDetach()
@@ -43,56 +42,48 @@ void TestLayer::OnUpdateUI(float ts)
     const float toolbarSize = 25;
     float menuBarHeight = 0.f;
 
-    // Menubar
+    // Generate IDs
     {
-        if (ImGui::BeginMainMenuBar())
-        {
-            if (ImGui::BeginMenu("File")) 
-            {
-                ImGui::EndMenu();
-            }
 
-            ImGui::EndMainMenuBar();
-        }
+        editorTopLevelClass.ClassId = ImGui::GetID("MyTopLevelClass");
+        editorTopLevelClass.DockingAllowUnclassed = false;
+        editorTopLevelClass.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoDockingSplitOther | ImGuiDockNodeFlags_NoDockingSplitMe;
+
+        documentClass.ClassId = ImGui::GetID("DocumentClass");
+        documentClass.DockNodeFlagsOverrideSet = 0;
+        documentClass.DockingAllowUnclassed = false;
+
+        projectSettingsClass.ClassId = ImGui::GetID("ProjectSettingsClass");
+        projectSettingsClass.DockingAllowUnclassed = false;
+        projectSettingsClass.DockNodeFlagsOverrideSet = 0;
+
+        documentDockSpace = ImGui::GetID("DocumentDockSpace");
+        projectSettingsDockSpace = ImGui::GetID("ProjectSettingsDockSpace");
+    }
+    
+    {
+        editorTopLevelDockSpace = ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_None, &editorTopLevelClass);
     }
 
-#if 1
     {
-
-        ImGuiWindowClass top_level_class;
-        top_level_class.ClassId = ImGui::GetID("MyTopLevelClass");
-        top_level_class.DockingAllowUnclassed = false;
-        top_level_class.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoDockingSplitOther | ImGuiDockNodeFlags_NoDockingSplitMe;
-
-        ImGuiWindowClass inside_document_class;
-        inside_document_class.ClassId = ImGui::GetID("InsideDocumentClass");
-        inside_document_class.DockNodeFlagsOverrideSet = 0;
-        inside_document_class.DockingAllowUnclassed = false;
-
-        ImGuiWindowClass project_settings_class;
-        project_settings_class.ClassId = ImGui::GetID("ProjectSettingsClass");
-        project_settings_class.DockingAllowUnclassed = false;
-        project_settings_class.DockNodeFlagsOverrideSet = 0;
-
-        ImGuiID mainDockspaceId = ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_None, &top_level_class);
-
-        ImGuiID insideDocumentDockSpace = ImGui::GetID("InsideDocumentDockSpace");
-        ImGuiID projectSettingsDockSpace = ImGui::GetID("ProjectSettingsDockSpace");
-
-        ImGui::SetNextWindowClass(&top_level_class);
-        ImGui::Begin("ThirdPersonView");
+        ImGui::SetNextWindowClass(&editorTopLevelClass);
+        ImGui::Begin("Document");
         ImGui::BeginChild("statusbar", ImVec2(ImGui::GetContentRegionAvail().x, toolbarSize));
         ImGui::Text("[STATUS BAR]"); ImGui::SameLine(); ImGui::Button("Toolbar goes here", ImVec2(0, toolbarSize));
         ImGui::EndChild();
-        ImGui::DockSpace(insideDocumentDockSpace, ImVec2(0, 0), 0, &inside_document_class);
+        ImGui::DockSpace(documentDockSpace, ImVec2(0, 0), 0, &documentClass);
         ImGui::End();
 
-        ImGui::SetNextWindowClass(&top_level_class);
+    }
+    
+    {
+        ImGui::SetNextWindowClass(&editorTopLevelClass);
         ImGui::Begin("Project Settings");
-        ImGui::DockSpace(projectSettingsDockSpace, ImVec2(0, 0), 0, &project_settings_class);
+        ImGui::DockSpace(projectSettingsDockSpace, ImVec2(0, 0), 0, &projectSettingsClass);
         ImGui::End();
-
-
+    }
+    
+    {
         static bool first_time = true;
         if (first_time) {
             first_time = false;
@@ -101,24 +92,24 @@ void TestLayer::OnUpdateUI(float ts)
 
             ImVec2 workSize = ImGui::GetMainViewport()->WorkSize;
             ImVec2 workPos = ImGui::GetMainViewport()->WorkPos;
-            ImGui::DockBuilderRemoveNode(mainDockspaceId); // Clear out existing layout
-            ImGui::DockBuilderAddNode(mainDockspaceId, ImGuiDockNodeFlags_None); // Add empty node
-            ImGui::DockBuilderSetNodeSize(mainDockspaceId, workSize);
-            ImGui::DockBuilderSetNodePos(mainDockspaceId, workPos);
+            ImGui::DockBuilderRemoveNode(editorTopLevelDockSpace); // Clear out existing layout
+            ImGui::DockBuilderAddNode(editorTopLevelDockSpace, ImGuiDockNodeFlags_None); // Add empty node
+            ImGui::DockBuilderSetNodeSize(editorTopLevelDockSpace, workSize);
+            ImGui::DockBuilderSetNodePos(editorTopLevelDockSpace, workPos);
 
-            ImGui::DockBuilderDockWindow("ThirdPersonView", mainDockspaceId);
-            ImGui::DockBuilderDockWindow("Project Settings", mainDockspaceId);
+            ImGui::DockBuilderDockWindow("Document", editorTopLevelDockSpace);
+            ImGui::DockBuilderDockWindow("Project Settings", editorTopLevelDockSpace);
 
-            ImGui::DockBuilderFinish(mainDockspaceId);
+            ImGui::DockBuilderFinish(editorTopLevelDockSpace);
 
             {
-                ImGui::DockBuilderSetNodeSize(insideDocumentDockSpace, ImGui::GetMainViewport()->WorkSize);
-                auto insideDocumentUp = ImGui::DockBuilderSplitNode(insideDocumentDockSpace, ImGuiDir_Up, 0.1f, nullptr, &insideDocumentDockSpace);
-                auto insideDocumentLeft = ImGui::DockBuilderSplitNode(insideDocumentDockSpace, ImGuiDir_Left, 0.5f, nullptr, &insideDocumentDockSpace);
+                ImGui::DockBuilderSetNodeSize(documentDockSpace, ImGui::GetMainViewport()->WorkSize);
+                auto insideDocumentUp = ImGui::DockBuilderSplitNode(documentDockSpace, ImGuiDir_Up, 0.1f, nullptr, &documentDockSpace);
+                auto insideDocumentLeft = ImGui::DockBuilderSplitNode(documentDockSpace, ImGuiDir_Left, 0.5f, nullptr, &documentDockSpace);
                 auto componentsBottom = ImGui::DockBuilderSplitNode(insideDocumentLeft, ImGuiDir_Down, 0.5f, nullptr, &insideDocumentLeft);
                 ImGui::DockBuilderDockWindow("Components", insideDocumentLeft);
                 ImGui::DockBuilderDockWindow("Properties", componentsBottom);
-                ImGui::DockBuilderFinish(insideDocumentDockSpace);
+                ImGui::DockBuilderFinish(documentDockSpace);
             }
 
             {
@@ -130,21 +121,22 @@ void TestLayer::OnUpdateUI(float ts)
 
         }
 
-
-        ImGui::SetNextWindowClass(&inside_document_class);
+    }
+    {
+        ImGui::SetNextWindowClass(&documentClass);
         ImGui::Begin("Components");
         ImGui::End();
-
-        ImGui::SetNextWindowClass(&inside_document_class);
+    } 
+    {
+        ImGui::SetNextWindowClass(&documentClass);
         ImGui::Begin("Properties");
         ImGui::End();
-
-        ImGui::SetNextWindowClass(&project_settings_class);
+    } 
+    {
+        ImGui::SetNextWindowClass(&projectSettingsClass);
         ImGui::Begin("Categories");
         ImGui::End();
     }
-
-#endif
 
 }
 

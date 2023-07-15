@@ -16,7 +16,7 @@ namespace Editor
 class SceneLayer: public Layer
 {
 public:
-    SceneLayer();
+    SceneLayer(const EditorUIConfig& config);
     virtual ~SceneLayer() = default;
     virtual void OnUpdateUI(float ts) override;
 private:
@@ -28,6 +28,8 @@ private:
 
     Ref<Engine> m_Engine;
     Ref<Scene> m_Scene;
+
+    const EditorUIConfig& m_UIConfig;
 };
 
 }

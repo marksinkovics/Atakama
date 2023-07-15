@@ -2,6 +2,10 @@
 
 #include "Layer/MenuBarLayer.hpp"
 #include "Layer/EditorLayer.hpp"
+#include "Layer/DocumentLayer.hpp"
+#include "Layer/ProjectSettingsLayer.hpp"
+#include "Layer/EditorConfigLayer.hpp"
+
 #include "Layer/StatsLayer.hpp"
 #include "Layer/ViewportLayer.hpp"
 #include "Layer/DepthViewLayer.hpp"
@@ -25,15 +29,22 @@ namespace Atakama::Editor
 EditorApplication::EditorApplication()
 : Application()
 {
+    m_WindowConfigs[WindowId::Document] = { "Document - Sandbox", "Document" };
+
+    AddLayer(new MenuBarLayer());
 #if TEST_LAYER
     AddLayer(new TestLayer());
 #else
-    AddLayer(new EditorLayer());
-    AddLayer(new MenuBarLayer());
-    AddLayer(new StatsLayer());
-    AddLayer(new ViewportLayer());
-    AddLayer(new DepthViewLayer());
-    AddLayer(new SceneLayer());
+    m_EditorLayer = new EditorLayer();
+    AddLayer(m_EditorLayer);
+    AddLayer(new DocumentLayer(m_WindowConfigs[WindowId::Document], m_EditorLayer->GetUIConfig()));
+    AddLayer(new ProjectSettingsLayer(m_EditorLayer->GetUIConfig()));
+    AddLayer(new EditorConfigLayer(m_EditorLayer->GetUIConfig()));
+
+    AddLayer(new StatsLayer(m_EditorLayer->GetUIConfig()));
+    AddLayer(new ViewportLayer(m_EditorLayer->GetUIConfig()));
+    AddLayer(new DepthViewLayer(m_EditorLayer->GetUIConfig()));
+    AddLayer(new SceneLayer(m_EditorLayer->GetUIConfig()));
 #endif
 
     m_Engine->GetViewportRenderPass()->RemoveDependency(m_Engine->GetMainRenderPass());

@@ -13,8 +13,8 @@
 namespace Atakama::Editor
 {
 
-StatsLayer::StatsLayer()
-: Layer("Stats Layer")
+StatsLayer::StatsLayer(const EditorUIConfig& config)
+: Layer("Stats Layer"), m_UIConfig(config)
 {
     m_Application = (EditorApplication*)g_RuntimeGlobalContext.m_Application;
 }
@@ -34,6 +34,7 @@ void StatsLayer::OnUpdateUI(float ts)
     if (!g_RuntimeEditorContext.StatshWindowOpen)
         return;
 
+    ImGui::SetNextWindowClass(&m_UIConfig.documentClass);
     ImGui::Begin("Stats");
     ImGui::Text("Vendor: %s", m_Application->GetEngine()->GetStatistics().Vendor.c_str());
     ImGui::Text("Renderer: %s", m_Application->GetEngine()->GetStatistics().Renderer.c_str());

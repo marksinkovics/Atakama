@@ -3,6 +3,8 @@
 
 #include <Atakama/Core/Layer.hpp>
 
+#include <imgui.h>
+
 namespace Atakama::Editor
 {
 
@@ -19,6 +21,13 @@ public:
     virtual void OnUpdateUI(float ts) override;
 private:
     EditorApplication* m_Application;
+
+    ImGuiWindowClass editorTopLevelClass;
+    ImGuiWindowClass documentClass;
+    ImGuiWindowClass projectSettingsClass;
+    ImGuiID editorTopLevelDockSpace;
+    ImGuiID documentDockSpace;
+    ImGuiID projectSettingsDockSpace;
 };
 
 }

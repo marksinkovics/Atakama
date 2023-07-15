@@ -15,12 +15,13 @@ namespace Editor
 class DepthViewLayer: public Layer
 {
 public:
-    DepthViewLayer();
+    DepthViewLayer(const EditorUIConfig& config);
     ~DepthViewLayer() = default;
     virtual void OnUpdateUI(float ts) override;
 private:
     Ref<Engine> m_Engine;
     Ref<RenderPass> m_RenderPass;
+    const EditorUIConfig& m_UIConfig;
 };
 
 }

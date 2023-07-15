@@ -2,7 +2,6 @@
 
 #include "EditorApplication.hpp"
 
-
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <imgui_impl_glfw.h>
@@ -30,6 +29,31 @@ namespace Atakama::Editor
 
     void EditorLayer::OnUpdateUI(float ts)
     {
+        // Generate IDs
+        {
+
+            m_UIConfig.editorTopLevelClass.ClassId = ImGui::GetID("MyTopLevelClass");
+            m_UIConfig.editorTopLevelClass.DockingAllowUnclassed = false;
+            m_UIConfig.editorTopLevelClass.DockNodeFlagsOverrideSet = ImGuiDockNodeFlags_NoDockingSplitOther | ImGuiDockNodeFlags_NoDockingSplitMe;
+
+            m_UIConfig.documentClass.ClassId = ImGui::GetID("DocumentClass");
+            m_UIConfig.documentClass.DockNodeFlagsOverrideSet = 0;
+            m_UIConfig.documentClass.DockingAllowUnclassed = false;
+
+            m_UIConfig.projectSettingsClass.ClassId = ImGui::GetID("ProjectSettingsClass");
+            m_UIConfig.projectSettingsClass.DockingAllowUnclassed = false;
+            m_UIConfig.projectSettingsClass.DockNodeFlagsOverrideSet = 0;
+
+            m_UIConfig.documentDockSpace = ImGui::GetID("DocumentDockSpace");
+            m_UIConfig.projectSettingsDockSpace = ImGui::GetID("ProjectSettingsDockSpace");
+        }
+
+        // Set the top level dock space
+        {
+            m_UIConfig.editorTopLevelDockSpace = ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_None, &m_UIConfig.editorTopLevelClass);
+        }
+
+#if 0
         static bool dockspaceOpen = true;
         static bool opt_fullscreen = true;
         static bool opt_padding = false;
@@ -90,6 +114,18 @@ namespace Atakama::Editor
         style.WindowMinSize.x = minWinSizeX;
 
         ImGui::End();
+#endif
     }
+
+    const EditorUIConfig& EditorLayer::GetUIConfig() const
+    {
+        return m_UIConfig;
+    }
+
+    EditorUIConfig& EditorLayer::GetUIConfig()
+    {
+        return m_UIConfig;
+    }
+
 
 }
