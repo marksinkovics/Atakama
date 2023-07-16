@@ -15,7 +15,7 @@ MenuBarLayer::MenuBarLayer()
 
 void MenuBarLayer::OnUpdateUI(float ts)
 {
-    if(g_RuntimeEditorContext.DemoWindowOpen)
+    if(GetWindowConfig(WindowId::Demo).Open)
     {
         ImGui::ShowDemoWindow();
     }
@@ -37,11 +37,11 @@ void MenuBarLayer::OnUpdateUI(float ts)
 
         if (ImGui::BeginMenu("Window"))
         {
-            if (ImGui::MenuItem("Stats", nullptr, &g_RuntimeEditorContext.StatshWindowOpen)) {}
-            if (ImGui::MenuItem("Depth", nullptr, &g_RuntimeEditorContext.DepthWindowOpen)) {}
-            if (ImGui::MenuItem("Demo", nullptr, &g_RuntimeEditorContext.DemoWindowOpen)) {}
-            if (ImGui::MenuItem("Scene View", nullptr, &g_RuntimeEditorContext.SceneViewOpen)) {}
-            if (ImGui::MenuItem("Object Properties", nullptr, &g_RuntimeEditorContext.ObjectPropertiesViewOpen)) {}
+            if (ImGui::MenuItem("Stats", nullptr, &GetWindowConfig(WindowId::Stats).Open)) {}
+            if (ImGui::MenuItem("Depth", nullptr, &GetWindowConfig(WindowId::DepthView).Open)) {}
+            if (ImGui::MenuItem("Demo", nullptr, &GetWindowConfig(WindowId::Demo).Open)) {}
+            if (ImGui::MenuItem("Scene View", nullptr, &GetWindowConfig(WindowId::SceneView).Open)) {}
+            if (ImGui::MenuItem("Object Properties", nullptr, &GetWindowConfig(WindowId::ObjectProperties).Open)) {}
             ImGui::EndMenu();
         }
 

@@ -19,9 +19,7 @@ public:
     EditorApplication();
     virtual bool OnDrop(DropEvent& event);
 private:
-    EditorLayer* m_EditorLayer { nullptr };
-
-    std::map<WindowId, WindowConfig> m_WindowConfigs;
+    std::map<WindowId, WindowConfig>& m_WindowConfigs;
 };
 
 }

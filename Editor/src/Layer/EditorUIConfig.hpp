@@ -18,14 +18,23 @@ struct EditorUIConfig
 
 enum class WindowId
 {
+    Demo,
+
     Document,
+    ProjectSettings,
+
+    Stats,
+    Viewport,
+    DepthView,
+    SceneView,
+    ObjectProperties,
 };
 
 struct WindowConfig
 {
     std::string Name;
     std::string Id;
-
+    bool Open { true };
     std::string GetImGuiWindowId() const;
     std::string GetLayerName() const;
 };

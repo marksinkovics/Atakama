@@ -10,7 +10,7 @@ namespace Atakama::Editor
     class DocumentLayer : public Layer
     {
     public:
-        DocumentLayer(WindowConfig& windowConfig, const EditorUIConfig& editorUIConfig);
+        DocumentLayer();
         ~DocumentLayer() = default;
 
         virtual void OnAttach() override;
@@ -18,8 +18,7 @@ namespace Atakama::Editor
         virtual void OnUpdateUI(float ts) override;
     private:
         EditorApplication* m_Application;
-        const EditorUIConfig& m_UIConfig;
-        WindowConfig& m_WindowConfig;
+        EditorUIConfig& m_UIConfig;
         const float toolbarSize = 25;
     };
 

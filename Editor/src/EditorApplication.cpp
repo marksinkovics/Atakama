@@ -27,24 +27,21 @@ namespace Atakama::Editor
 {
 
 EditorApplication::EditorApplication()
-: Application()
+    : Application(), m_WindowConfigs(g_RuntimeEditorContext.WindowConfigs)
 {
-    m_WindowConfigs[WindowId::Document] = { "Document - Sandbox", "Document" };
-
     AddLayer(new MenuBarLayer());
 #if TEST_LAYER
     AddLayer(new TestLayer());
 #else
-    m_EditorLayer = new EditorLayer();
-    AddLayer(m_EditorLayer);
-    AddLayer(new DocumentLayer(m_WindowConfigs[WindowId::Document], m_EditorLayer->GetUIConfig()));
-    AddLayer(new ProjectSettingsLayer(m_EditorLayer->GetUIConfig()));
-    AddLayer(new EditorConfigLayer(m_EditorLayer->GetUIConfig()));
+    AddLayer(new EditorLayer());
+    AddLayer(new DocumentLayer());
+    AddLayer(new ProjectSettingsLayer());
+    AddLayer(new EditorConfigLayer());
 
-    AddLayer(new StatsLayer(m_EditorLayer->GetUIConfig()));
-    AddLayer(new ViewportLayer(m_EditorLayer->GetUIConfig()));
-    AddLayer(new DepthViewLayer(m_EditorLayer->GetUIConfig()));
-    AddLayer(new SceneLayer(m_EditorLayer->GetUIConfig()));
+    AddLayer(new StatsLayer());
+    AddLayer(new ViewportLayer());
+    AddLayer(new DepthViewLayer());
+    AddLayer(new SceneLayer());
 #endif
 
     m_Engine->GetViewportRenderPass()->RemoveDependency(m_Engine->GetMainRenderPass());

@@ -13,7 +13,7 @@ namespace Atakama::Editor
 {
 
     EditorLayer::EditorLayer()
-        : Layer("Editor Layer")
+        : Layer("Editor Layer"), m_UIConfig(GetUIConfig())
     {
     }
 
@@ -116,16 +116,4 @@ namespace Atakama::Editor
         ImGui::End();
 #endif
     }
-
-    const EditorUIConfig& EditorLayer::GetUIConfig() const
-    {
-        return m_UIConfig;
-    }
-
-    EditorUIConfig& EditorLayer::GetUIConfig()
-    {
-        return m_UIConfig;
-    }
-
-
 }

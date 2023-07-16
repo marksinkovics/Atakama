@@ -29,7 +29,7 @@ void ImGuiLayer::OnAttach()
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
     io.IniFilename = NULL;
-    ImGui::LoadIniSettingsFromDisk(FileSystem::GetImGuiInitPath().string().c_str());
+    //ImGui::LoadIniSettingsFromDisk(FileSystem::GetImGuiInitPath().string().c_str());
 
     if (IsEditor())
     {

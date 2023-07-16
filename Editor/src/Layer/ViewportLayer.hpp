@@ -23,7 +23,7 @@ class ViewportLayer: public Layer
 public:
     typedef std::function<void(glm::uvec2)> CallbackFunc;
 
-    ViewportLayer(const EditorUIConfig& config);
+    ViewportLayer();
     virtual ~ViewportLayer() = default;
     virtual void OnAttach() override;
     virtual void OnUpdate(float ts) override;
@@ -49,7 +49,7 @@ private:
 
     bool m_EnableGizmoSnapping { false };
 
-    const EditorUIConfig& m_UIConfig;
+    EditorUIConfig& m_UIConfig;
 };
 
 }

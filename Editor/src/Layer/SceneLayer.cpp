@@ -14,8 +14,8 @@
 namespace Atakama::Editor
 {
 
-SceneLayer::SceneLayer(const EditorUIConfig& config)
-: Layer("Scene Layer"), m_UIConfig(config)
+SceneLayer::SceneLayer()
+: Layer("Scene Layer"), m_UIConfig(GetUIConfig())
 {
     m_Engine = g_RuntimeGlobalContext.m_Engine;
     m_Scene = m_Engine->GetScene();
@@ -25,18 +25,18 @@ void SceneLayer::OnUpdateUI(float ts)
 {
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse;
 
-    if (g_RuntimeEditorContext.SceneViewOpen)
+    if (GetWindowConfig(WindowId::SceneView).Open)
     {
         ImGui::SetNextWindowClass(&m_UIConfig.documentClass);
-        ImGui::Begin("Scene View", &g_RuntimeEditorContext.SceneViewOpen, window_flags);
+        ImGui::Begin(GetImGuiWindowId(WindowId::SceneView).c_str(), &GetWindowConfig(WindowId::SceneView).Open, window_flags);
         UpdateEntityList();
         ImGui::End();
     }
 
-    if (g_RuntimeEditorContext.ObjectPropertiesViewOpen)
+    if (GetWindowConfig(WindowId::SceneView).Open)
     {
         ImGui::SetNextWindowClass(&m_UIConfig.documentClass);
-        ImGui::Begin("Object Properties", &g_RuntimeEditorContext.ObjectPropertiesViewOpen, window_flags);
+        ImGui::Begin(GetImGuiWindowId(WindowId::ObjectProperties).c_str(), &GetWindowConfig(WindowId::SceneView).Open, window_flags);
         if (m_Scene->HasSelectedEntity())
         {
             UpdateComponentList();

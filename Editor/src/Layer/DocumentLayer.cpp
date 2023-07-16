@@ -12,8 +12,8 @@
 namespace Atakama::Editor
 {
 
-DocumentLayer::DocumentLayer(WindowConfig& windowConfig, const EditorUIConfig& editorUIConfig)
-    : Layer(windowConfig.GetLayerName()), m_WindowConfig(windowConfig), m_UIConfig(editorUIConfig)
+DocumentLayer::DocumentLayer()
+    : Layer("Document Layer"), m_UIConfig(GetUIConfig())
 {
     m_Application = (EditorApplication*)g_RuntimeGlobalContext.m_Application;
 }
@@ -31,7 +31,7 @@ void DocumentLayer::OnDetach()
 void DocumentLayer::OnUpdateUI(float ts)
 {
     ImGui::SetNextWindowClass(&m_UIConfig.editorTopLevelClass);
-    ImGui::Begin(m_WindowConfig.GetImGuiWindowId().c_str());
+    ImGui::Begin(GetImGuiWindowId(WindowId::Document).c_str());
     ImGui::BeginChild("statusbar", ImVec2(ImGui::GetContentRegionAvail().x, toolbarSize));
     ImGui::Text("[STATUS BAR]"); ImGui::SameLine(); ImGui::Button("Toolbar goes here", ImVec2(0, toolbarSize));
     ImGui::EndChild();

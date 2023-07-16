@@ -7,13 +7,16 @@ namespace Atakama::Editor
 class RuntimeEditorContext
 {
 public:
-    bool DemoWindowOpen { false };
-    bool DepthWindowOpen { false };
-    bool StatshWindowOpen { true };
+    void Init();
+    void Shutdown();
 
-    bool SceneViewOpen { true };
-    bool ObjectPropertiesViewOpen { true };
+    std::map<WindowId, WindowConfig> WindowConfigs;
+    EditorUIConfig UIConfig;
 };
+
+WindowConfig& GetWindowConfig(WindowId windowId);
+std::string GetImGuiWindowId(WindowId windowId);
+EditorUIConfig& GetUIConfig();
 
 extern RuntimeEditorContext g_RuntimeEditorContext;
 

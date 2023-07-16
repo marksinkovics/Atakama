@@ -11,8 +11,8 @@
 namespace Atakama::Editor
 {
 
-DepthViewLayer::DepthViewLayer(const EditorUIConfig& config)
-    : Layer("Depth View Layer"), m_UIConfig(config)
+DepthViewLayer::DepthViewLayer()
+    : Layer("Depth View Layer"), m_UIConfig(GetUIConfig())
 {
     m_Engine = g_RuntimeGlobalContext.m_Engine;
     m_RenderPass = m_Engine->GetDepthViewRenderPass();
@@ -20,11 +20,11 @@ DepthViewLayer::DepthViewLayer(const EditorUIConfig& config)
 
 void DepthViewLayer::OnUpdateUI(float ts)
 {
-    if (!g_RuntimeEditorContext.DepthWindowOpen)
+    if (!GetWindowConfig(WindowId::DepthView).Open)
         return;
 
     ImGui::SetNextWindowClass(&m_UIConfig.documentClass);
-    ImGui::Begin("Depth");
+    ImGui::Begin(GetImGuiWindowId(WindowId::DepthView).c_str());
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
     ImVec2 wSize = ImGui::GetContentRegionAvail();
     Ref<Texture> texture = m_RenderPass->GetOutputColorTexture();

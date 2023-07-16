@@ -12,7 +12,7 @@ namespace Atakama::Editor
     class ProjectSettingsLayer : public Layer
     {
     public:
-        ProjectSettingsLayer(const EditorUIConfig& config);
+        ProjectSettingsLayer();
         ~ProjectSettingsLayer() = default;
 
         virtual void OnAttach() override;
@@ -20,7 +20,7 @@ namespace Atakama::Editor
         virtual void OnUpdateUI(float ts) override;
     private:
         EditorApplication* m_Application;
-        const EditorUIConfig& m_UIConfig;
+        EditorUIConfig& m_UIConfig;
     };
 
 }

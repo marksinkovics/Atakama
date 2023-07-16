@@ -13,8 +13,8 @@
 namespace Atakama::Editor
 {
 
-    ProjectSettingsLayer::ProjectSettingsLayer(const EditorUIConfig& config)
-        : Layer("Project Settings Layer"), m_UIConfig(config)
+    ProjectSettingsLayer::ProjectSettingsLayer()
+        : Layer("Project Settings Layer"), m_UIConfig(GetUIConfig())
     {
         m_Application = (EditorApplication*)g_RuntimeGlobalContext.m_Application;
     }
@@ -32,7 +32,7 @@ namespace Atakama::Editor
     void ProjectSettingsLayer::OnUpdateUI(float ts)
     {
         ImGui::SetNextWindowClass(&m_UIConfig.editorTopLevelClass);
-        ImGui::Begin("Project Settings");
+        ImGui::Begin(GetImGuiWindowId(WindowId::ProjectSettings).c_str());
         ImGui::DockSpace(m_UIConfig.projectSettingsDockSpace, ImVec2(0, 0), 0, &m_UIConfig.projectSettingsClass);
         ImGui::End();
     }

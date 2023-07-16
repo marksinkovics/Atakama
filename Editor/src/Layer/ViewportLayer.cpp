@@ -24,8 +24,8 @@
 namespace Atakama::Editor
 {
 
-ViewportLayer::ViewportLayer(const EditorUIConfig& config)
-    : Layer("Viewport Layer"), m_GizmoType(-1), m_UIConfig(config)
+ViewportLayer::ViewportLayer()
+    : Layer("Viewport Layer"), m_GizmoType(-1), m_UIConfig(GetUIConfig())
 {
     m_InputSystem = g_RuntimeGlobalContext.m_InputSystem;
     m_CameraSystem = g_RuntimeGlobalContext.m_CameraSystem;
@@ -115,7 +115,7 @@ void ViewportLayer::OnUpdateUI(float ts)
     }
 
     ImGui::SetNextWindowClass(&m_UIConfig.documentClass);
-    ImGui::Begin("Viewport");
+    ImGui::Begin(GetImGuiWindowId(WindowId::Viewport).c_str());
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
     ImVec2 vMin = ImGui::GetWindowContentRegionMin();

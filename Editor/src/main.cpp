@@ -6,6 +6,7 @@ int main(int argc, char **argv)
 {
     Atakama::SetArguments({argc, argv});
     Atakama::g_RuntimeGlobalContext.Init();
+    Atakama::Editor::g_RuntimeEditorContext.Init();
 
     {
         Atakama::Editor::EditorApplication app;

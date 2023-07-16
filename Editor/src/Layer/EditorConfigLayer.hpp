@@ -12,7 +12,7 @@ namespace Atakama::Editor
     class EditorConfigLayer : public Layer
     {
     public:
-        EditorConfigLayer(EditorUIConfig& config);
+        EditorConfigLayer();
         ~EditorConfigLayer() = default;
 
         virtual void OnAttach() override;
