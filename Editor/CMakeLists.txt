@@ -72,6 +72,17 @@ target_add_assets(${PROJECT_NAME} "configs"
     ${CONFIGS}
 )
 
+set(RESOURCES_ROOT ${PROJECT_SOURCE_DIR}/resources)
+
+set(RESOURCES_ICONS_ROOT ${RESOURCES_ROOT}/icons)
+file(GLOB_RECURSE RESOURCES_ICONS
+    ${RESOURCES_ICONS_ROOT}/*.png
+)
+
+target_add_assets(${PROJECT_NAME} "resources/icons"
+    ${RESOURCES_ICONS}
+)
+
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${SOURCE_ROOT}

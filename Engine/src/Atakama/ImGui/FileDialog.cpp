@@ -11,8 +11,6 @@
 #include <filesystem>
 #include <sstream>
 
-#include <imgui.h>
-
 #include "FileDialog.hpp"
 
 using namespace std::chrono_literals;

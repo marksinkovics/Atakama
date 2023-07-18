@@ -4,8 +4,6 @@
 #include <Atakama/Engine/Engine.hpp>
 #include <Atakama/Scene/Scene.hpp>
 
-#include <imgui.h>
-
 namespace Atakama::Editor
 {
 

@@ -26,6 +26,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/hash.hpp>
 
+#include <imgui.h>
+
 #include "Atakama/Core/Macro.hpp"
 #include "Atakama/Core/Utils.hpp"
 #include "Atakama/Log/LogSystem.hpp"

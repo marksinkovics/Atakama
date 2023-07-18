@@ -5,7 +5,6 @@
 #include <Atakama/Scene/Scene.hpp>
 #include <Atakama/Scene/Components/Components.hpp>
 
-#include <imgui.h>
 #include <imgui_internal.h>
 
 #include <string>

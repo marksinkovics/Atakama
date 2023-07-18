@@ -1,8 +1,6 @@
 #ifndef ATAKAMA_EDITOR_UI_CONFIG_HPP
 #define ATAKAMA_EDITOR_UI_CONFIG_HPP
 
-#include <imgui.h>
-
 namespace Atakama::Editor
 {
 

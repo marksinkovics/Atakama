@@ -3,8 +3,6 @@
 
 #include <Atakama/Core/Layer.hpp>
 
-#include <imgui.h>
-
 namespace Atakama::Editor
 {
 

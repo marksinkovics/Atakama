@@ -6,8 +6,6 @@
 #include <Atakama/Engine/FrameBuffer.hpp>
 #include <Atakama/Engine/Texture.hpp>
 
-#include <imgui.h>
-
 namespace Atakama::Editor
 {
 

@@ -1,12 +1,16 @@
 #include "ViewportLayer.hpp"
 
+#include "Core/IconMap.hpp"
+#include "ImGui/IconButton.hpp"
+
 #include <Atakama/Core/Application.hpp>
 #include <Atakama/Core/InputSystem.hpp>
+#include <Atakama/Core/FileSystem.hpp>
 #include <Atakama/Asset/AssetManager.hpp>
 #include <Atakama/Engine/RenderPass/RenderPass.hpp>
 #include <Atakama/Engine/RenderPass/OutlineRenderPass.hpp>
 #include <Atakama/Engine/FrameBuffer.hpp>
-
+#include <Atakama/Engine/Texture.hpp>
 
 #include <Atakama/Scene/Scene.hpp>
 #include <Atakama/Scene/Entity.hpp>
@@ -14,7 +18,6 @@
 #include <Atakama/Engine/CameraSystem.hpp>
 #include <Atakama/Scene/Components/Components.hpp>
 
-#include <imgui.h>
 #include <ImGuizmo.h>
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtx/euler_angles.hpp>
@@ -36,6 +39,8 @@ ViewportLayer::ViewportLayer()
 
 void ViewportLayer::OnAttach()
 {
+    auto path = FileSystem::GetBinaryPath() / "resources" / "icons" / "editor_icon_map.png";
+    m_IconMap = CreateRef<IconMap>(path, 1024, 64);
 }
 
 void ViewportLayer::OnUpdate(float ts)
@@ -157,15 +162,23 @@ void ViewportLayer::OnUpdateUI(float ts)
         ImGui::Image(reinterpret_cast<ImTextureID>(texture->GetId()), wSize, ImVec2(0, 1), ImVec2(1, 0));
     }
 
-
     //TODO: fetch the titlebar height and adjust the Y coordinate
     ImGui::SetCursorPos(ImVec2(20, 40));
     ImGui::BeginGroup();
     {
-        ImGui::RadioButton("Select", &m_GizmoType, -1);
-        ImGui::RadioButton("Rotate", &m_GizmoType, ImGuizmo::OPERATION::ROTATE);
-        ImGui::RadioButton("Translate", &m_GizmoType, ImGuizmo::OPERATION::TRANSLATE);
-        ImGui::RadioButton("Scale", &m_GizmoType, ImGuizmo::OPERATION::SCALE);
+        std::map<IconMap::Icon, int> operationMap = {
+            { IconMap::Icon::Cursor, -1},
+            { IconMap::Icon::Move, ImGuizmo::OPERATION::TRANSLATE },
+            { IconMap::Icon::Rotate, ImGuizmo::OPERATION::ROTATE},
+            { IconMap::Icon::Scale, ImGuizmo::OPERATION::SCALE }
+        };
+
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.f, 0.f));
+        for (IconMap::Icon icon : {IconMap::Icon::Cursor, IconMap::Icon::Move, IconMap::Icon::Rotate, IconMap::Icon::Scale})
+        {
+            IconButton(m_IconMap, icon, &m_GizmoType, operationMap[icon]);
+        }
+        ImGui::PopStyleVar();
         ImGui::Text("Mesh: %d", m_MeshId);
         ImGui::Text("Focused: %s", m_ViewportFocused ? "YES" : "NO");
         ImGui::Text("Hovered: %s", m_ViewportHovered ? "YES" : "NO");

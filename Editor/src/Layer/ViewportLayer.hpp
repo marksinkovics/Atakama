@@ -18,6 +18,9 @@ class CameraSystem;
 namespace Atakama::Editor
 {
 
+class IconMap;
+
+
 class ViewportLayer: public Layer
 {
 public:
@@ -50,6 +53,8 @@ private:
     bool m_EnableGizmoSnapping { false };
 
     EditorUIConfig& m_UIConfig;
+    Ref<IconMap> m_IconMap; // 1024x1024 - tile size 64x64
+
 };
 
 }

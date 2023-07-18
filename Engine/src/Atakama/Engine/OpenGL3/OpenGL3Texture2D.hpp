@@ -19,6 +19,8 @@ public:
 private:
     uint32_t m_Id;
     int m_TotalUnits;
+    GLenum m_InternalFormat;
+    GLenum m_DataFormat;
 };
 
 }

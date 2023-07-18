@@ -5,9 +5,6 @@
 #include "Atakama/Events/Event.hpp"
 #include "Atakama/Core/Profiler.hpp"
 
-#include <imgui.h>
-#include <GLFW/glfw3.h>
-
 namespace Atakama {
 
 Application::Application()

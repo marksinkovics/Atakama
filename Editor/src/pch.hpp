@@ -22,6 +22,10 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/hash.hpp>
 
+#define IMGUI_DEFINE_MATH_OPERATORS
+#include <imgui.h>
+#include <imgui_internal.h>
+
 #include <Atakama/Core/Utils.hpp>
 #include <Atakama/Log/LogSystem.hpp>
 #include <Atakama/Core/GlobalContext.hpp>
