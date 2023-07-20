@@ -50,7 +50,9 @@ namespace Atakama::Editor
 
         // Set the top level dock space
         {
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 8, 8 });
             m_UIConfig.editorTopLevelDockSpace = ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_None, &m_UIConfig.editorTopLevelClass);
+            ImGui::PopStyleVar();
         }
 
 #if 0

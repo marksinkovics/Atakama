@@ -38,6 +38,9 @@ void ImGuiLayer::OnAttach()
     }
 
     ImGui::StyleColorsDark();
+    
+    SetCustomTheme();
+
     ImGui_ImplGlfw_InitForOpenGL(m_Window->GetWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 330 core");
 
@@ -75,6 +78,26 @@ void ImGuiLayer::End()
         ImGui::RenderPlatformWindowsDefault();
         glfwMakeContextCurrent(backup_current_context);
     }
+}
+
+void ImGuiLayer::SetCustomTheme()
+{
+    ImVec4* colors = ImGui::GetStyle().Colors;
+    colors[ImGuiCol_WindowBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.00f);
+    colors[ImGuiCol_ChildBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.00f);
+    colors[ImGuiCol_PopupBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.00f);
+    colors[ImGuiCol_Button] = ImVec4(0.22f, 0.23f, 0.25f, 1.00f);
+    colors[ImGuiCol_Header] = ImVec4(0.22f, 0.23f, 0.25f, 1.00f);
+    colors[ImGuiCol_HeaderActive] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
+    colors[ImGuiCol_Tab] = ImVec4(0.22f, 0.23f, 0.25f, 1.00f);
+    colors[ImGuiCol_TabHovered] = ImVec4(0.47f, 0.49f, 0.54f, 1.00f);
+    colors[ImGuiCol_TabActive] = ImVec4(0.47f, 0.50f, 0.54f, 1.00f);
+    colors[ImGuiCol_TabUnfocused] = ImVec4(0.22f, 0.23f, 0.25f, 1.00f);
+    colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.22f, 0.23f, 0.25f, 1.00f);
+    colors[ImGuiCol_FrameBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.54f);
+    colors[ImGuiCol_ButtonHovered] = ImVec4(0.32f, 0.32f, 0.32f, 1.00f);
+    colors[ImGuiCol_ButtonActive] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
+    colors[ImGuiCol_TitleBgActive] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
 }
 
 

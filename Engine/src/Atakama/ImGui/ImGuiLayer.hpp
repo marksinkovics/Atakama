@@ -23,6 +23,8 @@ public:
 protected:
     Ref<Window> m_Window;
     Ref<RenderSystem> m_RenderSystem;
+private:
+    void SetCustomTheme();
 };
 
 }
